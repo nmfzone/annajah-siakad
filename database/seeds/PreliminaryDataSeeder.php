@@ -1,7 +1,7 @@
 <?php
 
 use App\Enums\Role;
-use App\Models\StudentProfile;
+use App\Imports\StudentsImport;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -40,8 +40,10 @@ class PreliminaryDataSeeder extends Seeder
             'role' => Role::STUDENT,
         ]);
 
-        $student->studentProfile()->save(factory(StudentProfile::class)->make([
+        $student->studentProfile->update([
             'graduate_date' => '2020-05-10',
-        ]));
+        ]);
+
+        (new StudentsImport)->queue(resource_path('files/DataSantriAll.xlsx'));
     }
 }

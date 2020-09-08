@@ -8,7 +8,13 @@ final class AcademicClassName extends Enum
 {
     const VII_MAKMUM = 'VII MAKMUN';
 
-    const VIII_MAKMUM = 'VIII MAKMUN';
+    const VII_MUAWIYAH = 'VII MUAWIYAH';
 
-    const IX_MAKMUM = 'IX MAKMUN';
+    const VIII_AL_FARUQ = 'VIII AL FARUQ';
+
+    const VIII_AL_FATIH = 'VIII AL FATIH';
+
+    const IX_TAJUDDIN = 'IX TAJUDDIN';
+
+    const IX_SHALAHUDIN = 'IX SHALAHUDIN';
 }

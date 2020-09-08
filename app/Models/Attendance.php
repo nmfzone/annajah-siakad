@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 
 class Attendance extends Model
 {
@@ -28,20 +27,5 @@ class Attendance extends Model
     public function academicClass()
     {
         return $this->belongsTo(AcademicClass::class);
-    }
-
-    public static function generateSlug()
-    {
-        $generate = function () {
-            return Str::random(20);
-        };
-
-        $slug = $generate();
-
-        while (Attendance::whereSlug($slug)->first() != null) {
-            $slug = $generate();
-        }
-
-        return $slug;
     }
 }

@@ -1,16 +1,15 @@
 // Font awesome
 $fa-font-path: '../fonts/vendor/font-awesome';
-@import "~font-awesome/scss/font-awesome";
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/regular";
+@import "@fortawesome/fontawesome-free/scss/solid";
+@import "@fortawesome/fontawesome-free/scss/brands";
 
-@tailwind base;
+@import "vue-select/src/scss/vue-select";
+
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@200;300;400;600');
+
+@import "tailwind";
 
 @import "variables";
 @import "global";
-
-@tailwind components;
-
-@import "components/form";
-@import "components/button";
-@import "components/navbar";
-
-@tailwind utilities;

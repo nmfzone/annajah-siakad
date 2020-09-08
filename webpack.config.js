@@ -14,6 +14,7 @@ const webpackConfig = {
   resolve: {
     symlinks: false,
     alias: {
+      '@vendor': `${root}/vendor`,
       '@root': `${root}/resources/js`,
       '@mixins': `${root}/resources/js/mixins`,
       '@images': `${root}/resources/images`,

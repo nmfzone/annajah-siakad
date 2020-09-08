@@ -1,52 +1,56 @@
-@extends('layouts.web')
+@extends('layouts.web', [
+  'background' => 'bg-gray-200',
+])
 
-@section('title', "Presensi {$attendance->name} {$attendance->academicClass->name} {$attendance->academicClass->academicYear->name}")
+@section('title', "Presensi Kehadiran")
+
+@section('top-content-lv2')
+  <div class="text-center">
+    <div class="flex justify-center">
+      <img src="{{ asset('images/logo.png') }}" class="w-1/4" />
+    </div>
+
+    <h3 class="font-normal text-2xl md:text-3xl mb-5">
+      Presensi Kehadiran
+    </h3>
+  </div>
+@endsection
 
 @section('content-lv2')
   <div class="font-light text-base">
-    <div class="w-full mb-6">
-      <h3 class="font-normal text-2xl md:text-3xl mb-3 text-center">
-        Presensi {{ $attendance->name }}
-      </h3>
-
-      <h4 class="text-lg md:text-xl text-center">
-        Kelas {{ $attendance->academicClass->name }}
-      </h4>
-
-      <h4 class="text-lg md:text-xl mb-5 text-center">
-        Tahun Ajaran {{ $attendance->academicClass->academicYear->name }}
-      </h4>
-
+    <div class="w-full lg:w-5/6 mb-6 mx-auto">
       <div class="text-center">
-        @include('flash::message')
+        @include('flash::message', ['dismissible' => true, 'timer' => 0])
 
-        @if ($userAttend == null)
-          <div class="mt-20">
-            <form id="next-form" action="{{ route('attendances.store', $attendance->slug) }}" method="POST">
-              @csrf
+        <div class="mt-5">
+          <form id="next-form" action="{{ route('attendances.store') }}" method="POST">
+            @csrf
 
-              <button class="rounded bg-blue-600 px-4 py-2 text-white text-lg">
-                {{ __('Hadir') }}
-              </button>
-            </form>
-          </div>
+            <h3 class="font-normal text-lg mb-5 text-center">
+              Pilih Jenis Presensi
+            </h3>
 
-          <div class="mt-4">
-            Waktu Presensi berakhir pukul <b>{{ $attendance->ended_at->format('h:i:s') }}</b> WIB
-          </div>
-        @else
-          <div class="divide-y divide-gray-400">
-            <div class="pt-4 pb-4">
-              Anda telah melakukan presensi pukul <b>{{ $attendTime->format('h:i:s') }}</b> WIB
+            <div class="form-stack mb-5">
+              <form-select
+                name="attendance"
+                :options='@json($attendances)'
+                class="@error('email') is-invalid @enderror"
+                no-options-message="Presensi Kehadiran kosong."
+                label="label"
+                value-key="value"></form-select>
+
+              @error('attendance')
+                <span class="invalid-feedback" role="alert">
+                  <b>{{ $message }}</b>
+                </span>
+              @enderror
             </div>
 
-            @if ($attendance->message)
-              <div class="pt-4">
-                {!! $attendance->message !!}
-              </div>
-            @endif
-          </div>
-        @endif
+            <button class="rounded bg-blue-600 px-4 py-2 text-white text-lg">
+              {{ __('Hadir') }}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </div>

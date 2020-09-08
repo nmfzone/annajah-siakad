@@ -28,8 +28,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     });
 
-    Route::get('/p/{slug}', 'AttendancesController@index')->name('attendances.index');
-    Route::post('/p/{slug}', 'AttendancesController@store')->name('attendances.store');
+    Route::get('/main', 'AttendancesController@index')->name('attendances.index');
+    Route::post('/main', 'AttendancesController@store')->name('attendances.store');
 });
 
 Route::get('/go/{code}', function ($code) {

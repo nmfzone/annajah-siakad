@@ -1,0 +1,9 @@
+@tailwind base;
+
+@tailwind components;
+
+@import "components/form";
+@import "components/button";
+@import "components/navbar";
+
+@tailwind utilities;

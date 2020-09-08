@@ -17,50 +17,77 @@ class AttendancesController extends Controller
         $this->middleware(['auth', 'role:student']);
     }
 
-    public function index(Request $request, $slug)
+    public function index(Request $request)
     {
         /** @var \App\Models\Attendance $attendance */
-        $attendance = Attendance::whereSlug($slug)->firstOrFail();
-        /** @var \App\Models\AcademicClassStudent $academicClassStudent */
-        $academicClassStudent = $request->user()
-            ->academicClassStudents()
-            ->where('academic_class_id', $attendance->academicClass->id)
-            ->first();
+        $attendances = Attendance::with('academicClass.academicYear')
+            ->where('is_open', true)
+            ->get();
 
-        if (! $academicClassStudent) {
-            abort(403, 'You don\'t belongs to this class.');
-        }
+        $attendances = $attendances->map(function ($attendance) {
+            return [
+                'label' => $attendance->name . ' ' .
+                    $attendance->academicClass->name . ' ' .
+                    $attendance->academicClass->academicYear->name,
+                'value' => $attendance->id,
+            ];
+        });
 
-        $userAttend = $attendance->academicClassStudents()->find($academicClassStudent);
-        $attendTime = null;
-
-        if ($userAttend) {
-            $attendTime = $userAttend->pivot->created_at;
-        }
-
-        return view('attendances.index', compact('attendance', 'userAttend', 'attendTime'));
+        return view('attendances.index', compact('attendances'));
     }
 
-    public function store(Request $request, $slug)
+    public function store(Request $request)
     {
+        $this->validate($request, [
+            'attendance' => 'required|exists:attendances,id'
+        ]);
+
         /** @var \App\Models\Attendance $attendance */
-        $attendance = Attendance::whereSlug($slug)->firstOrFail();
-        $academicClassStudent = $request->user()
-            ->academicClassStudents()
-            ->where('academic_class_id', $attendance->academicClass->id)
-            ->first();
+        $attendance = Attendance::find($request->attendance);
 
-        if (! $academicClassStudent) {
-            abort(403, 'You don\'t belongs to this class.');
-        }
-
-        $userAttend = $attendance->academicClassStudents()->find($academicClassStudent);
-
-        if ($userAttend) {
-            flash('Anda sudah melakukan presensi sebelumnya.')->error();
+        if (! $attendance->is_open) {
+            flash('Mohon maaf, Anda sudah terlambat.')->error();
         } else {
-            $attendance->academicClassStudents()->attach($academicClassStudent);
-            flash('Berhasil melakukan presensi.')->success();
+            $academicClassStudent = $request->user()
+                ->academicClassStudents()
+                ->where('academic_class_id', $attendance->academicClass->id)
+                ->first();
+
+            if (! $academicClassStudent) {
+                flash('Mohon maaf, Anda bukan peserta kelas ini.')->error();
+            } else {
+                $userAttend = $attendance->academicClassStudents()->find($academicClassStudent);
+
+                $message = "
+                    <div class=\"divide-y divide-gray-400\">
+                        <div class=\"" . (empty($attendance->message) ? '' : 'pb-4') . "\">
+                            %s
+                        </div>
+                ";
+
+                if (! empty($attendance->message)) {
+                    $message .= "
+                        <div class=\"pt-4\">
+                            {$attendance->message}
+                        </div>
+                    ";
+                }
+
+                $message .= '</div>';
+
+                if ($userAttend) {
+                    flash(
+                        sprintf($message, sprintf(
+                            'Anda sudah melakukan presensi pukul %s.',
+                            $userAttend->pivot->created_at->format('H:i')
+                        ))
+                    )->error();
+                } else {
+                    $attendance->academicClassStudents()->attach($academicClassStudent);
+
+                    flash(sprintf($message, 'Berhasil melakukan presensi.'))->success();
+                }
+            }
         }
 
         return redirect()->back();

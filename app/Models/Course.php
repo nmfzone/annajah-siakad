@@ -12,7 +12,7 @@ class Course extends Model
         'name',
     ];
 
-    public function academicClass()
+    public function academicClasses()
     {
         return $this->hasMany(AcademicClass::class);
     }

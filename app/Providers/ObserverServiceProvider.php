@@ -3,10 +3,8 @@
 namespace App\Providers;
 
 use App\Models\AcademicClass;
-use App\Models\Attendance;
 use App\Models\User;
 use App\Observers\AcademicClassObserver;
-use App\Observers\AttendanceObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 
@@ -21,7 +19,6 @@ class ObserverServiceProvider extends ServiceProvider
     {
         User::observe(UserObserver::class);
         AcademicClass::observe(AcademicClassObserver::class);
-        Attendance::observe(AttendanceObserver::class);
     }
 
     /**

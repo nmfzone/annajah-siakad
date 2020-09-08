@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Enums\Role;
+use App\Models\StudentProfile;
 use App\Models\User;
 
 class UserObserver
@@ -14,6 +16,21 @@ class UserObserver
      */
     public function creating(User $user)
     {
-        $user->username = User::generateUsername($user->role);
+        if ($user->username == null) {
+            $user->username = User::generateUsername($user->role);
+        }
+    }
+
+    /**
+     * Listen to the User created event.
+     *
+     * @param  \App\Models\User  $user
+     * @return void
+     */
+    public function created(User $user)
+    {
+        if ($user->role == Role::STUDENT) {
+            $user->studentProfile()->save(new StudentProfile());
+        }
     }
 }

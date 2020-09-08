@@ -2,10 +2,10 @@
   <transition name="fade">
     <div :class="['alert', localState, {'pr-12-imp': dismissible}]" v-if="localShow">
       <slot>
-        <div class="header" v-if="hasMessage">{{ message }}</div>
+        <div class="header" v-if="hasMessage" v-html="message"></div>
         <ul class="list" v-if="hasMessages">
           <li v-for="message in messages">
-            {{ message }}
+            <div v-html="message"></div>
           </li>
         </ul>
 
@@ -72,7 +72,7 @@
         }
       },
       init () {
-        if (!this.show || this.timer === undefined) {
+        if (!this.show || this.timer === undefined || this.timer < 1) {
           return
         }
 

@@ -8,35 +8,47 @@
 
 @section('content')
   <div class="row">
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-blue"><i class="fas fa-user-tie"></i></span>
+    <div class="col-lg-3 col-6">
+      <a href="">
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>{{ $teacherCounts }}</h3>
 
-        <div class="info-box-content">
-          <span class="info-box-text">Total Asatidz</span>
-          <span class="info-box-number">{{ $teacherCounts }}</span>
+            <p>Total Asatidz</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-yellow"><i class="fas fa-users"></i></span>
+    <div class="col-lg-3 col-6">
+      <a href="">
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>{{ $studentCounts }}</h3>
 
-        <div class="info-box-content">
-          <span class="info-box-text">Total Siswa Aktif</span>
-          <span class="info-box-number">{{ $studentCounts }}</span>
+            <p>Total Siswa Aktif</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-users"></i>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
-    <div class="col-md-3 col-sm-6 col-xs-12">
-      <div class="info-box">
-        <span class="info-box-icon bg-green"><i class="fas fa-user-graduate"></i></span>
+    <div class="col-lg-3 col-6">
+      <a href="">
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>{{ $graducatedStudentCounts }}</h3>
 
-        <div class="info-box-content">
-          <span class="info-box-text">Total Kelulusan</span>
-          <span class="info-box-number">{{ $graducatedStudentCounts }}</span>
+            <p>Total Kelulusan</p>
+          </div>
+          <div class="icon">
+            <i class="fas fa-user-graduate"></i>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
   </div>
   <div class="row">

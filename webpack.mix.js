@@ -14,14 +14,16 @@ require('laravel-mix-tailwind')
  */
 
 mix.js('resources/js/app.js', 'public/js')
+  .js('resources/js/dashboard.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css')
+  .sass('resources/sass/dashboard.scss', 'public/css')
   .tailwind('./tailwind.config.js')
   .browserSync({
     proxy: process.env.APP_URL,
     port: 3000
   })
 
-mix.copy('node_modules/font-awesome/fonts', 'public/fonts/vendor/font-awesome')
+mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts/', 'public/fonts/vendor/font-awesome')
 
 if (mix.inProduction()) {
   mix.version()

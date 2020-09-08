@@ -15,13 +15,12 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->string('slug');
             $table->string('type');
             $table->string('name');
             $table->unsignedBigInteger('academic_class_id');
             $table->boolean('is_open')->default(false);
-            $table->timestamp('started_at');
-            $table->timestamp('ended_at');
+            $table->timestamp('started_at')->useCurrent();
+            $table->timestamp('ended_at')->useCurrent();
             $table->text('message')->nullable();
 
             $table->foreign('academic_class_id')

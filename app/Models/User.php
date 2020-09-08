@@ -47,11 +47,12 @@ class User extends Authenticatable
         return $this->hasOne(StudentProfile::class, 'student_id');
     }
 
-    public static function generateUsername($role)
+    public static function generateUsername($role, $year = null)
     {
-        $generate = function ($index) use ($role) {
+        $generate = function ($index) use ($role, $year) {
             if ($role == Role::STUDENT) {
-                return Carbon::now()->year . random_int(100000, 999999);
+                $year = $year ? $year : Carbon::now()->year;
+                return $year . random_int(100000, 999999);
             }
 
             return 'annajah-' . $index;
