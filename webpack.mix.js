@@ -1,4 +1,6 @@
-const mix = require('laravel-mix');
+const mix = require('laravel-mix')
+require('./webpack.config')
+require('laravel-mix-tailwind')
 
 /*
  |--------------------------------------------------------------------------
@@ -12,4 +14,15 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+  .sass('resources/sass/app.scss', 'public/css')
+  .tailwind('./tailwind.config.js')
+  .browserSync({
+    proxy: process.env.APP_URL,
+    port: 3000
+  })
+
+mix.copy('node_modules/font-awesome/fonts', 'public/fonts/vendor/font-awesome')
+
+if (mix.inProduction()) {
+  mix.version()
+}

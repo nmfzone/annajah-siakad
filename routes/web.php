@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\ShortLink;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['namespace' => 'Dashboard'], function () {
+        Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    });
+
+    Route::get('/p/{slug}', 'AttendancesController@index')->name('attendances.index');
+    Route::post('/p/{slug}', 'AttendancesController@store')->name('attendances.store');
+});
+
+Route::get('/go/{code}', function ($code) {
+    $shortLink = ShortLink::whereCode($code)->firstOrFail();
+    return view('redirect_link', compact('shortLink'));
 });

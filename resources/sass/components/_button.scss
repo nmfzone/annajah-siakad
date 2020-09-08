@@ -1,0 +1,7 @@
+.btn {
+  @apply block bg-gray-700 rounded px-4 py-3 text-white leading-none;
+
+  &:hover {
+    @apply bg-gray-900;
+  }
+}

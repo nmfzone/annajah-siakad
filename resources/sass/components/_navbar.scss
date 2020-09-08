@@ -1,0 +1,10 @@
+.navbar {
+  @apply bg-white w-full z-20 shadow flex justify-between align-middle px-4;
+
+  border-bottom: 2px solid #d7d8da99;
+  min-height: 36px;
+
+  > .navbar-brand {
+    @apply flex items-center py-4;
+  }
+}

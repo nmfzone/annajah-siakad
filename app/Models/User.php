@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Role;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,30 +12,58 @@ class User extends Authenticatable
 {
     use Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'phone',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function setPhoneAttribute($value)
+    {
+        $value = preg_replace('/[^0-9]/', '', $value);
+
+        $this->attributes['phone'] = $value;
+    }
+
+    public function academicClassStudents()
+    {
+        return $this->hasMany(AcademicClassStudent::class, 'student_id');
+    }
+
+    public function attendances()
+    {
+        return $this->belongsToMany(Attendance::class, 'attendance_record')
+            ->withTimestamps();
+    }
+
+    public function studentProfile()
+    {
+        return $this->hasOne(StudentProfile::class, 'student_id');
+    }
+
+    public static function generateUsername($role)
+    {
+        $generate = function ($index) use ($role) {
+            if ($role == Role::STUDENT) {
+                return Carbon::now()->year . random_int(100000, 999999);
+            }
+
+            return 'annajah-' . $index;
+        };
+
+        $index = 1;
+        $username = $generate($index);
+
+        while (User::whereUsername($username)->first() != null) {
+            $username = $generate($index++);
+        }
+
+        return $username;
+    }
 }
