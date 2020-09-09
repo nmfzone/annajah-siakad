@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\ShortLink;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,9 +13,7 @@ use App\Models\ShortLink;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'WebController@index');
 
 Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'Auth\LoginController@login');
@@ -32,7 +29,4 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/main', 'AttendancesController@store')->name('attendances.store');
 });
 
-Route::get('/go/{code}', function ($code) {
-    $shortLink = ShortLink::whereCode($code)->firstOrFail();
-    return view('redirect_link', compact('shortLink'));
-});
+Route::get('/go/{code}', 'ShortLinksController@show');
