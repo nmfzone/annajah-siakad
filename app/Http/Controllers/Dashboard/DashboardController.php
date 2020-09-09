@@ -21,7 +21,7 @@ class DashboardController extends Controller
 
         $studentCounts = $allStudentCounts - $graducatedStudentCounts;
 
-        return view('dashboard', compact(
+        return view('dashboard.index', compact(
             'teacherCounts',
             'studentCounts',
             'graducatedStudentCounts'
