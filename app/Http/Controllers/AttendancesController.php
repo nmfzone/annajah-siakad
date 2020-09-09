@@ -40,6 +40,8 @@ class AttendancesController extends Controller
     {
         $this->validate($request, [
             'attendance' => 'required|exists:attendances,id'
+        ], [], [
+            'attendance' => 'Jenis Presensi'
         ]);
 
         /** @var \App\Models\Attendance $attendance */
