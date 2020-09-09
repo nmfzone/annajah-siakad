@@ -19,6 +19,7 @@ class CreateAcademicClassesTable extends Migration
             $table->string('class_name');
             $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('academic_year_id');
+            $table->unsignedBigInteger('teacher_id')->nullable();
 
             $table->foreign('course_id')
                 ->references('id')
@@ -27,6 +28,10 @@ class CreateAcademicClassesTable extends Migration
             $table->foreign('academic_year_id')
                 ->references('id')
                 ->on('academic_years')
+                ->onDelete('cascade');
+            $table->foreign('teacher_id')
+                ->references('id')
+                ->on('teachers')
                 ->onDelete('cascade');
         });
     }
