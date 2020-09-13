@@ -31,8 +31,9 @@ class CreateAcademicClassesTable extends Migration
                 ->onDelete('cascade');
             $table->foreign('teacher_id')
                 ->references('id')
-                ->on('teachers')
+                ->on('users')
                 ->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

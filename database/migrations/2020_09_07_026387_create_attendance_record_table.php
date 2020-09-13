@@ -16,6 +16,7 @@ class CreateAttendanceRecordTable extends Migration
         Schema::create('attendance_record', function (Blueprint $table) {
             $table->unsignedBigInteger('attendance_id');
             $table->unsignedBigInteger('academic_class_student_id');
+            $table->boolean('late')->default(false);
 
             $table->foreign('attendance_id')
                 ->references('id')

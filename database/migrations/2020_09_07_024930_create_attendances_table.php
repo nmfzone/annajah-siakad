@@ -21,12 +21,15 @@ class CreateAttendancesTable extends Migration
             $table->boolean('is_open')->default(false);
             $table->timestamp('started_at')->useCurrent();
             $table->timestamp('ended_at')->useCurrent();
+            $table->timestamp('advanced_started_at')->nullable();
+            $table->timestamp('advanced_ended_at')->nullable();
             $table->text('message')->nullable();
 
             $table->foreign('academic_class_id')
                 ->references('id')
                 ->on('academic_classes')
                 ->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

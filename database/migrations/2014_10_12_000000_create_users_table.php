@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('address')->nullable();
             $table->boolean('gender')->default(true);
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

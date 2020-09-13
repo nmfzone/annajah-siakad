@@ -30,7 +30,7 @@ return [
         'array' => 'Isian kolom :attribute harus antara :min sampai :max item.',
     ],
     'boolean' => 'Isian kolom :attribute hanya boleh berisi true atau false.',
-    'confirmed' => 'Isian kolom :attribute konfirmasi tidak cocok.',
+    'confirmed' => 'Isian kolom konfirmasi :attribute tidak cocok.',
     'date' => 'Isian kolom :attribute bukan tanggal yang valid.',
     'date_equals' => 'Isian kolom :attribute harus berisi sebuah tanggal yang sama dengan :date.',
     'date_format' => 'Isian kolom :attribute harus sesuai format (:format).',
@@ -146,5 +146,11 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'Nama',
+        'address' => 'Alamat',
+        'role' => 'Jabatan',
+        'gender' => 'Jenis Kelamin',
+        'phone' => 'No telepon',
+    ],
 ];

@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2.5",
         "bensampo/laravel-enum": "^2.2",
+        "dompdf/dompdf": "^0.8.6",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
@@ -18,7 +19,10 @@
         "laravel/framework": "^7.24",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.2",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "yajra/laravel-datatables-buttons": "^4.10",
+        "yajra/laravel-datatables-html": "^4.30",
+        "yajra/laravel-datatables-oracle": "^9.11"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.4",

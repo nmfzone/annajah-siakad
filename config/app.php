@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'short_name' => env('APP_SHORT_NAME', env('APP_NAME', 'Laravel')),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -227,6 +229,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Role' => App\Enums\Role::class,
 
     ],
 

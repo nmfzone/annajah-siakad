@@ -9,8 +9,8 @@
     <alert
       state="{{ $message['level'] }}"
       message="{{ $message['message'] }}"
-      {{ $dismissible ? 'dismissible' : null }}
-      timer="{{ $timer ?? '10' }}"></alert>
+      {{ isset($dismissible) ? 'dismissible' : null }}
+      timer="{{ isset($timer) ? $timer : '10' }}"></alert>
   @endif
 @endforeach
 

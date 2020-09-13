@@ -17,7 +17,6 @@
 
 @section('body')
   <div class="{{ $auth_type ?? 'login' }}-box">
-
     <div class="{{ $auth_type ?? 'login' }}-logo">
       <a href="{{ url('/') }}">
         <img src="{{ asset('images/logo.png') }}" width="180px" />

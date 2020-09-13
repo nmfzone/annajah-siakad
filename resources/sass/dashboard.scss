@@ -1,13 +1,20 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
 
 $fa-font-path: '../fonts/vendor/font-awesome';
-@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
 @import "@fortawesome/fontawesome-free/scss/regular";
 @import "@fortawesome/fontawesome-free/scss/solid";
 @import "@fortawesome/fontawesome-free/scss/brands";
 
-@import '~overlayscrollbars/css/OverlayScrollbars.css';
+@import "~overlayscrollbars/css/OverlayScrollbars.css";
 
-@import '~icheck-bootstrap/icheck-bootstrap.css';
+@import "~icheck-bootstrap/icheck-bootstrap.css";
 
-@import '~@vendor/almasaeed2010/adminlte/dist/css/adminlte.css';
+@import "~@vendor/almasaeed2010/adminlte/dist/css/adminlte.css";
+
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
+@import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";
+@import "~datatables.net-responsive-bs4/css/responsive.bootstrap4.css";
+
+@tailwind utilities;
+@import "global";

@@ -13,15 +13,17 @@ class RoleMiddleware
      * @param  \Closure  $next
      * @param  array  $roles
      * @return mixed
+     *
+     * @throws \Illuminate\Auth\AuthenticationException
      */
     public function handle($request, Closure $next, ...$roles)
     {
-        foreach($roles as $role) {
-            if (auth()->check() && auth()->user()->role == $role) {
+        return app(Authenticate::class)->handle($request, function ($request) use ($next, $roles) {
+            if (in_array(auth()->user()->role, $roles)) {
                 return $next($request);
             }
-        }
 
-        return abort(403);
+            return abort(403);
+        });
     }
 }

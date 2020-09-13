@@ -17,6 +17,7 @@ class CreateAcademicYearsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('semester');
+            $table->softDeletes();
         });
     }
 

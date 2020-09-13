@@ -7,6 +7,10 @@
         class="form-control"
         v-bind="attrs"
         v-on="$listeners">
+
+      <div class="invalid-feedback" v-if="state === false">
+        <strong>{{ errorMessage }}</strong>
+      </div>
     </template>
     <template v-else>
       <div class="input-group">
@@ -27,6 +31,10 @@
                 @click="showHidePassword" />
             </slot>
           </span>
+        </div>
+
+        <div class="invalid-feedback" v-if="state === false">
+          <strong>{{ errorMessage }}</strong>
         </div>
       </div>
     </template>
@@ -51,6 +59,7 @@
         type: String,
         default: 'text'
       },
+      errorMessage: String,
       withAddOn: Boolean,
       addOnClass: [String, Object, Array]
     },

@@ -4,7 +4,7 @@
 
 @section('content_header')
     <h1 class="m-0 text-dark">Dashboard</h1>
-@stop
+@endsection
 
 @section('content')
   <div class="row">
@@ -60,4 +60,4 @@
       </div>
     </div>
   </div>
-@stop
+@endsection

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AcademicClassStudent extends Model
 {
+    use SoftDeletes;
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -14,7 +17,9 @@ class AcademicClassStudent extends Model
 
     public function attendances()
     {
-        return $this->belongsToMany(Attendance::class, 'attendance_record');
+        return $this->belongsToMany(Attendance::class, 'attendance_record')
+            ->withPivot('late')
+            ->withTimestamps();
     }
 
     public function academicClass()

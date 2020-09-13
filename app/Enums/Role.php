@@ -2,13 +2,13 @@
 
 namespace App\Enums;
 
-use BenSampo\Enum\Enum;
-
 final class Role extends Enum
 {
-    const STUDENT = 'student';
+    const STUDENT = 'santri';
 
-    const TEACHER = 'teacher';
+    const TEACHER = 'asatidz';
 
     const ADMIN = 'administrator';
+
+    const HEAD_MASTER = 'head-master';
 }

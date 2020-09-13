@@ -1,5 +1,7 @@
 form {
   .form-stack {
+    width: 100%;
+
     .invalid-feedback {
       @apply block text-sm font-light text-red-600 mt-2;
     }
