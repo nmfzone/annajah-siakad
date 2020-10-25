@@ -3,19 +3,34 @@
 namespace App\Imports;
 
 use App\Enums\Role;
+use App\Models\Site;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Concerns\Importable;
-use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\OnEachRow;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Row;
 
-class StudentsImport implements ToModel, WithChunkReading, ShouldQueue
+class StudentsImport implements WithChunkReading, OnEachRow, ShouldQueue
 {
     use Importable;
 
-    public function model(array $row)
+    /**
+     * @var \App\Models\Site
+     */
+    protected $site;
+
+    public function __construct(Site $site)
     {
+        $this->site = $site;
+    }
+
+    public function onRow(Row $row)
+    {
+        $row = $row->toArray();
+
         if (empty(trim($row[0]))) {
             Cache::forever('excel.students_import.start_year', $row[1]);
             return null;
@@ -32,17 +47,15 @@ class StudentsImport implements ToModel, WithChunkReading, ShouldQueue
             return null;
         }
 
-        return new User([
+        /** @var \App\Models\User $user */
+        $user = $this->site->users()->save(new User([
             'name' => $row[1],
             'password' => bcrypt('12345678'),
             'username' => User::generateUsername(Role::STUDENT, $value),
             'role' => Role::STUDENT,
-        ]);
-    }
+        ]));
 
-    public function batchSize(): int
-    {
-        return 20;
+        $user->studentProfiles()->save(new Student, ['site_id' => $this->site->id]);
     }
 
     public function chunkSize(): int

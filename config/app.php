@@ -54,9 +54,17 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'protocol' => env('APP_PROTOCOL', 'http'),
+
+    'host' => env('APP_HOST', 'localhost'),
+
+    'url' => env('APP_URL', env('APP_PROTOCOL', 'http') . '://' . env('APP_HOST', 'localhost')),
 
     'asset_url' => env('ASSET_URL', null),
+
+    'smp_host' => env('APP_SMP_HOST', 'smpit'),
+
+    'sd_host' => env('APP_SD_HOST', 'sdit'),
 
     /*
     |--------------------------------------------------------------------------
@@ -176,7 +184,9 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
+        App\Providers\MacroServiceProvider::class,
 
     ],
 

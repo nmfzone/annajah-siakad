@@ -24,9 +24,11 @@
   <div class="font-light text-base">
     <div class="top-right links">
       @auth
-        <a href="{{ url('/dashboard') }}">Dashboard</a>
+        @if(! is_main_app() || (is_main_app() && in_array(auth()->user()->role, [Role::SUPERADMIN, Role::EDITOR])))
+          <a href="{{ switch_route('auto', 'dashboard') }}">Dashboard</a>
+        @endif
       @else
-        <a href="{{ route('login') }}">Masuk</a>
+        <a href="{{ main_route('login', ! is_main_app() ? ['next' => sub_route('dashboard')] : []) }}">Masuk</a>
       @endauth
     </div>
 
@@ -35,12 +37,8 @@
         <img src="{{ asset('images/logo.png') }}" class="w-1/4" />
       </div>
 
-      <h3 class="font-normal text-3xl md:text-4xl mb-1 text-center mt-4">
-        Sistem Presensi
-      </h3>
-
-      <h4 class="text-lg md:text-xl mb-5 text-center">
-        {{ config('app.name') }}
+      <h4 class="text-3xl md:text-4xl mt-4 mb-5 text-center">
+        {{ app_name() }}
       </h4>
     </div>
   </div>

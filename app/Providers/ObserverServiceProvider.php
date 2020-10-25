@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\AcademicClass;
+use App\Models\AcademicClassCourse;
 use App\Models\User;
-use App\Observers\AcademicClassObserver;
+use App\Observers\AcademicClassCourseObserver;
 use App\Observers\UserObserver;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,7 +18,7 @@ class ObserverServiceProvider extends ServiceProvider
     public function boot()
     {
         User::observe(UserObserver::class);
-        AcademicClass::observe(AcademicClassObserver::class);
+        AcademicClassCourse::observe(AcademicClassCourseObserver::class);
     }
 
     /**

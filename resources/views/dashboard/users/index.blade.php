@@ -17,9 +17,9 @@
             <div class="col-md-6 my-auto">
               <h3 class="card-title">Daftar {{ ucwords($userType) }}</h3>
             </div>
-            @if(auth()->user()->role == Role::ADMIN)
+            @if(auth()->user()->isSuperAdmin() || auth()->user()->isAdmin())
               <div class="col-md-6">
-                <a href="{{ route('dashboard.users.create') }}" class="btn btn-secondary float-right">
+                <a href="{{ sub_route('dashboard.users.create') }}" class="btn btn-secondary float-right">
                   <i class="fa fa-plus"></i> Tambah Pengguna
                 </a>
               </div>

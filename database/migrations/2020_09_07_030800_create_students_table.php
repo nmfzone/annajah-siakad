@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateStudentProfilesTable extends Migration
+class CreateStudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateStudentProfilesTable extends Migration
      */
     public function up()
     {
-        Schema::create('student_profiles', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id');
-            $table->date('graduate_date')->nullable();
+            $table->timestamp('graduated_at')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('father_name')->nullable();
             $table->string('father_phone')->nullable();
@@ -26,11 +25,9 @@ class CreateStudentProfilesTable extends Migration
             $table->string('mother_phone')->nullable();
             $table->string('mother_address')->nullable();
             $table->integer('mother_salary')->nullable();
-
-            $table->foreign('student_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade');
+            $table->timestamp('accepted_at')->nullable();
+            $table->string('previous_school')->nullable();
+            $table->string('previous_school_address')->nullable();
         });
     }
 
@@ -41,6 +38,6 @@ class CreateStudentProfilesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('student_profiles');
+        Schema::dropIfExists('students');
     }
 }

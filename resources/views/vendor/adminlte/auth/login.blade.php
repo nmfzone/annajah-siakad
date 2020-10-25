@@ -2,18 +2,31 @@
 
 @section('title', 'Login')
 
-@php( $login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login') )
-@php( $register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register') )
-@php( $password_reset_url = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset') )
+@php
+  $login_url = [
+    'loc' => View::getSection('login_loc') ?? config('adminlte.login_url.loc', 'main'),
+    'path' => View::getSection('login_url') ?? config('adminlte.login_url.path', 'login')
+  ];
+
+  $register_url = [
+    'loc' => View::getSection('register_loc') ?? config('adminlte.register_url.loc', 'main'),
+    'path' => View::getSection('register_url') ?? config('adminlte.register_url.path', 'register')
+  ];
+
+  $password_reset_url = [
+    'loc' => View::getSection('password_reset_loc') ?? config('adminlte.password_reset_url.loc', 'main'),
+    'path' => View::getSection('password_reset_url') ?? config('adminlte.password_reset_url.path', 'password/reset')
+  ];
+@endphp
 
 @if (config('adminlte.use_route_url', false))
-  @php( $login_url = $login_url ? route($login_url) : '' )
-  @php( $register_url = $register_url ? route($register_url) : '' )
-  @php( $password_reset_url = $password_reset_url ? route($password_reset_url) : '' )
+  @php( $login_url = $login_url['path'] ? switch_route($login_url['loc'], $login_url['path']) : '' )
+  @php( $register_url = $register_url['path'] ? switch_route($register_url['loc'], $register_url['path']) : '' )
+  @php( $password_reset_url = $password_reset_url['path'] ? switch_route($password_reset_url['loc'], $password_reset_url['path']) : '' )
 @else
-  @php( $login_url = $login_url ? url($login_url) : '' )
-  @php( $register_url = $register_url ? url($register_url) : '' )
-  @php( $password_reset_url = $password_reset_url ? url($password_reset_url) : '' )
+  @php( $login_url = $login_url['path'] ? url($login_url['path']) : '' )
+  @php( $register_url = $register_url['path'] ? url($register_url['path']) : '' )
+  @php( $password_reset_url = $password_reset_url['path'] ? url($password_reset_url['path']) : '' )
 @endif
 
 @section('auth_header', __('adminlte::adminlte.login_message'))
@@ -21,6 +34,7 @@
 @section('auth_body')
   <form action="{{ $login_url }}" method="post">
     {{ csrf_field() }}
+    {{ next_field() }}
 
     <div class="input-group mb-3">
       <input type="text" name="username" class="form-control @error('username') is-invalid @enderror"

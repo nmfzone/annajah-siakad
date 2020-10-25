@@ -16,7 +16,7 @@
           <h3 class="card-title">Perbarui Pengguna</h3>
         </div>
         <div class="card-body">
-          <form method="POST" action="{{ route('dashboard.users.update', $user) }}">
+          <form method="POST" action="{{ sub_route('dashboard.users.update', $user) }}">
             @csrf
             @method('PUT')
 

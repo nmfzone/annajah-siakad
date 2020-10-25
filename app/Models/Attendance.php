@@ -24,15 +24,15 @@ class Attendance extends Model
         'advanced_ended_at' => 'datetime',
     ];
 
-    public function academicClassStudents()
+    public function academicClassCourseStudents()
     {
-        return $this->belongsToMany(AcademicClassStudent::class, 'attendance_record')
+        return $this->belongsToMany(AcademicClassCourseStudent::class, 'attendance_record')
             ->withPivot('late')
             ->withTimestamps();
     }
 
-    public function academicClass()
+    public function academicClassCourse()
     {
-        return $this->belongsTo(AcademicClass::class);
+        return $this->belongsTo(AcademicClassCourse::class);
     }
 }

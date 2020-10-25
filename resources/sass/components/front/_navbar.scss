@@ -1,0 +1,71 @@
+header {
+  a {
+    @apply text-white;
+  }
+
+  .main-navbar {
+    @apply border-t border-b;
+
+    background: rgba(3, 152, 158, 1);
+    border-color: rgba(255, 255, 255, 0.09);
+    transition: transform .35s ease-in-out, height .25s ease-in-out, background-color .45s ease-in-out;
+
+    .logo-box {
+      position: relative;
+
+      .logo {
+        @apply absolute w-40 left-0 text-center;
+
+        padding: 20px;
+        z-index: 99;
+        background-color: #04696d;
+        text-decoration: none;
+        color: #fff;
+        top: -35px;
+        transition: all ease-in-out 0.3s;
+
+        span {
+          @apply block mt-5;
+
+          font-family: "Exo 2", Verdana, serif;
+          font-size: 14px;
+          text-transform: uppercase;
+          line-height: 1.4;
+        }
+
+        img {
+          @apply block;
+
+          transition: all .35s;
+        }
+      }
+    }
+
+    &.sticky {
+      @apply fixed py-0 left-0 z-50 shadow-md;
+      background: rgba(3, 152, 158, 0.75);
+
+      .logo-box {
+        position: static;
+
+        .logo {
+          @apply left-auto top-0 w-60 h-full;
+
+          padding: 5px 10px 5px 80px;
+
+          span {
+            @apply mt-0 pl-5;
+          }
+
+          img {
+            position: absolute;
+            top: 5px;
+            left: 20px;
+            height: 60px;
+            object-fit: contain;
+          }
+        }
+      }
+    }
+  }
+}

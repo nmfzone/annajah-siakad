@@ -3,17 +3,26 @@
 namespace App\Models;
 
 use App\Enums\Role;
+use App\Models\Concerns\HasRole;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Laravolt\Avatar\Facade as Avatar;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use Notifiable,
-        SoftDeletes;
+    use HasRole,
+        Notifiable,
+        SoftDeletes,
+        InteractsWithMedia;
 
     protected $fillable = [
         'name', 'email', 'password', 'phone', 'address', 'gender',
@@ -28,9 +37,29 @@ class User extends Authenticatable
         'gender' => 'boolean',
     ];
 
-    public function academicClassStudents()
+    protected $appends = [
+        'avatar',
+        'photo_url',
+    ];
+
+    protected $with = [
+        'media',
+    ];
+
+    public function scopeForSite($query, Site $site = null): Builder
     {
-        return $this->hasMany(AcademicClassStudent::class, 'student_id');
+        return $query->whereHas('sites', function ($query) use ($site) {
+            if (is_null($site)) {
+                return $query;
+            }
+
+            return $query->where('id', $site->id);
+        });
+    }
+
+    public function academicClassCourseStudents()
+    {
+        return $this->hasMany(AcademicClassCourseStudent::class, 'student_id');
     }
 
     public function attendances()
@@ -39,9 +68,21 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    public function studentProfile()
+    public function sites()
     {
-        return $this->hasOne(StudentProfile::class, 'student_id');
+        return $this->belongsToMany(Site::class);
+    }
+
+    public function teacherProfiles()
+    {
+        return $this->morphedByMany(Teacher::class, 'userable')
+            ->withPivot('site_id');
+    }
+
+    public function studentProfiles()
+    {
+        return $this->morphedByMany(Student::class, 'userable')
+            ->withPivot('site_id');
     }
 
     public function setNameAttribute($value)
@@ -56,64 +97,62 @@ class User extends Authenticatable
         $this->attributes['phone'] = $value;
     }
 
-    public function isAdmin()
+    public function getPhotoUrlAttribute()
     {
-        return $this->role == Role::ADMIN;
+        $profileUrl = $this->getFirstMediaUrl('profile_pict');
+
+        if (empty($profileUrl)) {
+            return asset('images/user-default.png');
+        }
+
+        return $profileUrl;
     }
 
-    public function isNotAdmin()
+    public function getAvatarAttribute()
     {
-        return ! $this->isAdmin();
+        $avatar = $this->getFirstMediaUrl('profile_pict', 'thumb');
+
+        if (empty($avatar)) {
+            return Avatar::create($this->attributes['name'])->toBase64()->encoded;
+        }
+
+        return $avatar;
     }
 
-    public function isHeadMaster()
+    public function adminlteImage()
     {
-        return $this->role == Role::HEAD_MASTER;
+        return $this->getAvatarAttribute();
     }
 
-    public function isNotHeadMatser()
+    public function registerMediaCollections(): void
     {
-        return ! $this->isHeadMaster();
-    }
-
-    public function isTeacher()
-    {
-        return $this->role == Role::TEACHER;
-    }
-
-    public function isNotTeacher()
-    {
-        return ! $this->isTeacher();
-    }
-
-    public function isStudent()
-    {
-        return $this->role == Role::STUDENT;
-    }
-
-    public function isNotStudent()
-    {
-        return ! $this->isStudent();
+        $this->addMediaCollection('profile_pict')
+            ->acceptsMimeTypes(['image/jpeg', 'image/jpg', 'image/png'])
+            ->singleFile()
+            ->registerMediaConversions(function (Media $media) {
+                $this->addMediaConversion('thumb')
+                    ->width(50)
+                    ->height(50)
+                    ->sharpen(10);
+            });
     }
 
     public static function generateUsername($role, $year = null)
     {
-        $generate = function ($index) use ($role, $year) {
+        $generate = function () use ($role, $year) {
             if ($role == Role::STUDENT) {
                 $year = $year ? $year : Carbon::now()->year;
                 return $year . random_int(100000, 999999);
             }
 
-            return 'annajah-' . $index;
+            return 'annajah-' . Str::randomPlus('alnum', 3);
         };
 
-        $index = User::where('role', $role)->count();
-        $index = $index == 0 ? 1 : $index;
-        $username = $generate($index);
+        $username = $generate();
 
         $i = 0;
         while (User::whereUsername($username)->first() != null) {
-            $username = $generate($index++);
+            $username = $generate();
 
             if ($i++ == 10) {
                 throw new Exception('Cannot generate unique Username.');

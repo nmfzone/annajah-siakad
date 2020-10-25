@@ -19,7 +19,7 @@ mix.js('resources/js/app.js', 'public/js')
   .sass('resources/sass/dashboard.scss', 'public/css')
   .tailwind('./tailwind.config.js')
   .browserSync({
-    proxy: process.env.APP_URL,
+    proxy: process.env.APP_PROTOCOL + '://' + process.env.APP_HOST,
     port: 3000
   })
 

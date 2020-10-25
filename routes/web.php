@@ -14,45 +14,61 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'WebController@index');
+Route::group([
+    'domain' => config('app.host'),
+    'as' => 'main.',
+], function () {
+    Route::get('/', 'WebController@index')->name('web');
 
-Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
+    Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+    Route::post('login', 'Auth\LoginController@login');
 
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::group(['namespace' => 'Dashboard'], function () {
+    Route::group([
+        'namespace' => 'Dashboard',
+        'middleware' => 'auth',
+    ], function () {
+        Route::get('/dashboard', 'DashboardController@index')
+            ->name('dashboard')
+            ->middleware(sprintf('role:%s,%s', Role::EDITOR, Role::SUPERADMIN));
+    });
+});
+
+Route::group([
+    'domain' => sprintf('{sub_domain}.%s', config('app.host')),
+    'as' => 'sub.',
+    'middleware' => 'check_sub_domain',
+], function () {
+    Route::get('/', 'WebController@index')->name('web');
+
+    Route::group([
+        'namespace' => 'Dashboard',
+        'middleware' => ['auth', 'sub_permission'],
+    ], function () {
         Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 
         Route::get('/pengguna/buat', 'UsersController@create')
-            ->name('dashboard.users.create')
-            ->middleware(sprintf('role:%s', Role::ADMIN));
+            ->name('dashboard.users.create');
         Route::post('/pengguna/buat', 'UsersController@store')
-            ->name('dashboard.users.store')
-            ->middleware(sprintf('role:%s', Role::ADMIN));
+            ->name('dashboard.users.store');
         Route::get('/pengguna/{user}/edit', 'UsersController@edit')
-            ->name('dashboard.users.edit')
-            ->middleware(sprintf('role:%s', Role::ADMIN));
+            ->name('dashboard.users.edit');
         Route::put('/pengguna/{user}', 'UsersController@update')
-            ->name('dashboard.users.update')
-            ->middleware(sprintf('role:%s', Role::ADMIN));
+            ->name('dashboard.users.update');
         Route::delete('/pengguna/{user}', 'UsersController@destroy')
-            ->name('dashboard.users.destroy')
-            ->middleware(sprintf('role:%s', Role::ADMIN));
+            ->name('dashboard.users.destroy');
 
         Route::get('/pengguna/all/{userType}', 'UsersController@index')
             ->name('dashboard.users.index')
-            ->where('userType', implode('|', Role::asArray()))
-            ->middleware(sprintf('except_role:%s', Role::STUDENT));
+            ->where('userType', implode('|', Role::ordinalRoles()));
 
         Route::get('/pengguna/{user}', 'UsersController@show')
-            ->name('dashboard.users.show')
-            ->middleware(sprintf('except_role:%s', Role::STUDENT));
+            ->name('dashboard.users.show');
     });
 
-    Route::get('/main', 'AttendancesController@index')->name('attendances.index');
-    Route::post('/main', 'AttendancesController@store')->name('attendances.store');
+    Route::get('/presensi', 'AttendancesController@index')->name('attendances.index');
+    Route::post('/presensi', 'AttendancesController@store')->name('attendances.store');
 });
 
 Route::get('/go/{code}', 'ShortLinksController@show');

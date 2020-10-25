@@ -11,7 +11,7 @@
   <title>
     @yield('title_prefix', config('adminlte.title_prefix', ''))
     @yield('title', config('adminlte.title', 'AdminLTE 3'))
-    @yield('title_postfix', config('adminlte.title_postfix', ''))
+    @yield('title_postfix', ' | ' . app_name())
   </title>
 
   @yield('adminlte_css_pre')
@@ -54,7 +54,7 @@
 </head>
 
 <body class="@yield('classes_body')" @yield('body_data')>
-  <div id="app">
+  <div id="app" v-cloak>
     @yield('body')
   </div>
 

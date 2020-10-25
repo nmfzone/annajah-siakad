@@ -17,7 +17,6 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->string('type');
             $table->string('name');
-            $table->unsignedBigInteger('academic_class_id');
             $table->boolean('is_open')->default(false);
             $table->timestamp('started_at')->useCurrent();
             $table->timestamp('ended_at')->useCurrent();
@@ -25,9 +24,8 @@ class CreateAttendancesTable extends Migration
             $table->timestamp('advanced_ended_at')->nullable();
             $table->text('message')->nullable();
 
-            $table->foreign('academic_class_id')
-                ->references('id')
-                ->on('academic_classes')
+            $table->foreignId('academic_class_course_id')
+                ->constrained()
                 ->onDelete('cascade');
             $table->softDeletes();
         });

@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Enums\Role;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -14,10 +15,13 @@ class UsersDataTable extends DataTable
 
     protected $requestedType;
 
+    protected $site;
+
     public function __construct($authUser, $requestedType = null)
     {
         $this->authUser = $authUser;
         $this->requestedType = $requestedType ? strtolower($requestedType) : null;
+        $this->site = app()->make('site');
     }
 
     /**
@@ -38,20 +42,20 @@ class UsersDataTable extends DataTable
                 $buttons = "<div class=\"btn-group btn-group-sm\">";
 
                 $buttons .= "
-                    <a href=\"" . route('dashboard.users.show', $user) . "\" class=\"btn btn-info\">
+                    <a href=\"" . sub_route('dashboard.users.show', $user) . "\" class=\"btn btn-info\">
                       <i class=\"fas fa-eye\"></i>
                     </a>
                 ";
 
                 if ($authUser->isNotTeacher()) {
                     $buttons .= "
-                        <a href=\"" . route('dashboard.users.edit', $user) . "\" class=\"btn btn-success\">
+                        <a href=\"" . sub_route('dashboard.users.edit', $user) . "\" class=\"btn btn-success\">
                           <i class=\"fas fa-edit\"></i>
                         </a>
                     ";
 
                     $buttons .= "
-                        <a href=\"" . route('dashboard.users.destroy', $user) . "\"
+                        <a href=\"" . sub_route('dashboard.users.destroy', $user) . "\"
                           class=\"btn btn-danger delete-this\"
                           data-message=\"" . $deleteMessage . "\">
                           <i class=\"fas fa-trash\"></i>
@@ -66,13 +70,15 @@ class UsersDataTable extends DataTable
             });
 
         if ($this->requestedType == Role::STUDENT) {
-            $datatables->editColumn('ttl', function (User $user) {
-                if ($profile = $user->studentProfile) {
-                    return optional($profile->birthDate)->format('d-m-Y');
-                }
+            if ($this->site) {
+                $datatables->editColumn('ttl', function (User $user) {
+                    if ($profile = $user->studentProfiles->where('pivot.site_id', $this->site->id)->first()) {
+                        return optional($profile->birthDate)->format('d-m-Y');
+                    }
 
-                return null;
-            });
+                    return null;
+                });
+            }
         }
 
         return $datatables;
@@ -87,10 +93,16 @@ class UsersDataTable extends DataTable
     public function query(User $model)
     {
         $query = $model->newQuery()
-            ->with('studentProfile');
+            ->with('studentProfiles', 'teacherProfiles');
 
         if ($this->requestedType) {
             $query->where('role', $this->requestedType);
+        }
+
+        if ($this->site) {
+            $query->whereHas('sites', function (Builder $query) {
+                $query->where('id', $this->site->id);
+            });
         }
 
         return $query;
@@ -140,12 +152,14 @@ class UsersDataTable extends DataTable
         ];
 
         if ($this->requestedType == Role::STUDENT) {
-            $columns = array_merge($columns, [
-                Column::make('studentProfile.birthDate', 'ttl')
-                    ->title('TTL')
-                    ->content('-')
-                    ->hidden(),
-            ]);
+            if ($this->site) {
+                $columns = array_merge($columns, [
+                    Column::make('birthDate', 'ttl')
+                        ->title('TTL')
+                        ->content('-')
+                        ->hidden(),
+                ]);
+            }
         }
 
         return $columns;
@@ -155,6 +169,11 @@ class UsersDataTable extends DataTable
     {
         $type = $this->requestedType ?? 'pengguna';
 
-        return sprintf('SIAK_%s_Daftar_%s_%s', config('app.short_name'), $type, date('YmdHis'));
+        return sprintf(
+            'SIAK_%s_Daftar_%s_%s',
+            config('app.short_name'),
+            $type,
+            date('YmdHis')
+        );
     }
 }

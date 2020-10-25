@@ -65,6 +65,12 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'ppdb_gdrive' => [
+            'driver' => 'google_drive',
+            'authConfigPath' => env('PPDB_GOOGLE_DRIVE_AUTH_CONFIG_PATH'),
+            'folderId' => env('PPDB_GOOGLE_DRIVE_FOLDER_ID'),
+        ],
+
     ],
 
     /*

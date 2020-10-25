@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-  <div class="row" v-cloak>
+  <div class="row">
     <div class="col-10 mx-auto">
       <div class="card card-primary">
         <div class="card-header">
@@ -76,7 +76,7 @@
             <div class="form-group mt-5">
               <div class="col-12">
                 <div class="float-right">
-                  <a href="{{ route('dashboard.users.edit', $user) }}" class="btn btn-info">
+                  <a href="{{ sub_route('dashboard.users.edit', $user) }}" class="btn btn-info">
                     <i class="fa fa-btn fa-edit"></i> Perbarui
                   </a>
                 </div>

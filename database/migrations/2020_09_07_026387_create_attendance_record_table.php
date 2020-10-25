@@ -14,20 +14,16 @@ class CreateAttendanceRecordTable extends Migration
     public function up()
     {
         Schema::create('attendance_record', function (Blueprint $table) {
-            $table->unsignedBigInteger('attendance_id');
-            $table->unsignedBigInteger('academic_class_student_id');
             $table->boolean('late')->default(false);
 
-            $table->foreign('attendance_id')
-                ->references('id')
-                ->on('attendances')
+            $table->foreignId('attendance_id')
+                ->constrained()
                 ->onDelete('cascade');
-            $table->foreign('academic_class_student_id')
-                ->references('id')
-                ->on('academic_class_students')
+            $table->foreignId('academic_class_course_student_id')
+                ->constrained()
                 ->onDelete('cascade');
 
-            $table->index(['attendance_id', 'academic_class_student_id']);
+            $table->index(['attendance_id', 'academic_class_course_student_id'], 'attendance_record_1');
             $table->timestamps();
         });
     }

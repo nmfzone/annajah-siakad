@@ -23,7 +23,7 @@
         @include('flash::message', ['dismissible' => true, 'timer' => 0])
 
         <div class="mt-5">
-          <form id="next-form" action="{{ route('attendances.store') }}" method="POST">
+          <form id="next-form" action="{{ sub_route('attendances.store') }}" method="POST">
             @csrf
 
             <h3 class="font-normal text-lg mb-5 text-center">

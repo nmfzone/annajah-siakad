@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class AttendancesController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'role:student']);
+        $this->middleware([sprintf('role:%s', Role::STUDENT)]);
     }
 
     public function index(Request $request)
@@ -27,8 +28,8 @@ class AttendancesController extends Controller
         $attendances = $attendances->map(function ($attendance) {
             return [
                 'label' => $attendance->name . ' ' .
-                    $attendance->academicClass->name . ' ' .
-                    $attendance->academicClass->academicYear->name,
+                    $attendance->academicClassCourse->name . ' ' .
+                    $attendance->academicClassCourse->academicYear->name,
                 'value' => $attendance->id,
             ];
         });
@@ -50,15 +51,15 @@ class AttendancesController extends Controller
         if (! $attendance->is_open) {
             flash('Mohon maaf, Anda sudah terlambat.')->error();
         } else {
-            $academicClassStudent = $request->user()
-                ->academicClassStudents()
-                ->where('academic_class_id', $attendance->academicClass->id)
+            $academicClassCourseStudent = $request->user()
+                ->academicClassCourseStudents()
+                ->where('academic_class_course_id', $attendance->academicClassCourse->id)
                 ->first();
 
-            if (! $academicClassStudent) {
+            if (! $academicClassCourseStudent) {
                 flash('Mohon maaf, Anda bukan peserta kelas ini.')->error();
             } else {
-                $userAttend = $attendance->academicClassStudents()->find($academicClassStudent);
+                $userAttend = $attendance->academicClassCourseStudents()->find($academicClassCourseStudent);
 
                 $message = "
                     <div class=\"divide-y divide-gray-400\">
@@ -85,7 +86,7 @@ class AttendancesController extends Controller
                         ))
                     )->error();
                 } else {
-                    $attendance->academicClassStudents()->attach($academicClassStudent);
+                    $attendance->academicClassCourseStudents()->attach($academicClassCourseStudent);
 
                     flash(sprintf($message, 'Berhasil melakukan presensi.'))->success();
                 }

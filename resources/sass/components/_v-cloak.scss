@@ -9,7 +9,7 @@
   }
 }
 
-[v-cloak]:before {
+.cloak-spinner[v-cloak]:before {
   content: "";
   box-sizing: border-box;
   position: absolute;

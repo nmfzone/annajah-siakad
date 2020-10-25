@@ -4,10 +4,13 @@ use App\Enums\AcademicClassName;
 use App\Enums\AttendanceType;
 use App\Enums\Role;
 use App\Models\AcademicClass;
-use App\Models\AcademicClassStudent;
+use App\Models\AcademicClassCourse;
+use App\Models\AcademicClassCourseStudent;
 use App\Models\AcademicYear;
 use App\Models\Attendance;
 use App\Models\Course;
+use App\Models\Site;
+use App\Models\Student;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -21,56 +24,69 @@ class DummySeeder extends Seeder
      */
     public function run()
     {
-        /** @var \App\Models\AcademicYear $academicYear */
-        $academicYear = AcademicYear::create([
-            'name' => '2020/2021',
-            'semester' => 1,
+        /** @var \App\Models\Site $site */
+        $site = Site::firstOrCreate([
+            'domain' => 'smpit.' . config('app.host'),
+        ], [
+            'title' => 'SMPIT Muhammadiyah An Najah',
         ]);
 
+        /** @var \App\Models\AcademicYear $academicYear */
+        $academicYear = $site->academicYears()->save(new AcademicYear([
+            'name' => '2020/2021',
+            'semester' => 1,
+        ]));
+
         /** @var \App\Models\Course $course */
-        $course = factory(Course::class)->create([
+        $course = $site->courses()->save(factory(Course::class)->make([
             'name' => 'Matematika'
-        ]);
-        $course2 = factory(Course::class)->create([
+        ]));
+        $course2 = $site->courses()->save(factory(Course::class)->make([
             'name' => 'Bahasa Indonesia'
-        ]);
+        ]));
 
         /** @var \App\Models\AcademicClass $academicClass */
         $academicClass = $academicYear->academicClasses()->save(new AcademicClass([
-            'class_name' => AcademicClassName::VII_MAKMUM,
+            'name' => 'VII Makmun',
+        ]));
+
+        /** @var \App\Models\AcademicClassCourse $academicClassCourse */
+        $academicClassCourse = $academicClass->academicClassCourses()->save(new AcademicClassCourse([
             'course_id' => $course->id,
         ]));
-        $academicYear->academicClasses()->save(new AcademicClass([
-            'class_name' => AcademicClassName::VII_MAKMUM,
+        $academicClass->academicClassCourses()->save(new AcademicClassCourse([
             'course_id' => $course2->id,
         ]));
 
         /** @var \App\Models\User $user */
-        $student = factory(User::class)->create([
+        $user = $site->users()->save(factory(User::class)->make([
             'name' => 'Bimo Prakoso',
             'email' => 'bimo@gmail.com',
             'password' => bcrypt('12345678'),
             'email_verified_at' => now(),
             'role' => Role::STUDENT,
-        ]);
-        /** @var \App\Models\AcademicClassStudent $academicClassStudent */
-        $academicClassStudent = $student->academicClassStudents()
-            ->where('academic_class_id', $academicClass->id)
+        ]));
+
+        $user->studentProfiles()->save(new Student, ['site_id' => $site->id]);
+
+        /** @var \App\Models\AcademicClassCourseStudent $academicClassCourseStudent */
+        $academicClassCourseStudent = $user->academicClassCourseStudents()
+            ->where('academic_class_course_id', $academicClassCourse->id)
             ->first();
 
-        $academicClass->students()->save(new AcademicClassStudent([
+        $academicClassCourse->students()->save(new AcademicClassCourseStudent([
             'number' => 1,
-            'student_id' => $student->id,
+            'student_id' => $user->id,
         ]));
 
         /** @var \App\Models\Attendance $attendace */
-        $attendace = $academicClass->attendances()->save(new Attendance([
+        $attendace = $academicClassCourse->attendances()->save(new Attendance([
             'type' => AttendanceType::UTS,
             'name' => 'PTS',
             'started_at' => Carbon::parse('2020-09-07 08:00'),
             'ended_at' => Carbon::parse('2020-09-07 08:15'),
         ]));
 
-        $attendace->academicClassStudents()->attach($academicClassStudent);
+        $attendace->academicClassCourseStudents()->attach($academicClassCourseStudent);
     }
 }

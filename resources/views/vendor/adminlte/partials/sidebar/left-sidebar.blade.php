@@ -19,35 +19,37 @@
         @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item')
 
         @if(auth()->user()->isNotStudent())
-          <li class="nav-item has-treeview
-                    {{ Request::is('pengguna/*') ? 'menu-open' :'' }}">
-            <a class="nav-link
-                    {{ Request::is('pengguna/*') ? 'active' :'' }}"
-               href="#">
-              <i class="fa fa-fw fa-users"></i>
+          @if (!is_main_app())
+            <li class="nav-item has-treeview
+                      {{ Request::is('pengguna/*') ? 'menu-open' :'' }}">
+              <a class="nav-link
+                      {{ Request::is('pengguna/*') ? 'active' :'' }}"
+                 href="#">
+                <i class="fa fa-fw fa-users"></i>
 
-              <p>Manajemen Pengguna <i class="fas fa-angle-left right"></i></p>
-            </a>
+                <p>Manajemen Pengguna <i class="fas fa-angle-left right"></i></p>
+              </a>
 
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a class="nav-link
-                        {{ Request::is('pengguna/all/asatidz') ? 'active' :'' }}"
-                   href="{{ route('dashboard.users.index', 'asatidz') }}">
-                  <i class="far fa-fw fa-circle"></i>
-                  <p>Daftar Asatidz</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link
-                        {{ Request::is('pengguna/all/santri') ? 'active' :'' }}"
-                   href="{{ route('dashboard.users.index', 'santri') }}">
-                  <i class="far fa-fw fa-circle"></i>
-                  <p>Daftar Santri</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a class="nav-link
+                          {{ Request::is('pengguna/all/asatidz') ? 'active' :'' }}"
+                     href="{{ sub_route('dashboard.users.index', 'asatidz') }}">
+                    <i class="far fa-fw fa-circle"></i>
+                    <p>Daftar Asatidz</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link
+                          {{ Request::is('pengguna/all/santri') ? 'active' :'' }}"
+                     href="{{ sub_route('dashboard.users.index', 'santri') }}">
+                    <i class="far fa-fw fa-circle"></i>
+                    <p>Daftar Santri</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          @endif
         @endif
 
         <li class="nav-header">

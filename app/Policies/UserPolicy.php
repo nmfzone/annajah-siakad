@@ -11,6 +11,20 @@ class UserPolicy
     use HandlesAuthorization;
 
     /**
+     * The policy before callback.
+     *
+     * @param  \App\Models\User  $user
+     * @param  string  $ability
+     * @return mixed
+     */
+    public function before($user, $ability)
+    {
+        if ($user->isSuperAdmin()) {
+            return true;
+        }
+    }
+
+    /**
      * Determine whether the user can view any models.
      *
      * @param  \App\Models\User  $user

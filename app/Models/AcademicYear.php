@@ -23,4 +23,9 @@ class AcademicYear extends Model
     {
         return $this->hasMany(AcademicClass::class);
     }
+
+    public function site()
+    {
+        return $this->belongsTo(Site::class);
+    }
 }

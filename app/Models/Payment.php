@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StudentProfile extends Model
+class Payment extends Model
 {
-    public $timestamps = false;
+    //
 }

@@ -9,14 +9,14 @@
 @endsection
 
 @section('content')
-  <div class="row" v-cloak>
+  <div class="row cloak-spinner" v-cloak>
     <div class="col-10 mx-auto">
       <div class="card card-primary">
         <div class="card-header">
           <h3 class="card-title">Tambah Pengguna</h3>
         </div>
         <div class="card-body">
-          <form method="POST" action="{{ route('dashboard.users.store') }}">
+          <form method="POST" action="{{ sub_route('dashboard.users.store') }}">
             @csrf
             <div class="row">
               <div class="col-md-6 px-md-4">
@@ -171,7 +171,7 @@
                   </label>
 
                   <select name="role" class="form-control">
-                    @foreach(Role::asSelectArrayExcepts([Role::ADMIN]) as $role => $roleDesc)
+                    @foreach(Role::createUserSelectArray() as $role => $roleDesc)
                       <option
                         value="{{ $role }}"
                         @if($role == old('role')) selected @endif>

@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\StudentProfile;
+use App\Models\Student;
 use Faker\Generator as Faker;
 
 /*
@@ -16,7 +16,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(StudentProfile::class, function (Faker $faker) {
+$factory->define(Student::class, function (Faker $faker) {
     return [
         'father_name' => $faker->name,
         'mother_name' => $faker->name,

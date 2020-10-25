@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAcademicClassStudentsTable extends Migration
+class CreateAcademicClassCourseStudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,19 +13,15 @@ class CreateAcademicClassStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('academic_class_students', function (Blueprint $table) {
+        Schema::create('academic_class_course_students', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('academic_class_id');
-            $table->unsignedBigInteger('student_id');
             $table->integer('number');
 
-            $table->foreign('academic_class_id')
-                ->references('id')
-                ->on('academic_classes')
+            $table->foreignId('academic_class_course_id')
+                ->constrained()
                 ->onDelete('cascade');
-            $table->foreign('student_id')
-                ->references('id')
-                ->on('users')
+            $table->foreignId('student_id')
+                ->constrained('users')
                 ->onDelete('cascade');
             $table->softDeletes();
         });
@@ -38,6 +34,6 @@ class CreateAcademicClassStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('academic_class_students');
+        Schema::dropIfExists('academic_class_course_students');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Enums\Role;
+use App\Http\Controllers\Concerns\HasSiteContext;
 use App\Http\Controllers\Controller;
 use App\DataTables\UsersDataTable;
 use App\Http\Requests\UserCreateRequest;
@@ -13,7 +13,9 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public function index(Request $request, $userType)
+    use HasSiteContext;
+
+    public function index(Request $request, $subDomain, $userType)
     {
         $this->authorize('viewAny', [User::class, $userType]);
 
@@ -33,41 +35,45 @@ class UsersController extends Controller
     {
         $user = (new User)->newInstance($request->validated());
         $user->role = $request->role;
-        $user->save();
+        $this->site()->users()->save($user);
 
         flash('Berhasil menambahkan pengguna.')->success();
 
-        return redirect(route('dashboard.users.index', $request->role));
+        return redirect(sub_route('dashboard.users.index', $request->role));
     }
 
-    public function show(User $user)
+    public function show($subDomain, User $user)
     {
+        $this->userShouldBelongsToCurrentSite($user);
         $this->authorize('view', $user);
 
         return view('dashboard.users.show', compact('user'));
     }
 
-    public function edit(User $user)
+    public function edit($subDomain, User $user)
     {
+        $this->userShouldBelongsToCurrentSite($user);
         $this->authorize('update', $user);
 
         return view('dashboard.users.edit', compact('user'));
     }
 
-    public function update(UserUpdateRequest $request, User $user)
+    public function update(UserUpdateRequest $request, $subDomain, User $user)
     {
+        $this->userShouldBelongsToCurrentSite($user);
         $user->update($request->validated());
 
         flash('Berhasil memperbarui pengguna.')->success();
 
-        return redirect(route('dashboard.users.index', $user->role));
+        return redirect(sub_route('dashboard.users.index', $user->role));
     }
 
-    public function destroy(User $user)
+    public function destroy($subDomain, User $user)
     {
+        $this->userShouldBelongsToCurrentSite($user);
         $this->authorize('delete', $user);
 
-        if ($user->role == Role::ADMIN) {
+        if ($user->isSuperAdmin() || $user->isAdmin()) {
             flash('Tidak bisa menghapus pengguna ini.')->error();
         } else {
             try {
@@ -79,6 +85,6 @@ class UsersController extends Controller
             }
         }
 
-        return redirect(route('dashboard.users.index', $user->role));
+        return redirect(sub_route('dashboard.users.index', $user->role));
     }
 }

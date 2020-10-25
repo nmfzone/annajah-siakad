@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Enums\Role;
+use App\Http\Controllers\Concerns\HasSiteContext;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,21 +11,28 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    use HasSiteContext;
+
     public function index(Request $request)
     {
-        $teacherCounts = User::whereRole(Role::TEACHER)->count();
-        $allStudentCounts = User::whereRole(Role::STUDENT)->count();
-        $graducatedStudentCounts = User::whereRole(Role::STUDENT)
-            ->whereHas('studentProfile', function (Builder $query) {
-                $query->whereNotNull('graduate_date');
+        $teacherCounts = User::whereRole(Role::TEACHER)
+            ->forSite($this->site())
+            ->count();
+        $allStudentCounts = User::whereRole(Role::STUDENT)
+            ->forSite($this->site())
+            ->count();
+        $graduatedStudentCounts = User::whereRole(Role::STUDENT)
+            ->forSite($this->site())
+            ->whereHas('studentProfiles', function (Builder $query) {
+                $query->whereNotNull('graduated_at');
             })->count();
 
-        $studentCounts = $allStudentCounts - $graducatedStudentCounts;
+        $studentCounts = $allStudentCounts - $graduatedStudentCounts;
 
         return view('dashboard.index', compact(
             'teacherCounts',
             'studentCounts',
-            'graducatedStudentCounts'
+            'graduatedStudentCounts'
         ));
     }
 }

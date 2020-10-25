@@ -17,6 +17,9 @@ class CreateAcademicYearsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('semester');
+            $table->foreignId('site_id')
+                ->constrained()
+                ->onDelete('cascade');
             $table->softDeletes();
         });
     }
