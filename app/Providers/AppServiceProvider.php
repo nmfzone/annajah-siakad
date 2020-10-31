@@ -6,6 +6,7 @@ use App\Garages\GoogleDrive\GoogleDriveAdapter;
 use App\Garages\Utility\IndonesianNameFormatter;
 use Google_Client;
 use Google_Service_Drive;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use League\Flysystem\Filesystem;
@@ -49,6 +50,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Schema::defaultStringLength(191);
     }
 }
