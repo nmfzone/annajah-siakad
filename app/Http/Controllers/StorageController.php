@@ -8,10 +8,12 @@ class StorageController extends Controller
 {
     public function index($path)
     {
-        if (! Storage::exists($path)) {
+        $storage = Storage::disk('public');
+
+        if (! $storage->exists($path)) {
             abort('404');
         }
 
-        return Storage::response($path);
+        return $storage->response($path);
     }
 }
