@@ -72,3 +72,7 @@ Route::group([
 });
 
 Route::get('/go/{code}', 'ShortLinksController@show');
+
+Route::get('/storage/{path}', 'StorageController@index')
+    ->where(['path' => '.*'])
+    ->name('storage.public');
