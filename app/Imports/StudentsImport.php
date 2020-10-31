@@ -51,11 +51,15 @@ class StudentsImport implements WithChunkReading, OnEachRow, ShouldQueue
         $user = $this->site->users()->save(new User([
             'name' => $row[1],
             'password' => bcrypt('12345678'),
-            'username' => User::generateUsername(Role::STUDENT, $value),
             'role' => Role::STUDENT,
         ]));
 
-        $user->studentProfiles()->save(new Student, ['site_id' => $this->site->id]);
+        $user->studentProfiles()->save(
+            new Student([
+                'nis' => Student::generateNis($this->site),
+            ]),
+            ['site_id' => $this->site->id]
+        );
     }
 
     public function chunkSize(): int

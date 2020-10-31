@@ -5,6 +5,7 @@
     :class="localLiClassRoot">
     <a
       :href="data.url"
+      @click="onClick"
       @mouseover="onMouseOver"
       :class="linkClass">
       <template v-if="showChildren && childOpenDirection === 'open-left' && this.level !== 1">
@@ -89,6 +90,7 @@
         return this.mergeClasses({
           'show': this.show,
           'has-children': this.showChildren,
+          'highlight': _.get(this.data, 'highlight', false),
           [`level-${this.level}`]: true,
         }, this.liClass)
       },
@@ -103,9 +105,18 @@
         this.childIndicatorClassDisplayRight = this.grandchildIndicatorClassRight
         this.childIndicatorClassDisplayLeft = this.grandchildIndicatorClassLeft
       }
+
+      window.addEventListener('resize', () => {
+        $('body').removeClass('full-menu')
+        this.childOpenDirection = ''
+      })
     },
     methods: {
       shouldOpenRight() {
+        if ($('body').hasClass('full-menu')) {
+          return true
+        }
+
         if (!this.$parent ||
           (this.level > 1 && this.$parent.$el.className.includes('open-left')) ||
           !this.showChildren) {
@@ -123,8 +134,11 @@
 
         return (bounding.x + bounding.width + childrenBounding.width) < window.screen.width
       },
+      onClick() {
+        this.show = !this.show
+      },
       onMouseOver() {
-        if (!this.showChildren) {
+        if (!this.showChildren || $('body').hasClass('full-menu')) {
           return
         }
 
@@ -145,7 +159,7 @@
         }
       },
       onMouseLeave() {
-        if (!this.showChildren) {
+        if (!this.showChildren || $('body').hasClass('full-menu')) {
           return
         }
 
@@ -164,7 +178,7 @@
 
 <style lang="scss" scoped>
   li {
-    @apply relative py-4;
+    @apply relative py-4 px-5;
 
     > a {
       @apply flex justify-between items-center;
@@ -213,6 +227,16 @@
       }
     }
 
+    &.highlight {
+      background: #f19e07;
+
+      > a {
+        .title {
+          color: #ffffff;
+        }
+      }
+    }
+
     &:not(.level-1) {
       @apply px-5;
 
@@ -238,6 +262,27 @@
       ::v-deep > .dropdown {
         @apply absolute opacity-100 visible;
         transform: translate(0, 0);
+      }
+    }
+  }
+
+  @screen max-md {
+    body.full-menu {
+      li {
+        &:not(.level-1) {
+          padding-right: 0;
+
+          > a {
+            padding-right: 0;
+            margin-right: 0;
+          }
+        }
+
+        &.show {
+          ::v-deep > .dropdown {
+            @apply static;
+          }
+        }
       }
     }
   }

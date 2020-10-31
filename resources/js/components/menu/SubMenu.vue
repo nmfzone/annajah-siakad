@@ -75,4 +75,25 @@
       }
     }
   }
+
+  @screen max-md {
+    body.full-menu {
+      .dropdown {
+        @apply max-w-full bg-white;
+
+        transform: translate(0, 0);
+        transition: none;
+
+        ::v-deep li {
+          &:first-child {
+            @apply pt-8;
+          }
+
+          &:last-child {
+            @apply pb-0;
+          }
+        }
+      }
+    }
+  }
 </style>

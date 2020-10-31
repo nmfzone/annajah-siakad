@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\Role;
 use App\Models\Concerns\HasRole;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -137,14 +135,9 @@ class User extends Authenticatable implements HasMedia
             });
     }
 
-    public static function generateUsername($role, $year = null)
+    public static function generateUsername($role)
     {
-        $generate = function () use ($role, $year) {
-            if ($role == Role::STUDENT) {
-                $year = $year ? $year : Carbon::now()->year;
-                return $year . random_int(100000, 999999);
-            }
-
+        $generate = function () use ($role) {
             return 'annajah-' . Str::randomPlus('alnum', 3);
         };
 

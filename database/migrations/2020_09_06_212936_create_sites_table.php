@@ -20,6 +20,9 @@ class CreateSitesTable extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('twitter')->nullable();
             $table->mediumText('welcome_message')->nullable();
         });
     }

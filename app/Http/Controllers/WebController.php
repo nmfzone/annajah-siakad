@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\HasSiteContext;
+use App\Models\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -26,7 +27,7 @@ class WebController extends Controller
 //            ]
 //        ), Storage::disk('ppdb_gdrive')->getAdapter()->getCreatedFolders());
 
-        $slides = [];
+//        Site::find(1)->addMedia(public_path('images/logo-smp.png'))->toMediaCollection('logo');
 
         $menus = [
             [
@@ -40,30 +41,28 @@ class WebController extends Controller
                 'title' => 'Profil',
                 'children' => [
                     [
-                        'id' => 5,
+                        'id' => 6,
                         'url' => '#',
                         'title' => 'Visi & Misi',
-                        'children' => [
-                            ['id' => 7, 'url' => '#', 'title' => 'Visi & Misi Sejarah Akan Ditambahkan'],
-                            ['id' => 8, 'url' => '#', 'title' => 'Sejarah'],
-                            ['id' => 8, 'url' => '#', 'title' => 'Sejarah'],
-                            ['id' => 8, 'url' => '#', 'title' => 'Sejarah'],
-                            ['id' => 8, 'url' => '#', 'title' => 'Sejarah'],
-                            ['id' => 8, 'url' => '#', 'title' => 'Sejarah'],
-                        ]
                     ],
-                    ['id' => 6, 'url' => '#', 'title' => 'Sejarah'],
+                    ['id' => 7, 'url' => '#', 'title' => 'Sejarah'],
                 ]
             ],
             [
                 'id' => 3,
                 'url' => '#',
-                'title' => 'Galeri',
+                'title' => 'Kurikulum',
             ],
             [
                 'id' => 4,
                 'url' => '#',
-                'title' => 'Kontak',
+                'title' => 'Kesiswaan',
+            ],
+            [
+                'id' => 5,
+                'url' => '#',
+                'highlight' => true,
+                'title' => 'PPDB',
             ],
         ];
 
@@ -80,7 +79,13 @@ class WebController extends Controller
             ];
             $site = $this->site();
 
-            return view('subs.index', compact('slides', 'menus', 'site'));
+            $viewName = sprintf('subs.%s.index', $site->id);
+
+            if (! view()->exists($viewName)) {
+                return abort(404);
+            }
+
+            return view($viewName, compact('slides', 'menus', 'site'));
         }
 
         return view('main');

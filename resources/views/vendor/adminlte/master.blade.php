@@ -11,7 +11,7 @@
   <title>
     @yield('title_prefix', config('adminlte.title_prefix', ''))
     @yield('title', config('adminlte.title', 'AdminLTE 3'))
-    @yield('title_postfix', ' | ' . app_name())
+    @yield('title_postfix', ' | ' . Site::title())
   </title>
 
   @yield('adminlte_css_pre')

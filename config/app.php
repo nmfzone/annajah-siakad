@@ -240,7 +240,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Role' => App\Enums\Role::class,
-
+        'Site' => App\Garages\Utility\Site::class,
     ],
 
 ];

@@ -139,20 +139,6 @@ if (! function_exists('is_main_app')) {
     }
 }
 
-if (! function_exists('app_name')) {
-    /**
-     * Get the application name.
-     *
-     * @return string
-     */
-    function app_name()
-    {
-        return is_main_app()
-            ? config('app.name', 'Laravel')
-            : app()->make('site')->title;
-    }
-}
-
 if (! function_exists('next_field')) {
     /**
      * Generate a next url form field.

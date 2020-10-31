@@ -38,7 +38,7 @@
       </div>
 
       <h4 class="text-3xl md:text-4xl mt-4 mb-5 text-center">
-        {{ app_name() }}
+        {{ Site::title() }}
       </h4>
     </div>
   </div>

@@ -4,6 +4,7 @@ export const GlobalMixin = {
   computed: {
     attrs () {
       return {
+        ...this.$props,
         ...this.$attrs,
         ...this.$options.propsData,
       }

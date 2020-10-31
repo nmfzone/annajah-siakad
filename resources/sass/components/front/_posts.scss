@@ -1,0 +1,55 @@
+.post-card {
+  @apply block h-full pb-4 bg-white;
+
+  box-shadow: 0 12px 20px rgba(0,0,0,.07);
+  border-radius: 4px;
+
+  .post-card-inner {
+    @apply h-full flex flex-col;
+  }
+
+  a {
+    text-decoration: none;
+    cursor: pointer;
+
+    &.thumbnail {
+      @apply h-64 overflow-hidden relative w-full;
+
+      img {
+        @apply absolute object-cover m-auto w-full cursor-pointer;
+
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+      }
+    }
+
+    .title {
+      @apply font-muli text-lg m-0 cursor-pointer pl-6 pr-6;
+
+      color: #151d21;
+    }
+
+    @screen md {
+      img {
+        margin-bottom: 1rem;
+      }
+    }
+  }
+
+  .categories {
+    @apply list-none pt-4 pl-6 pr-6 m-0 flex flex-wrap items-start;
+
+    a {
+      font-weight: 500;
+      color: #3950e5;
+      background-color: #ebf0fc;
+      padding: 0 .5rem;
+      margin: 0 .5rem .5rem 0;
+      font-size: .75rem;
+      line-height: 2;
+      border-radius: 2px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+}

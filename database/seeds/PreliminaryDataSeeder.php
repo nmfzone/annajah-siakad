@@ -81,6 +81,7 @@ class PreliminaryDataSeeder extends Seeder
         ]));
 
         $user->studentProfiles()->save(new Student([
+            'nis' => Student::generateNis($site),
             'graduated_at' => now()->subMonths(5),
         ]), ['site_id' => $site->id]);
 

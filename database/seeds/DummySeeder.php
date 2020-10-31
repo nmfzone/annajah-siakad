@@ -67,7 +67,12 @@ class DummySeeder extends Seeder
             'role' => Role::STUDENT,
         ]));
 
-        $user->studentProfiles()->save(new Student, ['site_id' => $site->id]);
+        $user->studentProfiles()->save(
+            new Student([
+                'nis' => Student::generateNis($site),
+            ]),
+            ['site_id' => $site->id]
+        );
 
         /** @var \App\Models\AcademicClassCourseStudent $academicClassCourseStudent */
         $academicClassCourseStudent = $user->academicClassCourseStudents()

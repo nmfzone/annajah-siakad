@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -28,5 +30,29 @@ class Student extends Model implements HasMedia
         $this->addMediaCollection('kartu_keluarga')
             ->useDisk('ppdb_gdrive')
             ->singleFile();
+    }
+
+    public static function generateNis(Site $site, $year = null)
+    {
+        $generate = function () use ($site, $year) {
+            $year = $year ? $year : Carbon::now()->year;
+
+            return $year .
+                str_pad($site->id, 2, '0', STR_PAD_LEFT) .
+                random_int(100000, 999999);
+        };
+
+        $nis = $generate();
+
+        $i = 0;
+        while (Student::whereNis($nis)->first() != null) {
+            $nis = $generate();
+
+            if ($i++ == 10) {
+                throw new Exception('Cannot generate unique NIS.');
+            }
+        }
+
+        return $nis;
     }
 }

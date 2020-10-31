@@ -1,0 +1,19 @@
+.aio-icon {
+  @apply flex items-center justify-center m-auto text-white text-center;
+
+  background: #224687;
+  border-style: solid;
+  border-color: #2abfd4;
+  border-width: 8px;
+  border-radius: 180px;
+
+  .aio-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-color: #2abfd4;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+  }
+}

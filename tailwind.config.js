@@ -1,5 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const plugin = require('tailwindcss/plugin')
+const flattenColorPalette = require('tailwindcss/lib/util/flattenColorPalette').default
 
 module.exports = {
   purge: [
@@ -8,6 +9,13 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        ...defaultTheme.screens,
+        'max-sm': {'max': '639px'},
+        'max-md': {'max': '767px'},
+        'max-lg': {'max': '1023px'},
+        'max-xl': {'max': '1279px'},
+      },
       spacing: {
         px: '1px',
         0: '0',
@@ -19,6 +27,7 @@ module.exports = {
         3: '0.75rem',
         3.5: '0.875rem',
         4: '1rem',
+        4.05: '1.05rem',
         5: '1.25rem',
         6: '1.5rem',
         7: '1.75rem',
@@ -28,6 +37,7 @@ module.exports = {
         12: '3rem',
         14: '3.5rem',
         16: '4rem',
+        18: '4.5rem',
         20: '5rem',
         24: '6rem',
         28: '7rem',
@@ -45,7 +55,9 @@ module.exports = {
         96: '24rem',
       },
       fontFamily: {
-        exo: ['"Exo 2"', 'Verdana', 'serif']
+        exo: ['"Exo 2"', 'Verdana', 'serif'],
+        roboto: ['Roboto', 'Verdana', 'serif'],
+        muli: ['Muli', 'Verdana', 'serif']
       },
       colors: {
         maincolor: '#03989e',
@@ -53,6 +65,10 @@ module.exports = {
           ...defaultTheme.colors.gray,
           50: '#00000008',
           150: '#f8fafc',
+        },
+        orange: {
+          ...defaultTheme.colors.orange,
+          350: '#ffede0',
         },
         't-white': {
           50: 'rgba(255, 255, 255, 0.5)',
@@ -65,10 +81,21 @@ module.exports = {
         ...defaultTheme.fontSize,
         '2lg': ['1.5rem', { lineHeight: '1.75rem' }],
         '3lg': ['2rem', { lineHeight: '1.75rem' }],
+        '7xl': '5rem',
+        '8xl': '6rem',
+        '9xl': '7rem',
       },
       height: (theme) => ({
         ...defaultTheme.height,
         '3k': '300px',
+        '1/2vh': '50vh',
+        '1/3vh': '33.333333vh',
+        '2/3vh': '66.666667vh',
+        '1/4vh': '25vh',
+        '2/4vh': '50vh',
+        '3/4vh': '75vh',
+        '5/6vh': '83.333333vh',
+        '9/10vh': '90vh'
       }),
       maxHeight: (theme) => ({
         ...theme('spacing'),
@@ -107,6 +134,21 @@ module.exports = {
         '40': '10rem',
         '50vw': '50vw',
       },
+      margin: (theme, { negative }) => ({
+        ...defaultTheme.margin,
+        '-1/3': '-33.333333%',
+        '-1/2': '-50%',
+      }),
+      padding: (theme) => ({
+        ...defaultTheme.padding,
+        '1/3': '33.333333%',
+        '1/2': '50%',
+      }),
+      borderRadius: {
+        ...defaultTheme.borderRadius,
+        '50p': '50%',
+        '100p': '100%',
+      },
       boxShadow: {
         invalid: '0 0 0 0.2rem rgba(220,53,69,.25)'
       },
@@ -133,11 +175,14 @@ module.exports = {
   },
   variants: {
     textColor: ['responsive', 'hover', 'focus', 'important'],
+    backgroundColor: ['responsive', 'hover', 'focus', 'important'],
+    borderWidth: ['responsive', 'important'],
+    borderColor: ['responsive', 'hover', 'focus', 'important'],
     margin: ['responsive', 'important'],
     padding: ['responsive', 'important'],
   },
   plugins: [
-    plugin(function({ addVariant }) {
+    plugin(function ({ addVariant }) {
       addVariant('important', ({ container }) => {
         container.walkRules(rule => {
           rule.selector = `.${rule.selector.slice(1)}-imp`
@@ -146,6 +191,30 @@ module.exports = {
           })
         })
       })
-    })
+    }),
+    plugin(function ({ addUtilities, theme, variants }) {
+      const colors = flattenColorPalette(theme('borderColor'))
+      delete colors['default']
+
+      const colorMap = Object.keys(colors)
+        .map(color => ({
+          [`.border-t-${color}`]: {borderTopColor: colors[color]},
+          [`.border-r-${color}`]: {borderRightColor: colors[color]},
+          [`.border-b-${color}`]: {borderBottomColor: colors[color]},
+          [`.border-l-${color}`]: {borderLeftColor: colors[color]},
+        }))
+      const utilities = Object.assign({}, ...colorMap)
+
+      addUtilities(utilities, variants('borderColor'))
+    }),
+    plugin(function ({ addUtilities, variants }) {
+      const utilities = {
+        '.items-normal': {
+          'align-items': 'normal'
+        }
+      }
+
+      addUtilities(utilities, variants('alignItems'))
+    }),
   ],
 }
