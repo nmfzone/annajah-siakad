@@ -32,6 +32,9 @@ Route::group([
         Route::get('/dashboard', 'DashboardController@index')
             ->name('dashboard')
             ->middleware(sprintf('role:%s,%s', Role::EDITOR, Role::SUPERADMIN));
+
+        Route::get('/profil', 'ProfileController')
+            ->name('dashboard.profile');
     });
 });
 
@@ -40,13 +43,24 @@ Route::group([
     'as' => 'sub.',
     'middleware' => 'check_sub_domain',
 ], function () {
-    Route::get('/', 'WebController@index')->name('web');
+    Route::get('/', 'WebController@index')
+        ->name('web');
+
+    Route::get('/ppdb', 'PpdbController@index')
+        ->name('ppdb.index');
+    Route::post('/ppdb', 'PpdbController@store')
+        ->middleware('guest')
+        ->name('ppdb.store');
 
     Route::group([
         'namespace' => 'Dashboard',
         'middleware' => ['auth', 'sub_permission'],
     ], function () {
-        Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+        Route::get('/dashboard', 'DashboardController@index')
+            ->name('dashboard');
+
+        Route::get('/profil', 'ProfileController')
+            ->name('dashboard.profile');
 
         Route::get('/pengguna/buat', 'UsersController@create')
             ->name('dashboard.users.create');

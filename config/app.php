@@ -240,6 +240,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Role' => App\Enums\Role::class,
+        'PaymentType' => App\Enums\PaymentType::class,
+        'PpdbSetting' => App\Enums\PpdbSetting::class,
         'Site' => App\Garages\Utility\Site::class,
     ],
 

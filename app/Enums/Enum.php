@@ -23,4 +23,19 @@ abstract class Enum extends BaseEnum implements LocalizedEnum
 
         return $selectArray;
     }
+
+    public static function asTextValueArray(): array
+    {
+        $array = static::asArray();
+        $selectArray = [];
+
+        foreach ($array as $value) {
+            $selectArray[] = [
+                'text' => static::getDescription($value),
+                'value' => $value,
+            ];
+        }
+
+        return $selectArray;
+    }
 }

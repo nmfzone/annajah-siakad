@@ -7,6 +7,7 @@ use App\Models\Site;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\OnEachRow;
@@ -15,7 +16,8 @@ use Maatwebsite\Excel\Row;
 
 class StudentsImport implements WithChunkReading, OnEachRow, ShouldQueue
 {
-    use Importable;
+    use Importable,
+        SerializesModels;
 
     /**
      * @var \App\Models\Site

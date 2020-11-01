@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\HasSiteContext;
-use App\Models\Site;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -27,56 +26,44 @@ class WebController extends Controller
 //            ]
 //        ), Storage::disk('ppdb_gdrive')->getAdapter()->getCreatedFolders());
 
-//        Site::find(1)->addMedia(public_path('images/logo-smp.png'))->toMediaCollection('logo');
-
-        $menus = [
-            [
-                'id' => 1,
-                'url' => '#',
-                'title' => 'Utama',
-            ],
-            [
-                'id' => 2,
-                'url' => '#',
-                'title' => 'Profil',
-                'children' => [
-                    [
-                        'id' => 6,
-                        'url' => '#',
-                        'title' => 'Visi & Misi',
-                    ],
-                    ['id' => 7, 'url' => '#', 'title' => 'Sejarah'],
-                ]
-            ],
-            [
-                'id' => 3,
-                'url' => '#',
-                'title' => 'Kurikulum',
-            ],
-            [
-                'id' => 4,
-                'url' => '#',
-                'title' => 'Kesiswaan',
-            ],
-            [
-                'id' => 5,
-                'url' => '#',
-                'highlight' => true,
-                'title' => 'PPDB',
-            ],
-        ];
-
         if (! is_main_app()) {
             $slides = [
                 [
                     'id' => 3,
-                    'image' => asset('images/car-1.jpg')
+                    'image' => asset('images/slider-1.png')
                 ],
                 [
                     'id' => 1,
-                    'image' => asset('images/car-2.jpg')
+                    'image' => asset('images/slider-2.jpg')
                 ],
             ];
+            $articles = [
+                [
+                    'id' => 1,
+                    'title' => 'Tantangan dunia Pendidikan di masa Pandemi',
+                    'thumbnail' => asset('images/gambar-1.jpeg'),
+                    'categories' => [
+                        ['id' => 1, 'title' => 'Artikel', 'link' => '#']
+                    ]
+                ],
+                [
+                    'id' => 2,
+                    'title' => 'Tantangan dunia Pendidikan di masa Pandemi',
+                    'thumbnail' => asset('images/gambar-1.jpeg'),
+                    'categories' => [
+                        ['id' => 1, 'title' => 'Artikel', 'link' => '#']
+                    ]
+                ],
+                [
+                    'id' => 3,
+                    'title' => 'Tantangan dunia Pendidikan di masa Pandemi',
+                    'thumbnail' => asset('images/gambar-1.jpeg'),
+                    'categories' => [
+                        ['id' => 1, 'title' => 'Artikel', 'link' => '#']
+                    ]
+                ]
+            ];
+
             $site = $this->site();
 
             $viewName = sprintf('subs.%s.index', $site->id);
@@ -85,7 +72,7 @@ class WebController extends Controller
                 return abort(404);
             }
 
-            return view($viewName, compact('slides', 'menus', 'site'));
+            return view($viewName, compact('slides', 'articles'));
         }
 
         return view('main');

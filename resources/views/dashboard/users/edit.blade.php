@@ -76,7 +76,6 @@
                     with-add-on></form-input>
 
                   @error('password')
-                  @else
                     <div class="input-note">
                       Kosongkan jika tidak ingin memperbarui password.
                     </div>
@@ -101,7 +100,7 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="phone" class="col-form-label">No Telepon</label>
+                  <label for="phone" class="col-form-label">No Telefon</label>
 
                   <input
                     type="text"

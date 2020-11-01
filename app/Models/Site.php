@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use Glorand\Model\Settings\Traits\HasSettingsTable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Site extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use HasSettingsTable,
+        InteractsWithMedia;
 
     public $timestamps = false;
 
@@ -56,5 +58,11 @@ class Site extends Model implements HasMedia
         $this->addMediaCollection('logo')
             ->acceptsMimeTypes(['image/jpeg', 'image/jpg', 'image/png'])
             ->singleFile();
+
+        $this->addMediaCollection('home_slides')
+            ->acceptsMimeTypes(['image/jpeg', 'image/jpg', 'image/png']);
+
+        $this->addMediaCollection('ppdb_slides')
+            ->acceptsMimeTypes(['image/jpeg', 'image/jpg', 'image/png']);
     }
 }

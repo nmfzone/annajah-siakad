@@ -32,6 +32,8 @@ class UserCreateRequest extends FormRequest
             'password' => 'required|min:8|confirmed',
             'gender' => 'required|boolean',
             'phone' => 'nullable|digits_between:9,15',
+            'birth_place' => 'string|min:3|max:40',
+            'birth_date' => 'date|date_format:d-m-Y',
             'address' => 'max:120',
             'role' => ['required', Rule::in(Role::getValues())],
         ];

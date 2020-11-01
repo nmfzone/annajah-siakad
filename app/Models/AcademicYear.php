@@ -12,11 +12,7 @@ class AcademicYear extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name', 'semester',
-    ];
-
-    protected $casts = [
-        'semester' => 'integer',
+        'name',
     ];
 
     public function academicClasses()
@@ -27,5 +23,10 @@ class AcademicYear extends Model
     public function site()
     {
         return $this->belongsTo(Site::class);
+    }
+
+    public function ppdb()
+    {
+        return $this->hasMany(Ppdb::class);
     }
 }

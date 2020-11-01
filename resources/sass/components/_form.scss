@@ -2,6 +2,14 @@ form {
   .form-stack {
     width: 100%;
 
+    > label {
+      @apply block;
+
+      span.required {
+        color: #e2084d;
+      }
+    }
+
     .invalid-feedback {
       @apply block text-sm font-light text-red-600 mt-2;
     }
@@ -21,6 +29,16 @@ form {
         @apply shadow-invalid;
       }
     }
+  }
+
+  select.form-control {
+    @apply pr-10;
+
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none'%3e%3cpath d='M7 7l3-3 3 3m0 6l-3 3-3-3' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-size: 1.5em 1.5em;
+    background-repeat: no-repeat;
+    background-color: #fff;
   }
 
   .form-label {

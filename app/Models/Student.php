@@ -14,11 +14,9 @@ class Student extends Model implements HasMedia
 
     public $timestamps = false;
 
-    protected $fillable = [
-        'birth_date', 'father_name', 'mother_name',
-        'father_phone', 'mother_phone', 'father_address', 'mother_address',
-        'father_salary', 'mother_salary', 'previous_school',
-        'previous_school_address',
+    protected $guarded = [
+        'accepted_at',
+        'graduated_at',
     ];
 
     public function registerMediaCollections(): void

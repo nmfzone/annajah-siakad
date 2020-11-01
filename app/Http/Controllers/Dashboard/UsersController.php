@@ -63,6 +63,11 @@ class UsersController extends Controller
         $this->userShouldBelongsToCurrentSite($user);
         $user->update($request->validated());
 
+        if ($request->get('_context') == 'profile') {
+            flash('Berhasil memperbarui profil.')->success();
+            return redirect()->back();
+        }
+
         flash('Berhasil memperbarui pengguna.')->success();
 
         return redirect(sub_route('dashboard.users.index', $user->role));

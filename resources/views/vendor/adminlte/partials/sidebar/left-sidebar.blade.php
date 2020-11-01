@@ -57,7 +57,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="{{ switch_route('auto', 'dashboard.profile') }}">
             <i class="fas fa-fw fa-user"></i>
             <p>Profil</p>
           </a>

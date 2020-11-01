@@ -34,7 +34,6 @@ class DummySeeder extends Seeder
         /** @var \App\Models\AcademicYear $academicYear */
         $academicYear = $site->academicYears()->save(new AcademicYear([
             'name' => '2020/2021',
-            'semester' => 1,
         ]));
 
         /** @var \App\Models\Course $course */

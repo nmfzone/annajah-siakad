@@ -18,6 +18,7 @@
         "cross-env": "^7.0",
         "datatables.net-buttons-bs4": "^1.6.3",
         "datatables.net-responsive-bs4": "^2.2.5",
+        "dayjs": "^1.9.4",
         "icheck-bootstrap": "^3.0.1",
         "jquery": "^3.2",
         "laravel-mix": "^5.0.1",
@@ -33,6 +34,7 @@
         "vue": "^2.5.17",
         "vue-carousel": "^0.18.0",
         "vue-select": "^3.10.8",
-        "vue-template-compiler": "^2.6.12"
+        "vue-template-compiler": "^2.6.12",
+        "vue2-animate": "^2.1.4"
     }
 }

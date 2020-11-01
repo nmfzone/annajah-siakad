@@ -1,11 +1,16 @@
 <?php
 
+use App\Enums\PaymentType;
+use App\Enums\PpdbSetting;
 use App\Enums\Role;
 use App\Imports\StudentsImport;
+use App\Models\AcademicYear;
+use App\Models\Ppdb;
 use App\Models\Site;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 
 class PreliminaryDataSeeder extends Seeder
 {
@@ -20,15 +25,23 @@ class PreliminaryDataSeeder extends Seeder
         $site = factory(Site::class)->create([
             'title' => 'SMPIT Muhammadiyah An Najah',
             'domain' => 'smpit.' . config('app.host'),
-            'address' => 'Jalan Lingkar Utara Jatinom, Dukuh, Bonyokan, Jatinom, Klaten',
+            'address' => 'Jalan Lingkar Utara Jatinom, Dukuh Bonyokan, Jatinom, Klaten',
             'email' => 'info@smpit.muhannajah.sch.id',
             'phone' => '(0272) 3393415',
+            'instagram' => 'smpitmuhannajah',
+            'facebook' => 'Smpit-Muhammadiyah-An-Najah-320858588375921',
+            'twitter' => 'smpitmuhannajah',
         ]);
+
+        $destinationPath = tmp_path('logo-smp.png');
+        File::copy(resource_path('images/logo-smp.png'), $destinationPath);
+        $site->addMedia($destinationPath)
+            ->toMediaCollection('logo');
 
         factory(Site::class)->create([
             'title' => 'SDIT Muhammadiyah An Najah',
             'domain' => 'sdit.' . config('app.host'),
-            'address' => 'Jalan Lingkar Utara Jatinom, Dukuh, Bonyokan, Jatinom, Klaten',
+            'address' => 'Jalan Lingkar Utara Jatinom, Dk. Dukuh, Dukuh Bonyokan, Jatinom, Klaten',
             'email' => 'info@sdit.muhannajah.sch.id',
             'phone' => '(0272) 3393415',
         ]);
@@ -86,5 +99,38 @@ class PreliminaryDataSeeder extends Seeder
         ]), ['site_id' => $site->id]);
 
         (new StudentsImport($site))->queue(resource_path('files/DataSantriAll.xlsx'));
+
+        /** @var \App\Models\AcademicYear $academicYear */
+        $academicYear = $site->academicYears()->save(new AcademicYear([
+            'name' => '2021/2022',
+        ]));
+
+        /** @var \App\Models\Ppdb $ppdb */
+        $ppdb = $academicYear->ppdb()->save(new Ppdb([
+            'started_at' => now(),
+            'ended_at' => now()->addMonths(2),
+        ]));
+
+        $ppdb->settings()->set(PpdbSetting::PAYMENTS, [
+            [
+                'payment_type' => PaymentType::BANK_TRANSFER,
+                'provider' => 'bri',
+                'provider_number' => '003501070314507',
+                'provider_holder_name' => 'Zamroh Azizah Al Mukaromah',
+            ]
+        ]);
+
+        $ppdb->settings()->set(PpdbSetting::PAYMENT_AMOUNT, 100000);
+
+        $ppdb->settings()->set(PpdbSetting::CONTACT_PERSONS, [
+            [
+                'name' => 'Ustadzah Ratri',
+                'number' => '082135002033',
+            ],
+            [
+                'name' => 'Ustadzah Rahma',
+                'number' => '081225777431',
+            ]
+        ]);
     }
 }

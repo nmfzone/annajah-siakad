@@ -71,6 +71,14 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsToMany(Site::class);
     }
 
+    public function ppdb()
+    {
+        return $this->belongsToMany(Ppdb::class)
+            ->using(PpdbUser::class)
+            ->withTimestamps()
+            ->withPivot('selection_method');
+    }
+
     public function teacherProfiles()
     {
         return $this->morphedByMany(Teacher::class, 'userable')
@@ -137,15 +145,18 @@ class User extends Authenticatable implements HasMedia
 
     public static function generateUsername($role)
     {
-        $generate = function () use ($role) {
-            return 'annajah-' . Str::randomPlus('alnum', 3);
+        $generate = function ($index) use ($role) {
+            return 'annajah-' .
+                now()->format('y') .
+                str_pad($index, 3, '0', STR_PAD_LEFT);
         };
 
-        $username = $generate();
+        $count = User::count();
+        $username = $generate($count++);
 
-        $i = 0;
+        $i = 1;
         while (User::whereUsername($username)->first() != null) {
-            $username = $generate();
+            $username = $generate($count + $i);
 
             if ($i++ == 10) {
                 throw new Exception('Cannot generate unique Username.');

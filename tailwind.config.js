@@ -5,6 +5,8 @@ const flattenColorPalette = require('tailwindcss/lib/util/flattenColorPalette').
 module.exports = {
   purge: [
     './resources/views/**/*.blade.php',
+    './resources/js/**/*.vue',
+    './resources/js/**/*.js',
     './resources/css/**/*.css',
   ],
   theme: {
@@ -56,8 +58,10 @@ module.exports = {
       },
       fontFamily: {
         exo: ['"Exo 2"', 'Verdana', 'serif'],
+        lato: ['Lato', 'Verdana', 'serif'],
         roboto: ['Roboto', 'Verdana', 'serif'],
-        muli: ['Muli', 'Verdana', 'serif']
+        muli: ['Muli', 'Verdana', 'serif'],
+        glacial: ['GlacialIndifference', 'Verdana', 'serif']
       },
       colors: {
         maincolor: '#03989e',
@@ -66,9 +70,17 @@ module.exports = {
           50: '#00000008',
           150: '#f8fafc',
         },
+        blue: {
+          ...defaultTheme.colors.blue,
+          550: '#006266',
+        },
         orange: {
           ...defaultTheme.colors.orange,
           350: '#ffede0',
+        },
+        yellow: {
+          ...defaultTheme.colors.yellow,
+          350: '#f5bf1b'
         },
         't-white': {
           50: 'rgba(255, 255, 255, 0.5)',
@@ -96,6 +108,10 @@ module.exports = {
         '3/4vh': '75vh',
         '5/6vh': '83.333333vh',
         '9/10vh': '90vh'
+      }),
+      width: theme => ({
+        ...defaultTheme.width,
+        'fit-content': 'fit-content'
       }),
       maxHeight: (theme) => ({
         ...theme('spacing'),

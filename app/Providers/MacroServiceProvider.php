@@ -68,11 +68,19 @@ class MacroServiceProvider extends ServiceProvider
             return new static(Arr::mergeDeep($this->items, $this->getArrayableItems($items)));
         });
 
-        Str::macro('randomPlus', function ($type = 'alnum', $length = 8) {
+        Str::macro('randomPlus', function ($type = 'alnum', $length = 8, $lowerOnly = false) {
             if ($type == 'alnum') {
-                $pool = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $pool = '0123456789abcdefghijklmnopqrstuvwxyz';
+
+                if (! $lowerOnly) {
+                    $pool .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                }
             } elseif ($type == 'alpha') {
-                $pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $pool = 'abcdefghijklmnopqrstuvwxyz';
+
+                if (! $lowerOnly) {
+                    $pool .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                }
             } elseif ($type == 'numeric') {
                 $pool = '0123456789';
             } elseif ($type == 'nozero') {

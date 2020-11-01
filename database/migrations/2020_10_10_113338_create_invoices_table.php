@@ -21,13 +21,12 @@ class CreateInvoicesTable extends Migration
             $table->string('payment_type');
             $table->string('provider')->nullable();
             $table->string('provider_number')->nullable();
+            $table->string('provider_holder_name')->nullable();
             $table->string('redirect_url')->nullable();
             $table->integer('amount');
             $table->string('status');
             $table->timestamp('valid_until')->useCurrent();
-            $table->foreignId('site_id')
-                ->constrained()
-                ->onDelete('cascade');
+            $table->morphs('invoicable');
             $table->softDeletes();
             $table->timestamps();
         });

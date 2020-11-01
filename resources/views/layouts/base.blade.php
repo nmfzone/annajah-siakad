@@ -6,6 +6,8 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" href="{{ asset('favicons/favicon.ico') }}">
 
+  <meta property="og:image" content="{{ Site::logo() }}">
+
   @stack('meta')
 
   <title>
