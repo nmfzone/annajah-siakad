@@ -84,25 +84,12 @@ class PreliminaryDataSeeder extends Seeder
             'role' => Role::TEACHER,
         ]));
 
-        /** @var \App\Models\User $user */
-        $user = $site->users()->save(factory(User::class)->make([
-            'name' => 'Ahnaf',
-            'email' => 'ahnaf@gmail.com',
-            'password' => bcrypt('12345678'),
-            'email_verified_at' => now(),
-            'role' => Role::STUDENT,
-        ]));
-
-        $user->studentProfiles()->save(new Student([
-            'nis' => Student::generateNis($site),
-            'graduated_at' => now()->subMonths(5),
-        ]), ['site_id' => $site->id]);
-
         (new StudentsImport($site))->queue(resource_path('files/DataSantriAll.xlsx'));
 
         /** @var \App\Models\AcademicYear $academicYear */
         $academicYear = $site->academicYears()->save(new AcademicYear([
-            'name' => '2021/2022',
+            'from' => 2021,
+            'to' => 2022,
         ]));
 
         /** @var \App\Models\Ppdb $ppdb */
@@ -114,9 +101,9 @@ class PreliminaryDataSeeder extends Seeder
         $ppdb->settings()->set(PpdbSetting::PAYMENTS, [
             [
                 'payment_type' => PaymentType::BANK_TRANSFER,
-                'provider' => 'bri',
-                'provider_number' => '003501070314507',
-                'provider_holder_name' => 'Zamroh Azizah Al Mukaromah',
+                'provider' => 'bni',
+                'provider_number' => '0912570453',
+                'provider_holder_name' => 'Kartika Nur Kholidah',
             ]
         ]);
 

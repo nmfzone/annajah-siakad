@@ -40,7 +40,7 @@ class PpdbController extends Controller
         $slides = [
             [
                 'id' => 3,
-                'image' => asset('images/slider-1.png')
+                'image' => asset('images/slider-1_500.png')
             ],
             [
                 'id' => 1,
@@ -86,6 +86,7 @@ class PpdbController extends Controller
         $password = Str::randomPlus('numeric');
 
         $override = [
+            'username' => User::generateUsername(Role::STUDENT, $ppdb->academicYear->from),
             'password' => bcrypt($password),
             'role' => Role::STUDENT,
             'birth_date' => Carbon::createFromFormat('d-m-Y', $request->birth_date)

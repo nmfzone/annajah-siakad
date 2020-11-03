@@ -33,7 +33,8 @@ class DummySeeder extends Seeder
 
         /** @var \App\Models\AcademicYear $academicYear */
         $academicYear = $site->academicYears()->save(new AcademicYear([
-            'name' => '2020/2021',
+            'from' => 2020,
+            'to' => 2021
         ]));
 
         /** @var \App\Models\Course $course */
@@ -68,7 +69,7 @@ class DummySeeder extends Seeder
 
         $user->studentProfiles()->save(
             new Student([
-                'nis' => Student::generateNis($site),
+                'nis' => Student::generateNis($site, 2017),
             ]),
             ['site_id' => $site->id]
         );

@@ -52,13 +52,14 @@ class StudentsImport implements WithChunkReading, OnEachRow, ShouldQueue
         /** @var \App\Models\User $user */
         $user = $this->site->users()->save(new User([
             'name' => $row[1],
+            'username' => User::generateUsername(Role::STUDENT, $value),
             'password' => bcrypt('12345678'),
             'role' => Role::STUDENT,
         ]));
 
         $user->studentProfiles()->save(
             new Student([
-                'nis' => Student::generateNis($this->site),
+                'nis' => Student::generateNis($this->site, $value),
             ]),
             ['site_id' => $this->site->id]
         );

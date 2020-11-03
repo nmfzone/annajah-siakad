@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Role;
 use App\Models\Concerns\HasRole;
 use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -143,15 +144,26 @@ class User extends Authenticatable implements HasMedia
             });
     }
 
-    public static function generateUsername($role)
+    public static function generateUsername($role, $year = null)
     {
-        $generate = function ($index) use ($role) {
-            return 'annajah-' .
-                now()->format('y') .
-                str_pad($index, 3, '0', STR_PAD_LEFT);
+        if ($role == Role::STUDENT) {
+            $prefix = 'annajah-' . ($year
+                    ? substr($year, 2, 4)
+                    : now()->format('y') + 1);
+        } elseif ($role == Role::TEACHER) {
+            $prefix = 'asatidz-' . now()->format('y');
+        } else {
+            $prefix = 'annajah-' . now()->format('y');
+        }
+
+        $generate = function ($index) use ($prefix) {
+            return $prefix . str_pad($index, 3, '0', STR_PAD_LEFT);
         };
 
-        $count = User::count();
+        $count = User::where('username', 'like', $prefix . '%')
+            ->where('role', $role)
+            ->count();
+
         $username = $generate($count++);
 
         $i = 1;

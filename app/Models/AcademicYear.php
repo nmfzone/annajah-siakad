@@ -12,7 +12,8 @@ class AcademicYear extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
+        'from',
+        'to'
     ];
 
     public function academicClasses()
