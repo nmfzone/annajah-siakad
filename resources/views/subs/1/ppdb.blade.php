@@ -55,14 +55,12 @@
         </div>
 
         <div class="flex flex-wrap justify-center items-start mt-10 text-lg">
-          @foreach($ppdb->paymentLists() as $payment)
-            <div class="w-full md:w-1/3 text-left p-4 leading-relaxed">
-              <p><b>Jenis</b>: {{ PaymentType::getDescription($payment['payment_type']) }}</p>
-              <p><b>Provider</b>: {{ Str::upper($payment['provider']) }}</p>
-              <p><b>Nomor</b>: {{ $payment['provider_number'] }}</p>
-              <p><b>Atas Nama</b>: {{ $payment['provider_holder_name'] }}</p>
-            </div>
-          @endforeach
+          <div class="w-full md:w-1/3 text-left p-4 leading-relaxed">
+            <p><b>Jenis</b>: {{ PaymentType::getDescription($ppdb->paymentDetails()['payment_type']) }}</p>
+            <p><b>Provider</b>: {{ Str::upper($ppdb->paymentDetails()['provider']) }}</p>
+            <p><b>Nomor</b>: {{ $ppdb->paymentDetails()['provider_number'] }}</p>
+            <p><b>Atas Nama</b>: {{ $ppdb->paymentDetails()['provider_holder_name'] }}</p>
+          </div>
         </div>
       </div>
     </div>

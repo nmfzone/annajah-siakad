@@ -8,7 +8,7 @@ final class SelectionMethod extends Enum
 
     const RAPOT = 'rapot';
 
-    const Tahfidz = 'tahfidz';
+    const TAHFIDZ = 'tahfidz';
 
     const MANDIRI = 'mandiri';
 }

@@ -4,7 +4,7 @@ namespace App\Enums;
 
 final class PpdbSetting extends Enum
 {
-    const PAYMENTS = 'payments';
+    const PAYMENT = 'payment';
 
     const PAYMENT_AMOUNT = 'payment_amount';
 

@@ -23,7 +23,7 @@ class ExceptRoleMiddleware
                 return $next($request);
             }
 
-            return abort(403);
+            abort(403);
         });
     }
 }

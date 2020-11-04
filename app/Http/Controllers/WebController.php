@@ -69,7 +69,7 @@ class WebController extends Controller
             $viewName = sprintf('subs.%s.index', $site->id);
 
             if (! view()->exists($viewName)) {
-                return abort(404);
+                abort(404);
             }
 
             return view($viewName, compact('slides', 'articles'));

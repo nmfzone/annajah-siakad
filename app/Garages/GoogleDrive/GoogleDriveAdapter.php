@@ -21,7 +21,8 @@ class GoogleDriveAdapter extends AbstractAdapter
      *
      * @var string
      */
-    const FETCHFIELDS_GET = 'id,name,mimeType,modifiedTime,parents,permissions,size,webContentLink,webViewLink';
+    const FETCHFIELDS_GET = 'id,name,mimeType,modifiedTime,parents,permissions,size,webContentLink,
+                            webViewLink';
 
     /**
      * Fetch fields setting for list
@@ -59,10 +60,13 @@ class GoogleDriveAdapter extends AbstractAdapter
             'withLink' => true
         ],
         'appsExportMap' => [
-            'application/vnd.google-apps.document' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'application/vnd.google-apps.spreadsheet' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.google-apps.document' =>
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.google-apps.spreadsheet' =>
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'application/vnd.google-apps.drawing' => 'application/pdf',
-            'application/vnd.google-apps.presentation' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/vnd.google-apps.presentation' =>
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
             'application/vnd.google-apps.script' => 'application/vnd.google-apps.script+json',
             'default' => 'application/pdf'
         ],
@@ -183,7 +187,11 @@ class GoogleDriveAdapter extends AbstractAdapter
             $this->fetchfieldsGet .= ',' . $this->options['additionalFetchField'];
             $this->additionalFields = explode(',', $this->options['additionalFetchField']);
         }
-        $this->fetchfieldsList = str_replace('FETCHFIELDS_GET', $this->fetchfieldsGet, self::FETCHFIELDS_LIST);
+        $this->fetchfieldsList = str_replace(
+            'FETCHFIELDS_GET',
+            $this->fetchfieldsGet,
+            self::FETCHFIELDS_LIST
+        );
         if (isset($this->options['defaultParams']) && is_array($this->options['defaultParams'])) {
             $this->defaultParams = $this->options['defaultParams'];
         }
@@ -277,7 +285,11 @@ class GoogleDriveAdapter extends AbstractAdapter
             $opts['removeParents'] = $oldParent;
         }
 
-        $updatedFile = $this->service->files->update($fileId, $file, $this->applyDefaultParams($opts, 'files.update'));
+        $updatedFile = $this->service->files->update(
+            $fileId,
+            $file,
+            $this->applyDefaultParams($opts, 'files.update')
+        );
 
         if ($updatedFile) {
             $this->cacheFileObjects[$updatedFile->getId()] = $updatedFile;
@@ -358,12 +370,20 @@ class GoogleDriveAdapter extends AbstractAdapter
                 }
                 if (!$res) {
                     try {
-                        $this->service->files->update($id, $file, $this->applyDefaultParams($opts, 'files.update'));
+                        $this->service->files->update(
+                            $id,
+                            $file,
+                            $this->applyDefaultParams($opts, 'files.update')
+                        );
                     } catch (Google_Exception $e) {
                         return false;
                     }
                 }
-                unset($this->cacheFileObjects[$id], $this->cacheHasDirs[$id], $this->cacheFileObjectsByName[$parentId . '/' . $name]);
+                unset(
+                    $this->cacheFileObjects[$id],
+                    $this->cacheHasDirs[$id],
+                    $this->cacheFileObjectsByName[$parentId . '/' . $name]
+                );
                 return true;
             }
         }
@@ -394,7 +414,8 @@ class GoogleDriveAdapter extends AbstractAdapter
             $itemId = $folder->getId();
 
             try {
-                $this->cacheFileObjectsByName[$pdirId . '/' . $name] = $folder; // for confirmation by getMetaData() oe has() while in this connection
+                // for confirmation by getMetaData() oe has() while in this connection
+                $this->cacheFileObjectsByName[$pdirId . '/' . $name] = $folder;
                 $this->cacheFileObjects[$itemId] = $folder;
                 $this->cacheHasDirs[$itemId] = false;
                 array_push($this->cacheCreatedFolders, [
@@ -529,7 +550,9 @@ class GoogleDriveAdapter extends AbstractAdapter
                     // fetch cookie
                     if (strpos($res, 'Set-Cookie:') === 0) {
                         $domain = $url['host'];
-                        if (preg_match('/^Set-Cookie:(.+)(?:domain=\s*([^ ;]+))?/i', $res, $c1)) {
+                        if (preg_match(
+                            '/^Set-Cookie:(.+)(?:domain=\s*([^ ;]+))?/i', $res, $c1
+                        )) {
                             if (! empty($c1[2])) {
                                 $domain = trim($c1[2]);
                             }
@@ -603,7 +626,9 @@ class GoogleDriveAdapter extends AbstractAdapter
      */
     public function setVisibility($path, $visibility)
     {
-        $result = ($visibility === AdapterInterface::VISIBILITY_PUBLIC) ? $this->publish($path) : $this->unPublish($path);
+        $result = ($visibility === AdapterInterface::VISIBILITY_PUBLIC)
+            ? $this->publish($path)
+            : $this->unPublish($path);
 
         if ($result) {
             return compact('path', 'visibility');
@@ -675,7 +700,11 @@ class GoogleDriveAdapter extends AbstractAdapter
         $results = [];
         $i = 0;
         foreach ($targets as $id) {
-            $opts['q'] = sprintf('trashed = false and "%s" in parents and mimeType = "%s"', $id, self::DIRMIME);
+            $opts['q'] = sprintf(
+                'trashed = false and "%s" in parents and mimeType = "%s"',
+                $id,
+                self::DIRMIME
+            );
             $request = $gFiles->listFiles($this->applyDefaultParams($opts, 'files.list'));
             $key = (string) ++ $i;
             $results[$key] = $request;
@@ -683,7 +712,8 @@ class GoogleDriveAdapter extends AbstractAdapter
         }
         foreach ($results as $key => $result) {
             if ($result instanceof Google_Service_Drive_FileList) {
-                $object[$paths[$key]]['hasdir'] = $this->cacheHasDirs[$paths[$key]] = (bool) $result->getFiles();
+                $object[$paths[$key]]['hasdir'] =
+                    $this->cacheHasDirs[$paths[$key]] = (bool) $result->getFiles();
             }
         }
         return $object;
@@ -701,7 +731,8 @@ class GoogleDriveAdapter extends AbstractAdapter
         $permissions = $file->getPermissions();
         $visibility = AdapterInterface::VISIBILITY_PRIVATE;
         foreach ($permissions as $permission) {
-            if ($permission->type === $this->publishPermission['type'] && $permission->role === $this->publishPermission['role']) {
+            if ($permission->type === $this->publishPermission['type'] &&
+                $permission->role === $this->publishPermission['role']) {
                 $visibility = AdapterInterface::VISIBILITY_PUBLIC;
                 break;
             }
@@ -839,7 +870,7 @@ class GoogleDriveAdapter extends AbstractAdapter
         }
         // attach additional fields
         if ($this->additionalFields) {
-            foreach($this->additionalFields as $field) {
+            foreach ($this->additionalFields as $field) {
                 if (property_exists($object, $field)) {
                     $result[$field] = $object->$field;
                 }
@@ -873,7 +904,7 @@ class GoogleDriveAdapter extends AbstractAdapter
             $parameters['q'] .= ' and (' . $query . ')';
         }
         $parameters = $this->applyDefaultParams($parameters, 'files.list');
-        $pageToken = NULL;
+        $pageToken = null;
         $gFiles = $this->service->files;
         $this->cacheHasDirs[$itemId] = false;
         $setHasDir = [];
@@ -899,22 +930,26 @@ class GoogleDriveAdapter extends AbstractAdapter
                                 unset($setHasDir[$itemId]);
                             }
                             if ($recursive) {
-                                $results = array_merge($results, $this->getItems($result['path'], true, $maxResults, $query));
+                                $results = array_merge(
+                                    $results,
+                                    $this->getItems($result['path'], true, $maxResults, $query)
+                                );
                             }
                         }
                     }
                     $pageToken = $fileObjs->getNextPageToken();
                 } else {
-                    $pageToken = NULL;
+                    $pageToken = null;
                 }
             } catch (Exception $e) {
-                $pageToken = NULL;
+                $pageToken = null;
             }
         } while ($pageToken && $maxResults === 0);
 
         if ($setHasDir) {
             $results = $this->setHasDir($setHasDir, $results);
         }
+
         return array_values($results);
     }
 
@@ -928,9 +963,10 @@ class GoogleDriveAdapter extends AbstractAdapter
     protected function getFileObject($path, $checkDir = false)
     {
         list ($parentId, $itemId) = $this->splitPath($path, true);
+
         if (isset($this->cacheFileObjects[$itemId])) {
             return $this->cacheFileObjects[$itemId];
-        } else if (isset($this->cacheFileObjectsByName[$parentId . '/' . $itemId])) {
+        } elseif (isset($this->cacheFileObjectsByName[$parentId . '/' . $itemId])) {
             return $this->cacheFileObjectsByName[$parentId . '/' . $itemId];
         }
 
@@ -946,7 +982,11 @@ class GoogleDriveAdapter extends AbstractAdapter
             if ($checkDir && $this->useHasDir) {
                 $hasdir = $service->files->listFiles($this->applyDefaultParams([
                     'pageSize' => 1,
-                    'q' => sprintf('trashed = false and "%s" in parents and mimeType = "%s"', $itemId, self::DIRMIME)
+                    'q' => sprintf(
+                        'trashed = false and "%s" in parents and mimeType = "%s"',
+                        $itemId,
+                        self::DIRMIME
+                    )
                 ], 'files.list'));
             }
         } catch (Google_Service_Exception $e) {
@@ -964,8 +1004,9 @@ class GoogleDriveAdapter extends AbstractAdapter
                 }
             }
         } else {
-            $fileObj = NULL;
+            $fileObj = null;
         }
+
         $this->cacheFileObjects[$itemId] = $fileObj;
 
         return $fileObj;
@@ -1031,9 +1072,13 @@ class GoogleDriveAdapter extends AbstractAdapter
         $srcDriveFile = $this->getFileObject($path);
 
         if (is_resource($contents)) {
-            $uploadedDriveFile = $this->uploadResourceToGoogleDrive($contents, $parentId, $fileName, $srcDriveFile, $config->get('mimetype'));
+            $uploadedDriveFile = $this->uploadResourceToGoogleDrive(
+                $contents, $parentId, $fileName, $srcDriveFile, $config->get('mimetype')
+            );
         } else {
-            $uploadedDriveFile = $this->uploadStringToGoogleDrive($contents, $parentId, $fileName, $srcDriveFile, $config->get('mimetype'));
+            $uploadedDriveFile = $this->uploadStringToGoogleDrive(
+                $contents, $parentId, $fileName, $srcDriveFile, $config->get('mimetype')
+            );
         }
 
         return $this->normaliseUploadedFile($uploadedDriveFile, $path, $config->get('visibility'));
@@ -1052,13 +1097,19 @@ class GoogleDriveAdapter extends AbstractAdapter
         if ($memoryLimit > 0) {
             $availableMemory = $memoryLimit - $this->getMemoryUsedBytes();
             /*
-             * We need some breathing room, so we only take 1/4th of the available memory for use in chunking (the divide by 4 does this).
+             * We need some breathing room, so we only take 1/4th of the available memory
+             *  for use in chunking (the divide by 4 does this).
              * The chunk size must be a multiple of 256KB(262144).
-             * An example of why we need the breathing room is detecting the mime type for a file that is just small enough to fit into one chunk.
-             * In this scenario, we send the entire file off as a string to have the mime type detected. Unfortunately, this leads to the entire
+             * An example of why we need the breathing room is detecting the mime type
+             * for a file that is just small enough to fit into one chunk.
+             * In this scenario, we send the entire file off as a string to have
+             * the mime type detected. Unfortunately, this leads to the entire
              * file being loaded into memory again, separately from the copy we're holding.
              */
-            $chunkSizeBytes = max(262144, min($chunkSizeBytes, floor($availableMemory / 4 / 262144) * 262144));
+            $chunkSizeBytes = max(
+                262144,
+                min($chunkSizeBytes, floor($availableMemory / 4 / 262144) * 262144)
+            );
         }
 
         return (int)$chunkSizeBytes;
@@ -1110,7 +1161,9 @@ class GoogleDriveAdapter extends AbstractAdapter
 
         if ($fileSize <= $chunkSizeBytes) {
             // If the resource fits in a single chunk, we'll just upload it in a single request
-            return $this->uploadStringToGoogleDrive(stream_get_contents($resource), $parentId, $fileName, $srcDriveFile, $mime);
+            return $this->uploadStringToGoogleDrive(
+                stream_get_contents($resource), $parentId, $fileName, $srcDriveFile, $mime
+            );
         }
 
         $client = $this->service->getClient();
@@ -1121,7 +1174,8 @@ class GoogleDriveAdapter extends AbstractAdapter
         $media = $this->getMediaFileUpload($client, $request, $mime, $chunkSizeBytes);
         $media->setFileSize($fileSize);
 
-        // Upload chunks until we run out of file to upload; $status will be false until the process is complete.
+        // Upload chunks until we run out of file to upload;
+        // $status will be false until the process is complete.
         $status = false;
         while (! $status && ! feof($resource)) {
             $chunk = $this->readFileChunk($resource, $chunkSizeBytes);
@@ -1181,7 +1235,9 @@ class GoogleDriveAdapter extends AbstractAdapter
             $params['uploadType'] = 'media';
         }
         if ($mode === 'insert') {
-            $retrievedDriveFile = $this->service->files->create($driveFile, $this->applyDefaultParams($params, 'files.create'));
+            $retrievedDriveFile = $this->service->files->create(
+                $driveFile, $this->applyDefaultParams($params, 'files.create')
+            );
         } else {
             $retrievedDriveFile = $this->service->files->update(
                 $srcDriveFile->getId(),
@@ -1205,7 +1261,8 @@ class GoogleDriveAdapter extends AbstractAdapter
         $byteCount = 0;
         $giantChunk = '';
         while (! feof($handle)) {
-            // fread will never return more than 8192 bytes if the stream is read buffered and it does not represent a plain file
+            // fread will never return more than 8192 bytes if the stream is read buffered
+            // and it does not represent a plain file.
             // An example of a read buffered file is when reading from a URL
             $chunk = fread($handle, 8192);
             $byteCount += strlen($chunk);
@@ -1236,12 +1293,16 @@ class GoogleDriveAdapter extends AbstractAdapter
         $last = strtolower($val[strlen($val) - 1]);
         $val = (int) $val;
         switch ($last) {
+            // tera
             case 't':
                 $val *= 1024;
+            // giga
             case 'g':
                 $val *= 1024;
+            // mega
             case 'm':
                 $val *= 1024;
+            // kilo
             case 'k':
                 $val *= 1024;
         }
@@ -1280,7 +1341,9 @@ class GoogleDriveAdapter extends AbstractAdapter
      */
     protected function getMediaFileUpload($client, $request, $mime, $chunkSizeBytes)
     {
-        return new Google_Http_MediaFileUpload($client, $request, $mime, null, true, $chunkSizeBytes);
+        return new Google_Http_MediaFileUpload(
+            $client, $request, $mime, null, true, $chunkSizeBytes
+        );
     }
 
     /**

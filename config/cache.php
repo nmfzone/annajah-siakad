@@ -101,4 +101,6 @@ return [
 
     'prefix' => env('CACHE_PREFIX', Str::slug(env('APP_SHORT_NAME', env('APP_NAME', 'Laravel')), '_').'_cache'),
 
+    'assets_versioning' => env('CACHE_PREFIX', Str::slug(env('APP_SHORT_NAME', env('APP_NAME', 'Laravel')), '_').'_cache'),
+
 ];

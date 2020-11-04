@@ -49,7 +49,8 @@ class UsersDataTable extends DataTable
 
                 if ($authUser->isNotTeacher()) {
                     $buttons .= "
-                        <a href=\"" . sub_route('dashboard.users.edit', $user) . "\" class=\"btn btn-success\">
+                        <a href=\"" . sub_route('dashboard.users.edit', $user) .
+                            "\" class=\"btn btn-success\">
                           <i class=\"fas fa-edit\"></i>
                         </a>
                     ";

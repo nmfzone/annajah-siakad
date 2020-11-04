@@ -119,7 +119,7 @@ if (! function_exists('switch_route')) {
 
         if ($type == 'main') {
             return main_route($name, $parameters, $absolute);
-        } else if ($type == 'sub') {
+        } elseif ($type == 'sub') {
             return sub_route($name, $parameters, $absolute);
         }
 

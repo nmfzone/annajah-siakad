@@ -7,7 +7,6 @@ use App\Imports\StudentsImport;
 use App\Models\AcademicYear;
 use App\Models\Ppdb;
 use App\Models\Site;
-use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
@@ -98,13 +97,11 @@ class PreliminaryDataSeeder extends Seeder
             'ended_at' => now()->addMonths(2),
         ]));
 
-        $ppdb->settings()->set(PpdbSetting::PAYMENTS, [
-            [
-                'payment_type' => PaymentType::BANK_TRANSFER,
-                'provider' => 'bni',
-                'provider_number' => '0912570453',
-                'provider_holder_name' => 'Kartika Nur Kholidah',
-            ]
+        $ppdb->settings()->set(PpdbSetting::PAYMENT, [
+            'payment_type' => PaymentType::BANK_TRANSFER,
+            'provider' => 'bni',
+            'provider_number' => '0912570453',
+            'provider_holder_name' => 'Kartika Nur Kholidah',
         ]);
 
         $ppdb->settings()->set(PpdbSetting::PAYMENT_AMOUNT, 100000);

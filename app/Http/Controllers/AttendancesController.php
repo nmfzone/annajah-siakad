@@ -20,8 +20,7 @@ class AttendancesController extends Controller
 
     public function index(Request $request)
     {
-        /** @var \App\Models\Attendance $attendance */
-        $attendances = Attendance::with('academicClass.academicYear')
+        $attendances = Attendance::with('academicClassCourse.academicYear')
             ->where('is_open', true)
             ->get();
 

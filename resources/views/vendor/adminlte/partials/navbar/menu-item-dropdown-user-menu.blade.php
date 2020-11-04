@@ -16,10 +16,10 @@
 
 @if (config('adminlte.use_route_url', false))
   @php( $profile_url = $profile_url['path'] ? switch_route($profile_url['loc'], $profile_url['path']) : '' )
-  @php( $logout_url = $logout_url['path'] ? switch_route($logout_url['loc'], $logout_url['path']) : '' )
+  @php( $logout_url = $logout_url['path'] ? switch_route($logout_url['loc'], $logout_url['path'], ['next' => switch_route('auto', 'web')]) : '' )
 @else
   @php( $profile_url = $profile_url ? url($profile_url) : '' )
-  @php( $logout_url = $logout_url ? url($logout_url) : '' )
+  @php( $logout_url = $logout_url ? url($logout_url, ['next' => switch_route('auto', 'web')]) : '' )
 @endif
 
 <li class="nav-item dropdown user-menu">

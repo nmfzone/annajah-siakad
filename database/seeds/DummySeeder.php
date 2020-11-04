@@ -1,14 +1,18 @@
 <?php
 
-use App\Enums\AcademicClassName;
 use App\Enums\AttendanceType;
+use App\Enums\PaymentType;
+use App\Enums\PpdbSetting;
 use App\Enums\Role;
+use App\Enums\SelectionMethod;
 use App\Models\AcademicClass;
 use App\Models\AcademicClassCourse;
 use App\Models\AcademicClassCourseStudent;
 use App\Models\AcademicYear;
 use App\Models\Attendance;
 use App\Models\Course;
+use App\Models\Ppdb;
+use App\Models\PpdbUser;
 use App\Models\Site;
 use App\Models\Student;
 use App\Models\User;
@@ -93,5 +97,32 @@ class DummySeeder extends Seeder
         ]));
 
         $attendace->academicClassCourseStudents()->attach($academicClassCourseStudent);
+
+        /** @var \App\Models\Ppdb $ppdb */
+        $ppdb = $academicYear->ppdb()->save(new Ppdb([
+            'started_at' => now(),
+            'ended_at' => now()->addMonths(2),
+        ]));
+
+        $ppdb->settings()->set(PpdbSetting::PAYMENT, [
+            'payment_type' => PaymentType::BANK_TRANSFER,
+            'provider' => 'bni',
+            'provider_number' => '28371903874',
+            'provider_holder_name' => 'John Doe',
+        ]);
+
+        $ppdb->settings()->set(PpdbSetting::PAYMENT_AMOUNT, 200000);
+
+        $ppdb->settings()->set(PpdbSetting::CONTACT_PERSONS, [
+            [
+                'name' => 'John Doe',
+                'number' => '081726367482',
+            ],
+        ]);
+
+        $ppdb->ppdbUsers()->save(new PpdbUser([
+            'user_id' => $user->id,
+            'selection_method' => SelectionMethod::PRESTASI,
+        ]));
     }
 }

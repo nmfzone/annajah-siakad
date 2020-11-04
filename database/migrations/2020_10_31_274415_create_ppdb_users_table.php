@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePpdbUserTable extends Migration
+class CreatePpdbUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreatePpdbUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('ppdb_user', function (Blueprint $table) {
+        Schema::create('ppdb_users', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ppdb_id')
                 ->constrained('ppdb')
@@ -23,8 +23,6 @@ class CreatePpdbUserTable extends Migration
                 ->onDelete('cascade');
             $table->string('selection_method');
             $table->timestamps();
-
-            $table->index(['ppdb_id', 'user_id']);
         });
     }
 
@@ -35,6 +33,6 @@ class CreatePpdbUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ppdb_user');
+        Schema::dropIfExists('ppdb_users');
     }
 }

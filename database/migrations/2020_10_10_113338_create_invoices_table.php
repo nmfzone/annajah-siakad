@@ -15,9 +15,7 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
             $table->string('name');
-            $table->string('type');
             $table->string('payment_type');
             $table->string('provider')->nullable();
             $table->string('provider_number')->nullable();
@@ -26,7 +24,7 @@ class CreateInvoicesTable extends Migration
             $table->integer('amount');
             $table->string('status');
             $table->timestamp('valid_until')->useCurrent();
-            $table->morphs('invoicable');
+            $table->morphs('invoiceable');
             $table->softDeletes();
             $table->timestamps();
         });

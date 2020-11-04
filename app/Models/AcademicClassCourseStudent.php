@@ -18,7 +18,7 @@ class AcademicClassCourseStudent extends Model
     public function attendances()
     {
         return $this->belongsToMany(Attendance::class, 'attendance_record')
-            ->withPivot('late')
+            ->withPivot('is_late')
             ->withTimestamps();
     }
 

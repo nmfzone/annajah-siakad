@@ -21,7 +21,7 @@ class SubPermissionMiddleware
                 return $next($request);
             }
 
-            /** @var \App\Models\Site $site */
+            /** @var \App\Models\Site|null $site */
             $site = app()->make('site');
 
             if (auth()->user()->isSuperAdmin() ||
@@ -29,7 +29,7 @@ class SubPermissionMiddleware
                 return $next($request);
             }
 
-            return abort(403);
+            abort(403);
         });
     }
 }

@@ -14,7 +14,7 @@ class CreateAttendanceRecordTable extends Migration
     public function up()
     {
         Schema::create('attendance_record', function (Blueprint $table) {
-            $table->boolean('late')->default(false);
+            $table->boolean('is_late')->default(false);
 
             $table->foreignId('attendance_id')
                 ->constrained()

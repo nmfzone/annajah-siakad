@@ -11,7 +11,7 @@ class StorageController extends Controller
         $storage = Storage::disk('public');
 
         if (! $storage->exists($path)) {
-            abort('404');
+            abort(404);
         }
 
         return $storage->response($path);

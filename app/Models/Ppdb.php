@@ -29,17 +29,14 @@ class Ppdb extends Model
         return $this->belongsTo(AcademicYear::class);
     }
 
-    public function users()
+    public function ppdbUsers()
     {
-        return $this->belongsToMany(User::class)
-            ->using(PpdbUser::class)
-            ->withTimestamps()
-            ->withPivot('selection_method');
+        return $this->hasMany(PpdbUser::class);
     }
 
-    public function paymentLists()
+    public function paymentDetails()
     {
-        return $this->settings()->get(PpdbSetting::PAYMENTS, []);
+        return $this->settings()->get(PpdbSetting::PAYMENT);
     }
 
     public function paymentAmount()

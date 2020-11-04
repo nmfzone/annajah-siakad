@@ -2,20 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Pivot;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
+use App\Models\Concerns\Invoiceable;
+use Illuminate\Database\Eloquent\Model;
 
-class PpdbUser extends Pivot implements HasMedia
+class PpdbUser extends Model
 {
-    use InteractsWithMedia;
+    use Invoiceable;
 
-    public $incrementing = true;
+    protected $fillable = [
+        'user_id',
+        'selection_method'
+    ];
 
-    public function registerMediaCollections(): void
+    public function ppdb()
     {
-        $this->addMediaCollection('bukti_pembayaran')
-            ->useDisk('ppdb_gdrive')
-            ->singleFile();
+        return $this->belongsTo(Ppdb::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

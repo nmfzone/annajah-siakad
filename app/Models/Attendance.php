@@ -11,10 +11,7 @@ class Attendance extends Model
 
     public $timestamps = false;
 
-    protected $fillable = [
-        'name', 'type', 'is_open', 'started_at', 'ended_at',
-        'advanced_started_at', 'advanced_ended_at',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'is_open' => 'boolean',
@@ -27,7 +24,7 @@ class Attendance extends Model
     public function academicClassCourseStudents()
     {
         return $this->belongsToMany(AcademicClassCourseStudent::class, 'attendance_record')
-            ->withPivot('late')
+            ->withPivot('is_late')
             ->withTimestamps();
     }
 

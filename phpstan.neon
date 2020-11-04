@@ -1,0 +1,32 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+
+    paths:
+        - app
+
+    level: 5
+
+    ignoreErrors:
+        - '#Method [a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\) should return [a-zA-Z|]+|null but return statement is missing#'
+        - '#Access to an undefined property App\\Models\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9\\_]+#'
+        - '#Call to an undefined method App\\Providers\\[a-zA-Z0-9\\_]+::[a-zA-Z0-9\\_]+\(\)#'
+        - '#Access to an undefined property App\\Providers\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9\\_]+#'
+        - '#Parameter [\#][0-9]+ \$default of method Glorand\\Model\\Settings\\Contracts\\SettingsManagerContract::get\(\) expects null, [a-z]+ given#'
+        - '#Static method Illuminate\\Support\\Arr::mergeDeep\(\) invoked with [0-9] parameters, 0 required#'
+        -
+            message: '#Unsafe usage of new static\(\)#'
+            path: app/Providers/MacroServiceProvider.php
+
+    excludes_analyse:
+        - app/Garages/GoogleDrive/
+        - bootstrap/
+        - config/
+        - database/
+        - public/
+        - resources/
+        - routes/
+        - storage/
+        - tests/
+        - vendor/

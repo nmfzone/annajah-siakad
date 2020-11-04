@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<ruleset name="Laravel Code Standard" namespace="Laravel\CS\Standard">
+    <description>Code Standard used for Laravel App</description>
+
+    <file>./app</file>
+    <file>./routes</file>
+
+    <exclude-pattern>./bootstrap/*</exclude-pattern>
+    <exclude-pattern>./config/*</exclude-pattern>
+    <exclude-pattern>./database/*</exclude-pattern>
+    <exclude-pattern>./public/*</exclude-pattern>
+    <exclude-pattern>./resources/*</exclude-pattern>
+    <exclude-pattern>./storage/*</exclude-pattern>
+    <exclude-pattern>./tests/*</exclude-pattern>
+    <exclude-pattern>./vendor/*</exclude-pattern>
+
+    <arg name="colors"/>
+
+    <rule ref="PSR2" />
+
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax" />
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="110" />
+            <property name="absoluteLineLimit" value="110" />
+        </properties>
+    </rule>
+
+    <rule ref="PSR2.Methods.FunctionCallSignature">
+        <properties>
+            <property name="allowMultipleArguments" value="true" />
+        </properties>
+    </rule>
+
+    <rule ref="Generic.PHP.ForbiddenFunctions">
+        <properties>
+            <property name="forbiddenFunctions" type="array"
+                      value="session_start=>NULL,
+                        $_SESSION=>session,
+                        $_POST=>request,
+                        $_GET=>request,
+                        eval=>NULL,
+                        dd=>NULL,
+                        var_dump=>NULL,
+                        sizeof=>count,
+                        delete=>unset" />
+        </properties>
+    </rule>
+
+    <rule ref="Squiz.PHP.CommentedOutCode">
+        <properties>
+            <property name="maxPercentage" value="75" />
+        </properties>
+    </rule>
+</ruleset>

@@ -14,6 +14,7 @@ class AcademicClassCourseObserver
      */
     public function creating(AcademicClassCourse $academicClassCourse)
     {
-        $academicClassCourse->name = $academicClassCourse->academicClass->name . ' ' . $academicClassCourse->course->name;
+        $academicClassCourse->name = $academicClassCourse->academicClass->name
+            . ' ' . $academicClassCourse->course->name;
     }
 }

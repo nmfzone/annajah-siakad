@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Garages\Utility\Unique;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -34,24 +35,13 @@ class Student extends Model implements HasMedia
         $generate = function () use ($site, $year) {
             $prefix = $year
                     ? substr($year, 2, 4)
-                    : now()->format('y') + 1;
+                    : (int) now()->format('y') + 1;
 
             return $prefix .
-                str_pad($site->id, 2, '0', STR_PAD_LEFT) .
+                str_pad((string) $site->id, 2, '0', STR_PAD_LEFT) .
                 random_int(1000, 9999);
         };
 
-        $nis = $generate();
-
-        $i = 0;
-        while (Student::whereNis($nis)->first() != null) {
-            $nis = $generate();
-
-            if ($i++ == 10) {
-                throw new Exception('Cannot generate unique NIS.');
-            }
-        }
-
-        return $nis;
+        return Unique::generate(Student::class, $generate, 'nis');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\Role;
+use App\Garages\Utility\Unique;
 use App\Models\Concerns\HasRole;
 use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -10,7 +11,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 use Laravolt\Avatar\Facade as Avatar;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -72,12 +72,9 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsToMany(Site::class);
     }
 
-    public function ppdb()
+    public function ppdbUsers()
     {
-        return $this->belongsToMany(Ppdb::class)
-            ->using(PpdbUser::class)
-            ->withTimestamps()
-            ->withPivot('selection_method');
+        return $this->hasMany(PpdbUser::class);
     }
 
     public function teacherProfiles()
@@ -149,7 +146,7 @@ class User extends Authenticatable implements HasMedia
         if ($role == Role::STUDENT) {
             $prefix = 'annajah-' . ($year
                     ? substr($year, 2, 4)
-                    : now()->format('y') + 1);
+                    : (int) now()->format('y') + 1);
         } elseif ($role == Role::TEACHER) {
             $prefix = 'asatidz-' . now()->format('y');
         } else {
@@ -164,17 +161,6 @@ class User extends Authenticatable implements HasMedia
             ->where('role', $role)
             ->count();
 
-        $username = $generate($count++);
-
-        $i = 1;
-        while (User::whereUsername($username)->first() != null) {
-            $username = $generate($count + $i);
-
-            if ($i++ == 10) {
-                throw new Exception('Cannot generate unique Username.');
-            }
-        }
-
-        return $username;
+        return Unique::generate(User::class, $generate, 'username', $count);
     }
 }

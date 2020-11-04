@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Enums\Role;
 use App\Enums\SelectionMethod;
 use App\Http\Controllers\Concerns\HasSiteContext;
+use App\Models\PpdbUser;
 use App\Models\Student;
 use App\Models\User;
 use App\Services\PpdbService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -53,7 +55,7 @@ class PpdbController extends Controller
         $viewName = sprintf('subs.%s.ppdb', $site->id);
 
         if (! view()->exists($viewName) || is_null($ppdb)) {
-            return abort(404);
+            abort(404);
         }
 
         return view($viewName, compact('slides', 'ppdb'));
@@ -85,30 +87,33 @@ class PpdbController extends Controller
 
         $password = Str::randomPlus('numeric');
 
-        $override = [
-            'username' => User::generateUsername(Role::STUDENT, $ppdb->academicYear->from),
-            'password' => bcrypt($password),
-            'role' => Role::STUDENT,
-            'birth_date' => Carbon::createFromFormat('d-m-Y', $request->birth_date)
-        ];
-        $user = User::forceCreate(
-            $request->merge($override)
-                ->only(array_keys($userRules + $override))
-        );
-        $site->users()->save($user);
+        DB::transaction(function () use ($request, $site, $userRules, $studentRules, $ppdb, $password) {
+            $override = [
+                'username' => User::generateUsername(Role::STUDENT, $ppdb->academicYear->from),
+                'password' => bcrypt($password),
+                'role' => Role::STUDENT,
+                'birth_date' => Carbon::createFromFormat('d-m-Y', $request->birth_date)
+            ];
+            $user = User::forceCreate(
+                $request->merge($override)
+                    ->only(array_keys($userRules + $override))
+            );
+            $site->users()->save($user);
 
-        $override = [
-            'nis' => Student::generateNis($site),
-        ];
-        $user->studentProfiles()->save(new Student(
-            $request->merge($override)->only(array_keys($studentRules + $override))
-        ), ['site_id' => $site->id]);
+            $override = [
+                'nis' => Student::generateNis($site),
+            ];
+            $user->studentProfiles()->save(new Student(
+                $request->merge($override)->only(array_keys($studentRules + $override))
+            ), ['site_id' => $site->id]);
 
-        $ppdb->users()->save($user, [
-            'selection_method' => $request->selection_method,
-        ]);
+            $ppdb->ppdbUsers()->save(new PpdbUser([
+                'user_id' => $user->id,
+                'selection_method' => $request->selection_method,
+            ]));
 
-        auth()->loginUsingId($user->id);
+            auth()->loginUsingId($user->id);
+        });
 
         return redirect()->back()
             ->with('registered', true)

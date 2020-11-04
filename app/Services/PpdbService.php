@@ -10,7 +10,7 @@ class PpdbService
     public function currentPpdb(): ?Ppdb
     {
         $ppdb = null;
-        /** @var \App\Models\AcademicYear $academicYear */
+        /** @var \App\Models\AcademicYear|null $academicYear */
         $academicYear = $this->site()->academicYears()
             ->orderBy('name', 'desc')
             ->first();

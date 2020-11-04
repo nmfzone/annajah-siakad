@@ -43,7 +43,6 @@ class MacroServiceProvider extends ServiceProvider
          * Deep merge array.
          * Combine (instead of replace) array with the same key (if the value is an array).
          *
-         * @link https://api.drupal.org/api/drupal/includes%21bootstrap.inc/function/drupal_array_merge_deep_array/7.x
          * @return array
          */
         Arr::macro('mergeDeep', function () {
@@ -120,7 +119,7 @@ class MacroServiceProvider extends ServiceProvider
 
             if ($intended) {
                 $path = $intended;
-            } else if ($next && parse_url($next)) {
+            } elseif ($next && parse_url($next)) {
                 $url = Url::fromString($next);
 
                 if (empty($url->getHost())) {
