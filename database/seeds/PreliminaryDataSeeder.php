@@ -21,7 +21,7 @@ class PreliminaryDataSeeder extends Seeder
     public function run()
     {
         /** @var \App\Models\Site $site */
-        $site = factory(Site::class)->create([
+        $site = Site::create([
             'title' => 'SMPIT Muhammadiyah An Najah',
             'domain' => 'smpit.' . config('app.host'),
             'address' => 'Jalan Lingkar Utara Jatinom, Dukuh Bonyokan, Jatinom, Klaten',
@@ -37,7 +37,7 @@ class PreliminaryDataSeeder extends Seeder
         $site->addMedia($destinationPath)
             ->toMediaCollection('logo');
 
-        factory(Site::class)->create([
+        Site::create([
             'title' => 'SDIT Muhammadiyah An Najah',
             'domain' => 'sdit.' . config('app.host'),
             'address' => 'Jalan Lingkar Utara Jatinom, Dk. Dukuh, Dukuh Bonyokan, Jatinom, Klaten',
@@ -45,7 +45,7 @@ class PreliminaryDataSeeder extends Seeder
             'phone' => '(0272) 3393415',
         ]);
 
-        $superAdmin = factory(User::class)->make([
+        $superAdmin = User::create([
             'name' => 'Super Administrator',
             'email' => 'mail@muhannajah.sch.id',
             'password' => bcrypt('12345678'),
@@ -55,7 +55,7 @@ class PreliminaryDataSeeder extends Seeder
         $superAdmin->username = 'annajah';
         $superAdmin->save();
 
-        $editor = factory(User::class)->make([
+        $editor = User::create([
             'name' => 'Editor SMP',
             'email' => 'editor@smpit.muhannajah.sch.id',
             'password' => bcrypt('12345678'),
@@ -65,7 +65,7 @@ class PreliminaryDataSeeder extends Seeder
         $editor->username = 'smpit-editor';
         $site->users()->save($editor);
 
-        $admin = factory(User::class)->make([
+        $admin = User::create([
             'name' => 'Administrator SMP',
             'email' => 'mail@smpit.muhannajah.sch.id',
             'password' => bcrypt('12345678'),
@@ -75,7 +75,7 @@ class PreliminaryDataSeeder extends Seeder
         $admin->username = 'smpit-admin';
         $site->users()->save($admin);
 
-        $site->users()->save(factory(User::class)->make([
+        $site->users()->save(new User([
             'name' => 'Kartika Nur Kholidah, S.Kom',
             'email' => 'kartikanurkholidah@gmail.com',
             'password' => bcrypt('12345678'),
