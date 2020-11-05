@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\Invoiceable;
+use App\Models\Concerns\Transactionable;
 use Illuminate\Database\Eloquent\Model;
 
 class PpdbUser extends Model
 {
-    use Invoiceable;
+    use Transactionable;
 
     protected $fillable = [
         'user_id',

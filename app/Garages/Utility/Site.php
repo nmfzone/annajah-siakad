@@ -10,47 +10,47 @@ class Site
 {
     public static function title()
     {
-        return object_get(static::site(), 'title', config('app.name', 'Laravel'));
+        return object_get(self::model(), 'title', config('app.name', 'Laravel'));
     }
 
     public static function email()
     {
-        $value = self::site()->email;
+        $value = self::model()->email;
 
         return empty($value) ? '-' : $value;
     }
 
     public static function address()
     {
-        $value = self::site()->address;
+        $value = self::model()->address;
 
         return empty($value) ? '-' : $value;
     }
 
     public static function phone()
     {
-        $value = self::site()->phone;
+        $value = self::model()->phone;
 
         return empty($value) ? '-' : $value;
     }
 
     public static function instagram()
     {
-        $value = self::site()->instagram;
+        $value = self::model()->instagram;
 
         return empty($value) ? '-' : 'https://instagram.com/' . $value;
     }
 
     public static function facebook()
     {
-        $value = self::site()->facebook;
+        $value = self::model()->facebook;
 
         return empty($value) ? '-' : 'https://facebook.com/' . $value;
     }
 
     public static function twitter()
     {
-        $value = self::site()->twitter;
+        $value = self::model()->twitter;
 
         return empty($value) ? '-' : 'https://twitter.com/' . $value;
     }
@@ -59,7 +59,7 @@ class Site
     {
         return is_main_app()
             ? asset('images/logo.png')
-            : static::site()->logo;
+            : self::model()->logo;
     }
 
     public static function menus()
@@ -67,7 +67,7 @@ class Site
         if (is_main_app()) {
             $menus = [];
         } else {
-            $menus = self::site()->settings()->get(SiteSetting::MENUS);
+            $menus = self::model()->settings()->get(SiteSetting::MENUS);
 
             $menus = [
                 [
@@ -128,7 +128,7 @@ class Site
         return $menus;
     }
 
-    protected static function site(): ?SiteModel
+    public static function model(): ?SiteModel
     {
         $site = app()->make('site');
 

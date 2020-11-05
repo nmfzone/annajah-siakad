@@ -183,13 +183,11 @@
               </div>
             </div>
 
-            <div class="form-group mt-5">
-              <div class="col-12">
-                <div class="float-right">
-                  <button type="submit" class="btn btn-info">
-                    <i class="fa fa-btn fa-save"></i> Perbarui
-                  </button>
-                </div>
+            <div class="row mt-5">
+              <div class="col-12 px-md-4">
+                <button type="submit" class="btn btn-info float-right">
+                  <i class="fa fa-btn fa-save"></i> Perbarui
+                </button>
               </div>
             </div>
           </form>

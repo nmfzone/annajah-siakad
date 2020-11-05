@@ -12,10 +12,10 @@ use App\Models\AcademicYear;
 use App\Models\Attendance;
 use App\Models\Course;
 use App\Models\Ppdb;
-use App\Models\PpdbUser;
 use App\Models\Site;
 use App\Models\Student;
 use App\Models\User;
+use App\Services\PpdbService;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -111,7 +111,7 @@ class DummySeeder extends Seeder
             'provider_holder_name' => 'John Doe',
         ]);
 
-        $ppdb->settings()->set(PpdbSetting::PAYMENT_AMOUNT, 200000);
+        $ppdb->settings()->set(PpdbSetting::PRICE, 200000);
 
         $ppdb->settings()->set(PpdbSetting::CONTACT_PERSONS, [
             [
@@ -120,9 +120,10 @@ class DummySeeder extends Seeder
             ],
         ]);
 
-        $ppdb->ppdbUsers()->save(new PpdbUser([
-            'user_id' => $user->id,
+        $ppdbService = app()->make(PpdbService::class);
+
+        $ppdbService->addNewRegistrar($ppdb, $user, [
             'selection_method' => SelectionMethod::PRESTASI,
-        ]));
+        ]);
     }
 }

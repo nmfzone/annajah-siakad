@@ -12,6 +12,7 @@ class ProfileController extends Controller
 
     public function __invoke(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = $request->user();
         $this->userShouldBelongsToCurrentSite($user);
         $this->authorize('update', $user);

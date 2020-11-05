@@ -122,12 +122,16 @@
 <script>
   import { GlobalMixin } from '@mixins'
   import dayjs from 'dayjs'
+  import DatePicker from '@components/picker/DatePicker'
 
   export default {
     inheritAttrs: false,
     mixins: [
       GlobalMixin,
     ],
+    components: {
+      DatePicker
+    },
     props: {
       value: [Number, String],
       initialValue: [Number, String],
@@ -333,6 +337,8 @@
 
   .input-group-append {
     @apply shadow flex;
+
+    border-radius: 0 .25rem .25rem 0;
 
     > .input-group-text {
       @apply flex items-center mb-0 text-base font-normal text-center;

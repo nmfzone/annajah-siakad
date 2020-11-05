@@ -18,6 +18,10 @@ class CreateShortLinksTable extends Migration
             $table->string('code', 150)->unique();
             $table->mediumText('destination');
             $table->string('title')->nullable();
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

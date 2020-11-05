@@ -39,13 +39,13 @@ class Ppdb extends Model
         return $this->settings()->get(PpdbSetting::PAYMENT);
     }
 
-    public function paymentAmount()
+    public function price()
     {
-        return $this->settings()->get(PpdbSetting::PAYMENT_AMOUNT, 0);
+        return $this->settings()->get(PpdbSetting::PRICE, 0);
     }
 
-    public function paymentAmountFormatted()
+    public function priceFormatted()
     {
-        return 'Rp ' . number_format($this->paymentAmount(), 0, ',', '.');
+        return 'Rp ' . number_format($this->price(), 0, ',', '.');
     }
 }

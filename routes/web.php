@@ -62,6 +62,22 @@ Route::group([
         Route::get('/profil', 'ProfileController')
             ->name('dashboard.profile');
 
+        Route::get('/ppdb/peserta/detail', 'PpdbController@directShowUser')
+            ->name('dashboard.ppdb.users.direct_show');
+
+        Route::get('/ppdb/peserta/{ppdb_user}', 'PpdbController@showUser')
+            ->name('dashboard.ppdb.users.show');
+
+        Route::get(
+            '/ppdb/peserta/{ppdb_user}/tagihan/{transaction}',
+            'PpdbController@showPayment'
+        )->name('dashboard.ppdb.users.show_payment');
+
+        Route::post(
+            '/ppdb/peserta/{ppdb_user}/tagihan/{transaction}',
+            'PpdbController@storePayment'
+        )->name('dashboard.ppdb.users.store_payment');
+
         Route::get('/pengguna/buat', 'UsersController@create')
             ->name('dashboard.users.create');
         Route::post('/pengguna/buat', 'UsersController@store')

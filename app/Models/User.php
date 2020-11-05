@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\Role;
 use App\Garages\Utility\Unique;
 use App\Models\Concerns\HasRole;
-use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,6 +31,7 @@ class User extends Authenticatable implements HasMedia
     ];
 
     protected $casts = [
+        'birth_date' => 'date',
         'email_verified_at' => 'datetime',
         'gender' => 'boolean',
     ];
@@ -126,6 +126,20 @@ class User extends Authenticatable implements HasMedia
     public function adminlteImage()
     {
         return $this->getAvatarAttribute();
+    }
+
+    public function studentProfileFor(Site $site)
+    {
+        return $this->studentProfiles
+            ->where('pivot.site_id', $site->id)
+            ->first();
+    }
+
+    public function teacherProfileFor(Site $site)
+    {
+        return $this->teacherProfiles
+            ->where('pivot.site_id', $site->id)
+            ->first();
     }
 
     public function registerMediaCollections(): void

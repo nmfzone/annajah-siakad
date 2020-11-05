@@ -5,8 +5,12 @@ namespace App\Providers;
 use App\Garages\GoogleDrive\GoogleDriveAdapter;
 use App\Garages\Illuminate\Routing\UrlGenerator;
 use App\Garages\Utility\IndonesianNameFormatter;
+use App\Models\PpdbUser;
+use App\Models\Student;
+use App\Models\Teacher;
 use Google_Client;
 use Google_Service_Drive;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
@@ -69,5 +73,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+
+        Relation::morphMap([
+            'ppdb_user' => PpdbUser::class,
+            'teacher' => Teacher::class,
+            'student' => Student::class,
+        ]);
     }
 }

@@ -104,7 +104,7 @@ class PreliminaryDataSeeder extends Seeder
             'provider_holder_name' => 'Kartika Nur Kholidah',
         ]);
 
-        $ppdb->settings()->set(PpdbSetting::PAYMENT_AMOUNT, 100000);
+        $ppdb->settings()->set(PpdbSetting::PRICE, 100000);
 
         $ppdb->settings()->set(PpdbSetting::CONTACT_PERSONS, [
             [

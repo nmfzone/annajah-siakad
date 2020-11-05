@@ -52,6 +52,29 @@
           @endif
         @endif
 
+        @if(!is_main_app() && App\Models\PpdbUser::where('user_id', auth()->user()->id)->exists())
+          <li class="nav-item has-treeview
+                    {{ Request::is('ppdb/*') ? 'menu-open' :'' }}">
+            <a class="nav-link
+                    {{ Request::is('ppdb/*') ? 'active' :'' }}"
+               href="#">
+              <i class="fa fa-fw fa-clipboard"></i>
+              <p>PPDB <i class="fas fa-angle-left right"></i></p>
+            </a>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a class="nav-link
+                        {{ Request::is('ppdb/peserta/detail', 'ppdb/peserta/*') ? 'active' :'' }}"
+                   href="{{ sub_route('dashboard.ppdb.users.direct_show') }}">
+                  <i class="far fa-fw fa-circle"></i>
+                  <p>Detail Pendaftaran</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        @endif
+
         <li class="nav-header">
           PENGATURAN AKUN
         </li>

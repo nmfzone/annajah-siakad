@@ -16,6 +16,7 @@ const webpackConfig = {
     alias: {
       '@vendor': `${root}/vendor`,
       '@root': `${root}/resources/js`,
+      '@components': `${root}/resources/js/components`,
       '@mixins': `${root}/resources/js/mixins`,
       '@images': `${root}/resources/images`,
     }

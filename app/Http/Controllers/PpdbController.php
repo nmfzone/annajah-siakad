@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\Role;
 use App\Enums\SelectionMethod;
 use App\Http\Controllers\Concerns\HasSiteContext;
-use App\Models\PpdbUser;
 use App\Models\Student;
 use App\Models\User;
 use App\Services\PpdbService;
@@ -71,7 +70,7 @@ class PpdbController extends Controller
             'nickname' => 'required|string|min:3|max:15',
             'gender' => 'required|boolean',
             'birth_place' => 'required|string|min:3|max:40',
-            'birth_date' => 'required|date|date_format:d-m-Y',
+            'birth_date' => 'required|date_format:d-m-Y',
         ];
         $studentRules = [
             'no_kk' => 'required|digits_between:10,20',
@@ -107,10 +106,9 @@ class PpdbController extends Controller
                 $request->merge($override)->only(array_keys($studentRules + $override))
             ), ['site_id' => $site->id]);
 
-            $ppdb->ppdbUsers()->save(new PpdbUser([
-                'user_id' => $user->id,
+            $this->ppdbService->addNewRegistrar($ppdb, $user, [
                 'selection_method' => $request->selection_method,
-            ]));
+            ]);
 
             auth()->loginUsingId($user->id);
         });

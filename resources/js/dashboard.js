@@ -1,5 +1,5 @@
 import './bootstrap'
-import Vue from 'vue'
+import './global'
 import 'bootstrap'
 import 'bootstrap-switch'
 import 'overlayscrollbars'
@@ -9,14 +9,6 @@ import 'datatables.net-buttons-bs4'
 import './vendor/datatable/buttons.server-side'
 import '@vendor/almasaeed2010/adminlte/dist/js/adminlte'
 import './vendor/datatable/datatables'
-
-window.Vue = Vue
-
-import FormInput from './components/form/FormInput'
-import Alert from './components/Alert'
-
-Vue.component('alert', Alert)
-Vue.component('form-input', FormInput)
 
 
 const app = new Vue({
@@ -29,12 +21,22 @@ $('input[data-bootstrap-switch]').each(function() {
 })
 
 $('.form-control.is-invalid').each(function() {
-  const invalidFeedback = $(this).parent().siblings('.invalid-feedback')
+  const invalidFeedback = $(this).parent().find('.invalid-feedback')
 
   if (invalidFeedback) {
     invalidFeedback.show()
   }
 })
+
+// AdminLTE Plugins
+import bsCustomFileInput from '@vendor/almasaeed2010/adminlte/plugins/bs-custom-file-input/bs-custom-file-input'
+import '@vendor/almasaeed2010/adminlte/plugins/inputmask/jquery.inputmask.bundle'
+
+$(document).ready(function () {
+  bsCustomFileInput.init()
+  $('.mask-input').inputmask()
+})
+// AdminLTE Plugins
 
 $(document).on('init.dt', function (e, settings) {
   $('.dataTable .delete-this').click(function (e) {

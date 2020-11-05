@@ -51,12 +51,12 @@
         </div>
 
         <div class="text-lg mt-8">
-          Mohon selesaikan pendaftaran Anda dengan cara melakukan pembayaran biaya pendaftaran sebesar <b>{{ $ppdb->paymentAmountFormatted() }}</b>.
+          Mohon selesaikan pendaftaran Anda dengan cara melakukan pembayaran biaya pendaftaran sebesar <b>{{ $ppdb->priceFormatted() }}</b>.
         </div>
 
         <div class="flex flex-wrap justify-center items-start mt-10 text-lg">
           <div class="w-full md:w-1/3 text-left p-4 leading-relaxed">
-            <p><b>Jenis</b>: {{ PaymentType::getDescription($ppdb->paymentDetails()['payment_type']) }}</p>
+            <p><b>Metode Pembayaran</b>: {{ PaymentType::getDescription($ppdb->paymentDetails()['payment_type']) }}</p>
             <p><b>Provider</b>: {{ Str::upper($ppdb->paymentDetails()['provider']) }}</p>
             <p><b>Nomor</b>: {{ $ppdb->paymentDetails()['provider_number'] }}</p>
             <p><b>Atas Nama</b>: {{ $ppdb->paymentDetails()['provider_holder_name'] }}</p>

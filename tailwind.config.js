@@ -196,6 +196,7 @@ module.exports = {
     borderColor: ['responsive', 'hover', 'focus', 'important'],
     margin: ['responsive', 'important'],
     padding: ['responsive', 'important'],
+    lineHeight: ['responsive', 'important'],
   },
   plugins: [
     plugin(function ({ addVariant }) {
