@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\DataTables\PpdbUserDataTable;
 use App\Http\Controllers\Concerns\HasSiteContext;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
@@ -21,15 +22,25 @@ class PpdbController extends Controller
      */
     protected $ppdbService;
 
-    public function __construct(
-        PpdbService $ppdbService
-    ) {
+    public function __construct(PpdbService $ppdbService)
+    {
         $this->ppdbService = $ppdbService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        //
+        /** @var \App\Models\User $authUser */
+        $authUser = $request->user();
+
+        if ($authUser->isNotAdmin() && $authUser->isNotSuperAdmin()) {
+            abort(403);
+        }
+
+        $ppdb = $this->ppdbService->currentPpdb();
+
+        $datatable = new PpdbUserDataTable($ppdb);
+
+        return $datatable->render('dashboard.ppdb.index');
     }
 
     public function showUser($subDomain, PpdbUser $ppdbUser)
@@ -92,7 +103,7 @@ class PpdbController extends Controller
             'provider_holder_name' => 'required|max:50',
             'provider_number' => 'required|digits_between:5,30',
             'payment_date' => 'required|date_format:d-m-Y',
-            'payment_time' => 'required|date_format:"H:i"',
+            'payment_time' => 'date_format:"H:i"',
             'proof_file' => 'required|file|mimes:png,jpg,jpeg|max:1000',
         ], [], [
             'provider_holder_name' => 'Nama Pengirim',
@@ -109,7 +120,7 @@ class PpdbController extends Controller
                 'provider_number' => $request->provider_number,
                 'paid_on' => Carbon::createFromFormat(
                     'd-m-Y H:i',
-                    $request->payment_date . ' ' . $request->payment_time
+                    $request->payment_date . ' ' . $request->get('payment_time', '00:00')
                 ),
             ]));
 
@@ -130,7 +141,10 @@ class PpdbController extends Controller
         /** @var \App\Models\User $authUser */
         $authUser = auth()->user();
 
-        if ($authUser->isNotAdmin() && $authUser->isNot($ppdbUser->user)) {
+        if ($authUser->isNotSuperAdmin() &&
+            $authUser->isNotAdmin() &&
+            $authUser->isNot($ppdbUser->user)
+        ) {
             abort(403);
         }
     }

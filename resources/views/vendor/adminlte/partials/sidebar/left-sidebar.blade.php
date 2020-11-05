@@ -52,7 +52,7 @@
           @endif
         @endif
 
-        @if(!is_main_app() && App\Models\PpdbUser::where('user_id', auth()->user()->id)->exists())
+        @if(!is_main_app())
           <li class="nav-item has-treeview
                     {{ Request::is('ppdb/*') ? 'menu-open' :'' }}">
             <a class="nav-link
@@ -63,14 +63,26 @@
             </a>
 
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a class="nav-link
-                        {{ Request::is('ppdb/peserta/detail', 'ppdb/peserta/*') ? 'active' :'' }}"
-                   href="{{ sub_route('dashboard.ppdb.users.direct_show') }}">
-                  <i class="far fa-fw fa-circle"></i>
-                  <p>Detail Pendaftaran</p>
-                </a>
-              </li>
+              @if(auth()->user()->isSuperAdmin() || auth()->user()->isAdmin())
+                <li class="nav-item">
+                  <a class="nav-link
+                          {{ Request::is('ppdb/peserta') ? 'active' :'' }}"
+                     href="{{ sub_route('dashboard.ppdb.users.index') }}">
+                    <i class="far fa-fw fa-circle"></i>
+                    <p>List Pendaftar</p>
+                  </a>
+                </li>
+              @endif
+              @if(App\Models\PpdbUser::where('user_id', auth()->user()->id)->exists())
+                <li class="nav-item">
+                  <a class="nav-link
+                          {{ Request::is('ppdb/peserta/detail', 'ppdb/peserta/*') ? 'active' :'' }}"
+                     href="{{ sub_route('dashboard.ppdb.users.direct_show') }}">
+                    <i class="far fa-fw fa-circle"></i>
+                    <p>Detail Pendaftaran</p>
+                  </a>
+                </li>
+              @endif
             </ul>
           </li>
         @endif

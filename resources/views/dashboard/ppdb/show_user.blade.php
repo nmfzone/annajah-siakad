@@ -133,6 +133,26 @@
                   {{ $profile->wali_phone ?? '-' }}
                 </div>
               </div>
+
+              <div class="form-group">
+                <label for="phone" class="col-form-label">
+                  Asal Sekolah
+                </label>
+
+                <div class="plain-input">
+                  {{ $profile->previous_school ?? '-' }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="phone" class="col-form-label">
+                  Waktu Pendaftaran
+                </label>
+
+                <div class="plain-input">
+                  {{ $ppdbUser->created_at->translatedFormat('l, d F Y') }} pukul {{ $ppdbUser->created_at->format('H:i') }}
+                </div>
+              </div>
             </div>
           </div>
         </div>

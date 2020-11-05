@@ -27,14 +27,15 @@ class UserCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|max:40',
+            'name' => 'required|min:3|max:40',
             'email' => 'nullable|email',
+            'nickname' => 'nullable|string|min:3|max:15',
             'password' => 'required|min:8|confirmed',
             'gender' => 'required|boolean',
             'phone' => 'nullable|digits_between:9,15',
-            'birth_place' => 'string|min:3|max:40',
-            'birth_date' => 'date|date_format:d-m-Y',
-            'address' => 'max:120',
+            'birth_place' => 'nullable|string|min:3|max:40',
+            'birth_date' => 'nullable|date_format:d-m-Y',
+            'address' => 'nullable|max:120',
             'role' => ['required', Rule::in(Role::getValues())],
         ];
     }

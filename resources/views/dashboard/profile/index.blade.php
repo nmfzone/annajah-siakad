@@ -76,13 +76,8 @@
                     @enderror
                     name="password"
                     autocomplete="password"
+                    note="Kosongkan jika tidak ingin memperbarui password."
                     with-add-on></form-input>
-
-                  @error('password')
-                    <div class="input-note">
-                      Kosongkan jika tidak ingin memperbarui password.
-                    </div>
-                  @enderror
                 </div>
 
                 <div class="form-group">
@@ -118,9 +113,7 @@
                     </span>
                   @enderror
                 </div>
-              </div>
 
-              <div class="col-md-6 px-md-4">
                 <div class="form-group">
                   <label for="phone" class="col-form-label">
                     Jenis Kelamin <span class="required">*</span>
@@ -153,11 +146,52 @@
                     </div>
 
                     @error('gender')
-                      <span class="invalid-feedback" role="alert">
+                    <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                       </span>
                     @enderror
                   </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 px-md-4">
+                <div class="form-group">
+                  <label for="birth_place" class="col-form-label">
+                    Tempat Lahir
+                  </label>
+
+                  <input
+                    type="text"
+                    id="birth_place"
+                    name="birth_place"
+                    class="form-control @error('birth_place') is-invalid @enderror"
+                    value="{{ old('birth_place', $user->birth_place) }}">
+
+                  @error('birth_place')
+                    <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                    </span>
+                  @enderror
+                </div>
+
+                <div class="form-group">
+                  <label for="birth_date" class="col-form-label">
+                    Tanggal Lahir
+                  </label>
+
+                  <form-input
+                    id="birth_date"
+                    date-picker
+                    type="text"
+                    initial-value="{{ old('birth_date', optional($user->birth_date)->format('d-m-Y')) }}"
+                    end-date="{{ now()->format('Y-m-d') }}"
+                    @error('birth_date')
+                    :state="false"
+                    error-message="{{ $message }}"
+                    @enderror
+                    with-add-on
+                    add-on-class="fas fa-calendar"
+                    name="birth_date"></form-input>
                 </div>
 
                 <div class="form-group">
@@ -186,13 +220,11 @@
               </div>
             </div>
 
-            <div class="form-group mt-5">
-              <div class="col-12">
-                <div class="float-right">
-                  <button type="submit" class="btn btn-info">
-                    <i class="fa fa-btn fa-save"></i> Perbarui Profil
-                  </button>
-                </div>
+            <div class="row mt-5">
+              <div class="col-12 px-md-4">
+                <button type="submit" class="btn btn-info float-right">
+                  <i class="fa fa-btn fa-save"></i> Perbarui Profil
+                </button>
               </div>
             </div>
           </form>

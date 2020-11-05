@@ -22,27 +22,42 @@ class FormRequest extends BaseFormRequest
         $rules = is_array($rule) ? $rule : explode('|', $rule);
 
         if (count($excepts) > 0) {
+            $excepts = array_keys(Arr::where($excepts, function ($v) {
+                return $v;
+            }));
+
             // Unset rules that excepted.
             foreach ($rules as $key => $item) {
-                if (in_array($key, $excepts)) {
+                if (in_array($key, $excepts, true)) {
                     unset($rules[$key]);
                 }
             }
         }
 
-        $rules = array_merge($rules, $newRule);
+        $finalNewRule = [];
+        foreach ($newRule as $key => $rule) {
+            if (! is_numeric($key) && $rule === true) {
+                $finalNewRule[] = $key;
+            } else {
+                $finalNewRule[] = $rule;
+            }
+        }
+
+        $rules = array_merge($rules, $finalNewRule);
 
         $orderedRules = ['bail', 'nullable', 'required'];
 
         $startRules = [];
         foreach ($orderedRules as $rule) {
-            if (in_array($rule, $rules)) {
+            if (in_array($rule, $rules, true)) {
                 unset($rules[array_search($rule, $rules)]);
                 $startRules[] = $rule;
             }
         }
 
-        return array_merge($startRules, $rules);
+        return Arr::where(array_merge($startRules, $rules), function ($v) {
+            return is_string($v) || is_object($v);
+        });
     }
 
     /**

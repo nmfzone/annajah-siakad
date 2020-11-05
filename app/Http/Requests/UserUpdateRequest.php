@@ -23,10 +23,22 @@ class UserUpdateRequest extends UserCreateRequest
      */
     public function rules()
     {
+        /** @var \App\Models\User $authUser */
+        $authUser = auth()->user();
         $rules = parent::rules();
 
         return $this->mergeRules($rules, [
-            'password' => $this->mergeRule($rules['password'], ['nullable'], [0]),
+            'password' => $this->mergeRule($rules['password'], ['nullable'], [0 => true]),
+            'birth_place' => $this->mergeRule($rules['birth_place'], [
+                'required' => $authUser->isStudent(),
+            ], [
+                0 => $authUser->isStudent(),
+            ]),
+            'birth_date' => $this->mergeRule($rules['birth_date'], [
+                'required' => $authUser->isStudent(),
+            ], [
+                0 => $authUser->isStudent(),
+            ]),
         ], ['role']);
     }
 }

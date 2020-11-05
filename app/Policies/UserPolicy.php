@@ -72,7 +72,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->is($model) or $user->isAdmin();
+        return $user->is($model) || $user->isAdmin();
     }
 
     /**

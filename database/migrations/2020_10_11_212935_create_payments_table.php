@@ -20,7 +20,7 @@ class CreatePaymentsTable extends Migration
             $table->string('provider_number')->nullable();
             $table->string('fraud_status')->nullable();
             $table->timestamp('verified_at')->nullable();
-            $table->timestamp('paid_on');
+            $table->timestamp('paid_on')->nullable();
             $table->foreignId('transaction_id')
                 ->constrained()
                 ->onDelete('cascade');

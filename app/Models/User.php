@@ -96,7 +96,9 @@ class User extends Authenticatable implements HasMedia
 
     public function setPhoneAttribute($value)
     {
-        $value = preg_replace('/[^0-9]/', '', $value);
+        if (! is_null($value)) {
+            $value = preg_replace('/[^0-9]/', '', $value);
+        }
 
         $this->attributes['phone'] = $value;
     }

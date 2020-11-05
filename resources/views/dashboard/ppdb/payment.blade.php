@@ -69,34 +69,31 @@
                     Tanggal Pembayaran <span class="required">*</span>
                   </label>
 
-                  <div class="custom-file">
-                    <form-input
-                      id="payment_date"
-                      date-picker
-                      type="text"
-                      initial-value="{{ old('payment_date') }}"
-                      end-date="{{ now()->format('Y-m-d') }}"
-                      @error('payment_date')
-                      :state="false"
-                      error-message="{{ $message }}"
-                      @enderror
-                      with-add-on
-                      add-on-class="fas fa-calendar"
-                      name="payment_date"
-                      required></form-input>
-                  </div>
+                  <form-input
+                    id="payment_date"
+                    date-picker
+                    type="text"
+                    initial-value="{{ old('payment_date') }}"
+                    end-date="{{ now()->format('Y-m-d') }}"
+                    @error('payment_date')
+                    :state="false"
+                    error-message="{{ $message }}"
+                    @enderror
+                    with-add-on
+                    add-on-class="fas fa-calendar"
+                    name="payment_date"
+                    required></form-input>
                 </div>
 
                 <div class="form-group">
                   <label for="payment_time" class="col-form-label">
-                    Waktu Pembayaran <span class="required">*</span>
+                    Waktu Pembayaran
                   </label>
 
                   <input
                     type="text"
                     id="payment_time"
                     name="payment_time"
-                    required
                     data-inputmask-alias="datetime"
                     data-inputmask-inputformat="HH:MM"
                     data-inputmask-placeholder="00:00"

@@ -62,6 +62,9 @@ Route::group([
         Route::get('/profil', 'ProfileController')
             ->name('dashboard.profile');
 
+        Route::get('/ppdb/peserta', 'PpdbController@index')
+            ->name('dashboard.ppdb.users.index');
+
         Route::get('/ppdb/peserta/detail', 'PpdbController@directShowUser')
             ->name('dashboard.ppdb.users.direct_show');
 

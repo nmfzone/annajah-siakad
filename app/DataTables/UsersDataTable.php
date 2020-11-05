@@ -2,7 +2,6 @@
 
 namespace App\DataTables;
 
-use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Yajra\DataTables\Html\Button;
@@ -66,21 +65,13 @@ class UsersDataTable extends DataTable
 
                 return $buttons . '</div>';
             })
-            ->editColumn('gender', function (User $user) {
+            ->addColumn('gender', function (User $user) {
                 return $user->gender ? 'L' : 'P';
             });
 
-        if ($this->requestedType == Role::STUDENT) {
-            if ($this->site) {
-                $datatables->editColumn('ttl', function (User $user) {
-                    if ($profile = $user->studentProfiles->where('pivot.site_id', $this->site->id)->first()) {
-                        return optional($profile->birthDate)->format('d-m-Y');
-                    }
-
-                    return null;
-                });
-            }
-        }
+        $datatables->editColumn('birth_date', function (User $user) {
+            return optional($user->birth_date)->format('d-m-Y');
+        });
 
         return $datatables;
     }
@@ -88,12 +79,11 @@ class UsersDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $model)
+    public function query()
     {
-        $query = $model->newQuery()
+        $query = User::query()
             ->with('studentProfiles', 'teacherProfiles');
 
         if ($this->requestedType) {
@@ -133,9 +123,7 @@ class UsersDataTable extends DataTable
         $indexColumn = config('datatables.index_column', 'DT_RowIndex');
 
         $columns = [
-            Column::computed($indexColumn, 'No')
-                ->exportable(false)
-                ->printable(false),
+            Column::computed($indexColumn, 'No'),
             Column::make('name')
                 ->title('Nama'),
             Column::make('username'),
@@ -145,23 +133,20 @@ class UsersDataTable extends DataTable
                 ->title('No Telepon')
                 ->content('-')
                 ->hidden(),
+            Column::make('birth_place')
+                ->title('Tempat Lahir')
+                ->content('-')
+                ->hidden(),
+            Column::make('birth_date')
+                ->title('Tanggal Lahir')
+                ->content('-')
+                ->hidden(),
             Column::computed('action', 'Aksi')
                 ->width(100)
                 ->exportable(false)
                 ->printable(false)
                 ->addClass('text-center'),
         ];
-
-        if ($this->requestedType == Role::STUDENT) {
-            if ($this->site) {
-                $columns = array_merge($columns, [
-                    Column::make('birthDate', 'ttl')
-                        ->title('TTL')
-                        ->content('-')
-                        ->hidden(),
-                ]);
-            }
-        }
 
         return $columns;
     }

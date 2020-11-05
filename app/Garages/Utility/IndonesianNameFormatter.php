@@ -43,6 +43,10 @@ class IndonesianNameFormatter
 
     public function format($name)
     {
+        if (is_null($name)) {
+            return null;
+        }
+
         return preg_replace(
             $this->patterns,
             $this->replacements,

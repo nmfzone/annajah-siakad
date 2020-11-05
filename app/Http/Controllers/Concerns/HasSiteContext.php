@@ -7,8 +7,12 @@ use App\Models\User;
 
 trait HasSiteContext
 {
-    protected function userShouldBelongsToCurrentSite(User $user, $code = 404)
+    protected function userShouldBelongsToCurrentSite(User $user, $code = 404, $exceptSuperAdmin = false)
     {
+        if ($exceptSuperAdmin && auth()->user()->isSuperAdmin()) {
+            return;
+        }
+
         if (! $this->isUserBelongsToCurrentSite($user)) {
             abort($code);
         }
