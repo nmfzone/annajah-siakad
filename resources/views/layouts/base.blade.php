@@ -21,14 +21,14 @@
 
   @stack('stylesheets')
 
-  @if(env('GOOGLE_ANALYTICS_ID'))
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GOOGLE_ANALYTICS_ID') }}"></script>
+  @if(config('analytics.measurement_id'))
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ config('analytics.measurement_id') }}"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', '{{ env('GOOGLE_ANALYTICS_ID') }}');
+      gtag('config', '{{ config('analytics.measurement_id') }}');
     </script>
   @endif
 </head>
