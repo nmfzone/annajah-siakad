@@ -22,6 +22,14 @@ class PaymentObserver
             $payment->transaction->update([
                 'status' => PaymentStatus::PAID,
             ]);
+        } elseif ($payment->isFraud()) {
+            $payment->transaction->update([
+                'status' => PaymentStatus::DECLINED,
+            ]);
+        } elseif (! $payment->isVerified() && ! is_null($payment->getOriginal('verified_at'))) {
+            $payment->transaction->update([
+                'status' => PaymentStatus::UNPAID,
+            ]);
         }
     }
 }

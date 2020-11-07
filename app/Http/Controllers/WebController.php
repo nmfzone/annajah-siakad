@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\HasSiteContext;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class WebController extends Controller
 {
@@ -14,7 +16,7 @@ class WebController extends Controller
     {
 //        dd(Storage::disk('ppdb_gdrive')->getAdapter()->getCreatedFolders());
 //        dd(Storage::disk('ppdb_gdrive')->allDirectories());
-//        dd(Storage::disk('ppdb_gdrive')->deleteDirectory('./1VhpdeAMdO6HWqBUDGvbrUKzF8o9YRvPr'));
+//        dd(Storage::disk('ppdb_gdrive')->deleteDirectory('./1F8brAksYwOCoUpNSNraTSm1hElUaYDrl'));
 //        dd(Storage::disk('ppdb_gdrive')->createDir(
 //            'PPDB 2020-2021',
 //            [
@@ -25,6 +27,21 @@ class WebController extends Controller
 //                ]
 //            ]
 //        ), Storage::disk('ppdb_gdrive')->getAdapter()->getCreatedFolders());
+
+//        /** @var \App\Models\User $user */
+//        $user = User::find(1);
+//
+//        dd(Media::find(2)->getUrl());
+//
+//        $adapter = Storage::disk('ppdb_gdrive')
+//            ->getDriver()->getAdapter();
+//        $folderId = '1aBBjaQXcOt0qquj--8VhAsj5_1zlUcE4';
+//        $adapter->setPathPrefix($folderId);
+//        $adapter->root = $folderId;
+//
+//        $user->addMedia(public_path('images/coba.jpg'))
+//            ->preservingOriginal()
+//            ->toMediaCollection('profile_pict');
 
         if (! is_main_app()) {
             $slides = [

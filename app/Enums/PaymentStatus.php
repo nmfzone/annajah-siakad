@@ -7,4 +7,6 @@ final class PaymentStatus extends Enum
     const UNPAID = 'unpaid';
 
     const PAID = 'paid';
+
+    const DECLINED = 'declined';
 }

@@ -6,6 +6,11 @@ use App\Enums\Role;
 
 trait HasRole
 {
+    public function isSuperAdminOrAdmin()
+    {
+        return $this->isSuperAdmin() || $this->isAdmin();
+    }
+
     public function isSuperAdmin()
     {
         return $this->attributes['role'] == Role::SUPERADMIN;

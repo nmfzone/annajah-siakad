@@ -179,6 +179,7 @@ return [
         /*
          * Application Service Providers...
          */
+        App\Providers\MacroServiceProvider::class,
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
@@ -186,7 +187,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
-        App\Providers\MacroServiceProvider::class,
 
     ],
 
@@ -242,6 +242,7 @@ return [
         'Role' => App\Enums\Role::class,
         'PaymentType' => App\Enums\PaymentType::class,
         'PpdbSetting' => App\Enums\PpdbSetting::class,
+        'SelectionMethod' => App\Enums\SelectionMethod::class,
         'Site' => App\Garages\Utility\Site::class,
     ],
 

@@ -33,7 +33,43 @@ class DummySeeder extends Seeder
             'domain' => 'smpit.' . config('app.host'),
         ], [
             'title' => 'SMPIT Muhammadiyah An Najah',
+            'address' => 'Jalan Lingkar Utara Jatinom, Dukuh Bonyokan, Jatinom, Klaten',
+            'email' => 'info@smpit.muhannajah.sch.id',
+            'phone' => '(0272) 3393415',
+            'instagram' => 'smpitmuhannajah',
+            'facebook' => 'Smpit-Muhammadiyah-An-Najah-320858588375921',
+            'twitter' => 'smpitmuhannajah',
         ]);
+
+        $superAdmin = User::create([
+            'name' => 'Super Administrator',
+            'email' => 'mail@muhannajah.sch.id',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+            'role' => Role::SUPERADMIN,
+        ]);
+        $superAdmin->username = 'annajah';
+        $superAdmin->save();
+
+        $editor = User::create([
+            'name' => 'Editor SMP',
+            'email' => 'editor@smpit.muhannajah.sch.id',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+            'role' => Role::EDITOR,
+        ]);
+        $editor->username = 'smpit-editor';
+        $site->users()->save($editor);
+
+        $admin = User::create([
+            'name' => 'Administrator SMP',
+            'email' => 'mail@smpit.muhannajah.sch.id',
+            'password' => bcrypt('12345678'),
+            'email_verified_at' => now(),
+            'role' => Role::ADMIN,
+        ]);
+        $admin->username = 'smpit-admin';
+        $site->users()->save($admin);
 
         /** @var \App\Models\AcademicYear $academicYear */
         $academicYear = $site->academicYears()->save(new AcademicYear([
@@ -74,6 +110,7 @@ class DummySeeder extends Seeder
         $user->studentProfiles()->save(
             new Student([
                 'nis' => Student::generateNis($site, 2017),
+                'accepted_at' => Carbon::create(2017, 7, 1),
             ]),
             ['site_id' => $site->id]
         );

@@ -21,8 +21,8 @@ class GoogleDriveAdapter extends AbstractAdapter
      *
      * @var string
      */
-    const FETCHFIELDS_GET = 'id,name,mimeType,modifiedTime,parents,permissions,size,webContentLink,
-                            webViewLink';
+    const FETCHFIELDS_GET = 'id,name,mimeType,modifiedTime,parents,permissions,size,' .
+                            'webContentLink,webViewLink';
 
     /**
      * Fetch fields setting for list
@@ -978,7 +978,10 @@ class GoogleDriveAdapter extends AbstractAdapter
         ];
 
         try {
-            $fileObj = $this->service->files->get($itemId, $this->applyDefaultParams($opts, 'files.get'));
+            $fileObj = $this->service->files->get(
+                $itemId,
+                $this->applyDefaultParams($opts, 'files.get')
+            );
             if ($checkDir && $this->useHasDir) {
                 $hasdir = $service->files->listFiles($this->applyDefaultParams([
                     'pageSize' => 1,
@@ -1112,7 +1115,7 @@ class GoogleDriveAdapter extends AbstractAdapter
             );
         }
 
-        return (int)$chunkSizeBytes;
+        return (int) $chunkSizeBytes;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\DataTables\PpdbUserDataTable;
+use App\Enums\PaymentFraudStatus;
 use App\Http\Controllers\Concerns\HasSiteContext;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
@@ -103,7 +104,7 @@ class PpdbController extends Controller
             'provider_holder_name' => 'required|max:50',
             'provider_number' => 'required|digits_between:5,30',
             'payment_date' => 'required|date_format:d-m-Y',
-            'payment_time' => 'date_format:"H:i"',
+            'payment_time' => 'nullable:date_format:"H:i"',
             'proof_file' => 'required|file|mimes:png,jpg,jpeg|max:1000',
         ], [], [
             'provider_holder_name' => 'Nama Pengirim',
@@ -120,7 +121,7 @@ class PpdbController extends Controller
                 'provider_number' => $request->provider_number,
                 'paid_on' => Carbon::createFromFormat(
                     'd-m-Y H:i',
-                    $request->payment_date . ' ' . $request->get('payment_time', '00:00')
+                    $request->payment_date . ' ' . ($request->payment_time ?? '00:00')
                 ),
             ]));
 
@@ -134,6 +135,57 @@ class PpdbController extends Controller
         )->success();
 
         return redirect()->to(sub_route('dashboard.ppdb.users.show', $ppdbUser));
+    }
+
+    public function acceptPayment(Request $request, $subDomain, PpdbUser $ppdbUser, Transaction $transaction)
+    {
+        /** @var \App\Models\User $authUser */
+        $authUser = $request->user();
+        if (! $this->ownTransaction($ppdbUser, $transaction)) {
+            abort(404);
+        }
+        if (! $authUser->isSuperAdminOrAdmin()) {
+            abort(403);
+        }
+
+        $transaction->payment->forceFill([
+            'verified_at' => now(),
+        ])->save();
+
+        flash(
+            'Berhasil memverifikasi pembayaran.'
+        )->success();
+
+        return redirect()->back();
+    }
+
+    public function declinePayment(Request $request, $subDomain, PpdbUser $ppdbUser, Transaction $transaction)
+    {
+        /** @var \App\Models\User $authUser */
+        $authUser = $request->user();
+        if (! $this->ownTransaction($ppdbUser, $transaction)) {
+            abort(404);
+        }
+        if (! $authUser->isSuperAdminOrAdmin()) {
+            abort(403);
+        }
+
+        if ($transaction->isPaid()) {
+            $fraudStatus = null;
+        } else {
+            $fraudStatus = PaymentFraudStatus::FRAUD;
+        }
+
+        $transaction->payment->forceFill([
+            'verified_at' => null,
+            'fraud_status' => $fraudStatus,
+        ])->save();
+
+        flash(
+            'Berhasil menolak pembayaran.'
+        )->success();
+
+        return redirect()->back();
     }
 
     protected function checkPermission(PpdbUser $ppdbUser)

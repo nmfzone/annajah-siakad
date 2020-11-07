@@ -47,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
             return new Filesystem($adapter);
         });
 
+        $this->app->extend(\Spatie\MediaLibrary\MediaCollections\Filesystem::class, function () {
+            return $this->app->make(\App\Garages\MediaLibrary\Filesystem::class);
+        });
+
         $this->app->singleton('url', function ($app) {
             $routes = $app['router']->getRoutes();
 

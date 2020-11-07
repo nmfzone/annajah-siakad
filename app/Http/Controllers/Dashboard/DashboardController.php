@@ -20,7 +20,9 @@ class DashboardController extends Controller
             ->count();
         $allStudentCounts = User::whereRole(Role::STUDENT)
             ->forSite($this->site())
-            ->count();
+            ->whereHas('studentProfiles', function (Builder $query) {
+                $query->whereNotNull('accepted_at');
+            })->count();
         $graduatedStudentCounts = User::whereRole(Role::STUDENT)
             ->forSite($this->site())
             ->whereHas('studentProfiles', function (Builder $query) {

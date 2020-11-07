@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Models\Site;
 use App\Models\Student;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Cache;
@@ -60,6 +61,7 @@ class StudentsImport implements WithChunkReading, OnEachRow, ShouldQueue
         $user->studentProfiles()->save(
             new Student([
                 'nis' => Student::generateNis($this->site, $value),
+                'accepted_at' => Carbon::create($value, 7, 1),
             ]),
             ['site_id' => $this->site->id]
         );

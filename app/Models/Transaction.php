@@ -34,6 +34,11 @@ class Transaction extends Model
         return $this->status === PaymentStatus::PAID;
     }
 
+    public function isDeclined()
+    {
+        return $this->status === PaymentStatus::DECLINED;
+    }
+
     public function amountFormatted()
     {
         return 'Rp ' . number_format($this->amount, 2, ',', '.');

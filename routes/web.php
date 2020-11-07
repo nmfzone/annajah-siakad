@@ -39,6 +39,18 @@ Route::group([
 });
 
 Route::group([
+    'domain' => sprintf('%s.%s', config('assets.sub_domain'), config('app.host')),
+], function () {
+    Route::get('/media/{type}/{conversion}/{path}', 'StorageController@privateMedia')
+        ->middleware('auth')
+        ->name('storage.private_media');
+});
+
+Route::get('/storage/{path}', 'StorageController@index')
+    ->where(['path' => '.*'])
+    ->name('storage.public');
+
+Route::group([
     'domain' => sprintf('{sub_domain}.%s', config('app.host')),
     'as' => 'sub.',
     'middleware' => 'check_sub_domain',
@@ -81,6 +93,16 @@ Route::group([
             'PpdbController@storePayment'
         )->name('dashboard.ppdb.users.store_payment');
 
+        Route::post(
+            '/ppdb/peserta/{ppdb_user}/tagihan/{transaction}/accept',
+            'PpdbController@acceptPayment'
+        )->name('dashboard.ppdb.users.accept_payment');
+
+        Route::post(
+            '/ppdb/peserta/{ppdb_user}/tagihan/{transaction}/decline',
+            'PpdbController@declinePayment'
+        )->name('dashboard.ppdb.users.decline_payment');
+
         Route::get('/pengguna/buat', 'UsersController@create')
             ->name('dashboard.users.create');
         Route::post('/pengguna/buat', 'UsersController@store')
@@ -105,7 +127,3 @@ Route::group([
 });
 
 Route::get('/go/{code}', 'ShortLinksController@show');
-
-Route::get('/storage/{path}', 'StorageController@index')
-    ->where(['path' => '.*'])
-    ->name('storage.public');

@@ -87,6 +87,7 @@ class PpdbUserDataTable extends DataTable
     {
         $query = $this->ppdb
             ->ppdbUsers()
+            ->whereHas('user')
             ->with('user.studentProfiles');
 
         return $query;
