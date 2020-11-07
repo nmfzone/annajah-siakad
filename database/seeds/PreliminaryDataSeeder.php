@@ -32,9 +32,8 @@ class PreliminaryDataSeeder extends Seeder
             'twitter' => 'smpitmuhannajah',
         ]);
 
-        $destinationPath = tmp_path('logo-smp.png');
-        File::copy(resource_path('images/logo-smp.png'), $destinationPath);
-        $site->addMedia($destinationPath)
+        $site->addMedia(resource_path('images/logo-smp.png'))
+            ->preservingOriginal()
             ->toMediaCollection('logo');
 
         Site::create([

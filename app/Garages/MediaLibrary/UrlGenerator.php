@@ -14,9 +14,11 @@ class UrlGenerator extends BaseUrlGenerator
 {
     public function getUrl(): string
     {
-        $adapter = $this->getDisk()->getDriver()->getAdapter();
+        $driver = $this->getDisk()->getDriver();
+        $adapter = $driver->getAdapter();
 
-        if ($adapter instanceof Local || $adapter instanceof GoogleDriveAdapter) {
+        if (($adapter instanceof Local && $driver->getConfig()->get('visibility') !== 'public') ||
+            $adapter instanceof GoogleDriveAdapter) {
             $type = $this->conversion ? 'c' : 'n';
             $conversion = $this->conversion ? $this->conversion->getName() : 'z';
 

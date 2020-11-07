@@ -17,7 +17,19 @@
     <div class="col-10 mx-auto">
       <div class="card card-primary">
         <div class="card-header">
-          <h3 class="card-title">Detail Peserta PPDB</h3>
+          <div class="row">
+            <div class="col-md-6 my-auto">
+              <h3 class="card-title">Detail Peserta PPDB</h3>
+            </div>
+            <div class="col-md-6">
+              <a href="{{ auth()->user()->isSuperAdminOrAdmin()
+                            ? sub_route('dashboard.users.edit', $ppdbUser->user)
+                            : sub_route('dashboard.profile') }}"
+                 class="btn btn-secondary float-right">
+                <i class="fas fa-edit"></i> Ubah
+              </a>
+            </div>
+          </div>
         </div>
         <div class="card-body">
           @include('flash::message', ['timer' => 10])

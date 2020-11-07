@@ -41,6 +41,10 @@ class DummySeeder extends Seeder
             'twitter' => 'smpitmuhannajah',
         ]);
 
+        $site->addMedia(resource_path('images/logo-smp.png'))
+            ->preservingOriginal()
+            ->toMediaCollection('logo');
+
         $superAdmin = User::create([
             'name' => 'Super Administrator',
             'email' => 'mail@muhannajah.sch.id',

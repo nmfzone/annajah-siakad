@@ -94,7 +94,7 @@
               <div class="w-full mt-5">
                 <p>Nomor: {{ $transactionItem->transaction->payment->provider_number }}</p>
                 <p>Atas Nama: {{ $transactionItem->transaction->payment->provider_holder_name }}</p>
-                <p>Waktu Pembayaran: {{ $transactionItem->transaction->payment->paid_on->translatedFormat('l, d F Y') }}</p>
+                <p>Waktu Pembayaran: {{ $transactionItem->transaction->payment->paid_on->translatedFormat('l, d F Y H:i') }}</p>
               </div>
             @endif
           </div>
