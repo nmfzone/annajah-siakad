@@ -15,8 +15,8 @@ parameters:
         - '#Access to an undefined property App\\Providers\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9\\_]+#'
         - '#Parameter [\#][0-9]+ \$default of method Glorand\\Model\\Settings\\Contracts\\SettingsManagerContract::get\(\) expects null, [a-z]+ given#'
         - '#Static method Illuminate\\Support\\Arr::mergeDeep\(\) invoked with [0-9] parameters, 0 required#'
-        - '#Call to an undefined method League\\Flysystem\\FilesystemInterface::getAdapter\(\)#'
-        - '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::getAdapter\(\)#'
+        - '#Call to an undefined method League\\Flysystem\\FilesystemInterface::[a-zA-Z0-9\\_]+\(\)#'
+        - '#Call to an undefined method Illuminate\\Contracts\\Filesystem\\Filesystem::[a-zA-Z0-9\\_]+\(\)#'
         - '#Call to method getAdapter\(\) on an unknown class \\League\\Flysystem\\Cached\\CachedAdapter#'
         -
             message: '#Unsafe usage of new static\(\)#'
