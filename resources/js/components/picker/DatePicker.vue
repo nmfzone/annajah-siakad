@@ -504,7 +504,7 @@ export default {
   data() {
     const startDatepicker = this.startDate
       ? dayjs(this.startDate, this.dateFormat)
-      : dayjs().add(-60, 'year')
+      : dayjs().add(-100, 'year')
     const endDatepicker = this.endDate
       ? dayjs(this.endDate, this.dateFormat)
       : undefined

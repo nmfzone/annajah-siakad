@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\DataTables\UsersDataTable;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Http\Requests\UserUpdateUserableRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -44,7 +45,7 @@ class UsersController extends Controller
 
     public function show($subDomain, User $user)
     {
-        $this->userShouldBelongsToCurrentSite($user);
+        $this->userShouldBelongsToCurrentSite($user, 404, true);
         $this->authorize('view', $user);
 
         return view('dashboard.users.show', compact('user'));
@@ -52,7 +53,7 @@ class UsersController extends Controller
 
     public function edit($subDomain, User $user)
     {
-        $this->userShouldBelongsToCurrentSite($user);
+        $this->userShouldBelongsToCurrentSite($user, 404, true);
         $this->authorize('update', $user);
 
         return view('dashboard.users.edit', compact('user'));
@@ -60,15 +61,59 @@ class UsersController extends Controller
 
     public function update(UserUpdateRequest $request, $subDomain, User $user)
     {
-        $this->userShouldBelongsToCurrentSite($user);
+        $this->userShouldBelongsToCurrentSite($user, 404, true);
         $user->update($request->validated());
 
         if ($request->get('_context') == 'profile') {
-            flash('Berhasil memperbarui profil.')->success();
+            flash('Berhasil memperbarui identitas Anda.')->success();
             return redirect()->back();
         }
 
-        flash('Berhasil memperbarui pengguna.')->success();
+        flash('Berhasil memperbarui identitas pengguna.')->success();
+
+        if ($user->isSuperAdmin()) {
+            return redirect()->back();
+        }
+
+        return redirect(sub_route('dashboard.users.index', $user->role));
+    }
+
+    public function updateUserable(UserUpdateUserableRequest $request, $subDomain, User $user)
+    {
+        $this->userShouldBelongsToCurrentSite($user);
+
+        if ($user->studentProfiles->isEmpty() &&
+            $user->teacherProfiles->isEmpty()) {
+            abort(404);
+        }
+
+        $model = null;
+        /** @var \App\Models\User $authUser */
+        $authUser = $request->user();
+
+        if ($user->teacherProfiles->isNotEmpty()) {
+            $model = $user->teacherProfileFor($this->site());
+        } elseif ($user->studentProfiles->isNotEmpty()) {
+            $model = $user->studentProfileFor($this->site());
+        }
+
+        $model->update($request->validated());
+
+        if ($user->isStudent()) {
+            if ($authUser->isSuperAdminOrAdmin()) {
+                flash('Berhasil memperbarui data akademik pengguna.')->success();
+            } else {
+                flash('Berhasil memperbarui data akademik.')->success();
+            }
+        } else {
+            flash('Berhasil memperbarui data.')->success();
+        }
+
+        if ($request->get('_context') == 'profile') {
+            return redirect()
+                ->back()
+                ->with('bottom-message', true);
+        }
 
         return redirect(sub_route('dashboard.users.index', $user->role));
     }

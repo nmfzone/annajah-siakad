@@ -109,6 +109,8 @@ Route::group([
             ->name('dashboard.users.store');
         Route::get('/pengguna/{user}/edit', 'UsersController@edit')
             ->name('dashboard.users.edit');
+        Route::put('/pengguna/{user}/details', 'UsersController@updateUserable')
+            ->name('dashboard.users.update_userable');
         Route::put('/pengguna/{user}', 'UsersController@update')
             ->name('dashboard.users.update');
         Route::delete('/pengguna/{user}', 'UsersController@destroy')

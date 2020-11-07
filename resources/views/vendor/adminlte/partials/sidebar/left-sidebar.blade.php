@@ -69,7 +69,7 @@
                           {{ Request::is('ppdb/peserta') ? 'active' :'' }}"
                      href="{{ sub_route('dashboard.ppdb.users.index') }}">
                     <i class="far fa-fw fa-circle"></i>
-                    <p>List Pendaftar</p>
+                    <p>Lis Pendaftar</p>
                   </a>
                 </li>
               @endif

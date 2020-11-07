@@ -16,7 +16,8 @@ class ProfileController extends Controller
         $user = $request->user();
         $this->userShouldBelongsToCurrentSite($user, 404, true);
         $this->authorize('update', $user);
+        $profileContext = true;
 
-        return view('dashboard.profile.index', compact('user'));
+        return view('dashboard.users.edit', compact('user', 'profileContext'));
     }
 }
