@@ -1,5 +1,12 @@
 @extends('layouts.sub')
 
+@section('title', 'PPDB')
+
+@push('meta')
+  <meta property="og:description"
+        content="Penjaringan Peserta Didik Baru SMPIT Muhammadiyah An Najah, Klaten. Daftar sekarang juga!">
+@endpush
+
 @section('content-lv2')
   <div class="w-full">
     <carousel
