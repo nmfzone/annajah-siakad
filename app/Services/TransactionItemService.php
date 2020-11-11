@@ -6,9 +6,9 @@ use App\Garages\Utility\Unique;
 use App\Models\PpdbUser;
 use App\Models\Transaction;
 use App\Models\TransactionItem;
-use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class TransactionItemService extends BaseService
 {
@@ -32,7 +32,7 @@ class TransactionItemService extends BaseService
     protected function checkItemable($itemable)
     {
         if (! is_object($itemable) || ! in_array(get_class($itemable), $this->allowedItemable)) {
-            throw new Exception('Itemable is not allowed.');
+            throw new InvalidArgumentException('Itemable is not allowed.');
         }
     }
 

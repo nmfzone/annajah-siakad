@@ -94,6 +94,7 @@ module.exports = {
         '2lg': ['1.5rem', { lineHeight: '1.75rem' }],
         '3lg': ['2rem', { lineHeight: '1.75rem' }],
         '7xl': '5rem',
+        '7.5xl': '5.5rem',
         '8xl': '6rem',
         '9xl': '7rem',
       },

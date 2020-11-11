@@ -59,6 +59,7 @@ class PpdbService extends BaseService
             ->first();
 
         if ($academicYear) {
+            /** @var \App\Models\Ppdb|null $ppdb */
             $ppdb = $academicYear->ppdb()
                 ->latest()
                 ->first();

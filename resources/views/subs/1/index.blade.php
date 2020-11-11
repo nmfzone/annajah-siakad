@@ -64,7 +64,7 @@
     <div class="flex flex-wrap items-start px-4 lg:px-12 xl:px-36 2xl:px-60 mt-16">
       <div class="w-full md:w-1/2 p-4 flex flex-col">
         <div class="border-l-8 border-gray-400 pl-6">
-          <h3 class="text-3xl flex flex-col md:text-6xl lg:text-8xl font-bold font-inter">
+          <h3 class="text-3xl flex flex-col md:text-6xl lg:text-7.5xl font-bold font-inter">
             <span class="text-blue-550 md:-mt-6 lg:-mt-8">Ulul Albab</span>
             <span class="text-yellow-350 md:-mt-12 md:-mb-4 lg:-mt-18 lg:-mb-6">Generation</span>
           </h3>
