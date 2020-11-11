@@ -103,7 +103,8 @@ class PpdbController extends Controller
                 'nis' => Student::generateNis($site),
             ];
             $user->studentProfiles()->save(new Student(
-                $request->merge($override)->only(array_keys($studentRules + $override))
+                $request->merge($override)
+                    ->only(array_keys($studentRules + $override))
             ), ['site_id' => $site->id]);
 
             $this->ppdbService->addNewRegistrar($ppdb, $user, [
