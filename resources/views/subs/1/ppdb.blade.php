@@ -361,7 +361,7 @@
                         Jenis Kelamin <span class="required">*</span>
                       </label>
 
-                      @php($gender = [['value' => 0, 'text' => 'Laki-Laki'], ['value' => 1, 'text' => 'Perempuan']])
+                      @php($gender = [['value' => 0, 'text' => 'Perempuan'], ['value' => 1, 'text' => 'Laki-Laki']])
 
                       <form-input
                         inline
