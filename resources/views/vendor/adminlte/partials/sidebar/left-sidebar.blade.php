@@ -82,6 +82,14 @@
                     <p>Detail Pendaftaran</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link
+                        {{ Request::is('ppdb/observasi', 'ppdb/observasi/*') ? 'active' :'' }}"
+                     href="{{ sub_route('dashboard.ppdb.observation.index') }}">
+                    <i class="far fa-fw fa-circle"></i>
+                    <p>Observasi</p>
+                  </a>
+                </li>
               @endif
             </ul>
           </li>

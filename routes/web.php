@@ -103,6 +103,9 @@ Route::group([
             'PpdbController@declinePayment'
         )->name('dashboard.ppdb.users.decline_payment');
 
+        Route::get('/ppdb/observasi', 'ObservationController@index')
+            ->name('dashboard.ppdb.observation.index');
+
         Route::get('/pengguna/buat', 'UsersController@create')
             ->name('dashboard.users.create');
         Route::post('/pengguna/buat', 'UsersController@store')
