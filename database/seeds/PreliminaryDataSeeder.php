@@ -7,6 +7,7 @@ use App\Imports\StudentsImport;
 use App\Models\AcademicYear;
 use App\Models\Ppdb;
 use App\Models\Site;
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
@@ -74,13 +75,15 @@ class PreliminaryDataSeeder extends Seeder
         $admin->username = 'smpit-admin';
         $site->users()->save($admin);
 
-        $site->users()->save(new User([
+        $teacher = $site->users()->save(new User([
             'name' => 'Kartika Nur Kholidah, S.Kom',
             'email' => 'kartikanurkholidah@gmail.com',
             'password' => bcrypt('12345678'),
             'email_verified_at' => now(),
             'role' => Role::TEACHER,
         ]));
+
+        $teacher->teacherProfiles()->save(new Teacher, ['site_id' => $site->id]);
 
         (new StudentsImport($site))->queue(resource_path('files/DataSantriAll.xlsx'));
 

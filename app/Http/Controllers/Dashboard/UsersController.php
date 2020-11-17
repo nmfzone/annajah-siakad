@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\Role;
 use App\Http\Controllers\Concerns\HasSiteContext;
 use App\Http\Controllers\Controller;
 use App\DataTables\UsersDataTable;
 use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Requests\UserUpdateUserableRequest;
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
@@ -34,9 +38,21 @@ class UsersController extends Controller
 
     public function store(UserCreateRequest $request)
     {
-        $user = (new User)->newInstance($request->validated());
-        $user->role = $request->role;
-        $this->site()->users()->save($user);
+        $site = $this->site();
+
+        DB::transaction(function () use ($request, $site) {
+            $user = (new User)->newInstance($request->validated());
+            $user->role = $request->role;
+            $site->users()->save($user);
+
+            if ($request->role === Role::STUDENT) {
+                $user->studentProfiles()->save(new Student([
+                    'nis' => Student::generateNis($site),
+                ]), ['site_id' => $site->id]);
+            } elseif (in_array($request->role, [Role::TEACHER, Role::HEAD_MASTER], true)) {
+                $user->teacherProfiles()->save(new Teacher, ['site_id' => $site->id]);
+            }
+        });
 
         flash('Berhasil menambahkan pengguna.')->success();
 

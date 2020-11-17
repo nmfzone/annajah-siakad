@@ -4,7 +4,7 @@
 
 @push('meta')
   <meta property="og:description"
-        content="Penjaringan Peserta Didik Baru SMPIT Muhammadiyah An Najah, Klaten. Daftar sekarang juga!">
+        content="Penjaringan Peserta Didik Baru {{ Site::title() }}, Klaten. Daftar sekarang juga!">
 @endpush
 
 @section('content-lv2')
@@ -269,7 +269,7 @@
                         error-message="{{ $message }}"
                         @enderror
                         name="name"
-                        note="Nama harus sesuai dengan Ijazah / Akta Kelahiran"
+                        note="Nama harus sesuai dengan Ijazah / Akta Kelahiran. Mohon untuk tidak disingkat."
                         autocomplete="name"
                         required></form-input>
                     </div>
@@ -410,7 +410,7 @@
                   <div class="w-full">
                     <div class="form-stack mb-3">
                       <label for="wali_name" class="mb-2 font-bold w-full">
-                        Nama Wali
+                        Nama Wali <span class="required">*</span>
                       </label>
 
                       <form-input
@@ -429,7 +429,7 @@
                   <div class="w-full">
                     <div class="form-stack mb-3">
                       <label for="wali_phone" class="mb-2 font-bold w-full">
-                        Nomor Telefon Wali
+                        Nomor Telefon Wali <span class="required">*</span>
                       </label>
 
                       <form-input
