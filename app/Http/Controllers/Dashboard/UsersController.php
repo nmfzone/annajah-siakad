@@ -78,14 +78,20 @@ class UsersController extends Controller
     public function update(UserUpdateRequest $request, $subDomain, User $user)
     {
         $this->userShouldBelongsToCurrentSite($user, 404, true);
+        /** @var \App\Models\User $authUser */
+        $authUser = $request->user();
+
         $user->update($request->validated());
 
-        if ($request->get('_context') == 'profile') {
+        if ($authUser->is($user)) {
             flash('Berhasil memperbarui identitas Anda.')->success();
-            return redirect()->back();
+        } else {
+            flash('Berhasil memperbarui identitas pengguna.')->success();
         }
 
-        flash('Berhasil memperbarui identitas pengguna.')->success();
+        if ($request->get('to_previous')) {
+            return redirect()->back();
+        }
 
         if ($user->isSuperAdmin()) {
             return redirect()->back();
@@ -125,7 +131,7 @@ class UsersController extends Controller
             flash('Berhasil memperbarui data.')->success();
         }
 
-        if ($request->get('_context') == 'profile') {
+        if ($request->get('to_previous')) {
             return redirect()
                 ->back()
                 ->with('bottom-message', true);

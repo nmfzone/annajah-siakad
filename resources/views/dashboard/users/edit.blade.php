@@ -28,8 +28,8 @@
             @csrf
             @method('PUT')
 
-            @if(isset($profileContext))
-              <input type="hidden" name="_context" value="profile">
+            @if(isset($profileContext) || request()->get('to_previous'))
+              <input type="hidden" name="to_previous" value="1">
             @endif
 
             <div class="row">
@@ -262,8 +262,8 @@
               @csrf
               @method('PUT')
 
-              @if(isset($profileContext))
-                <input type="hidden" name="_context" value="profile">
+              @if(isset($profileContext) || request()->get('to_previous'))
+                <input type="hidden" name="to_previous" value="1">
               @endif
 
               <div class="row">

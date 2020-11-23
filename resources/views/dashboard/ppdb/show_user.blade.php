@@ -23,7 +23,7 @@
             </div>
             <div class="col-md-6">
               <a href="{{ auth()->user()->isSuperAdminOrAdmin()
-                            ? sub_route('dashboard.users.edit', $ppdbUser->user)
+                            ? sub_route('dashboard.users.edit', ['user' => $ppdbUser->user, 'to_previous' => 1])
                             : sub_route('dashboard.profile') }}"
                  class="btn btn-secondary float-right">
                 <i class="fas fa-edit"></i> Ubah
