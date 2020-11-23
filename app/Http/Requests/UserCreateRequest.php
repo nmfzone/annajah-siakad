@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
@@ -49,6 +50,11 @@ class UserCreateRequest extends FormRequest
             $validated = $validated->except('password');
         } else {
             $validated->put('password', bcrypt($password));
+        }
+
+        $birthDate = $validated->get('birth_date');
+        if (! empty($birthDate)) {
+            $validated->put('birth_date', Carbon::createFromFormat('d-m-Y', $birthDate));
         }
 
         return $validated->toArray();
