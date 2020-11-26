@@ -179,7 +179,7 @@
                       :key="`${date.$D}${date.$M}${date.$y}-current`"
                       class="w-1/7 group flex justify-center items-center my-2px">
                       <div
-                        class="relative overflow-hidden"
+                        class="relative"
                         :class="theme.picker.rounded">
                         <div
                           v-if="date.$events"
@@ -191,7 +191,7 @@
                               : '',
                           }"></div>
                         <div
-                          class="relative h-8 w-8 flex justify-center items-center overflow-hidden"
+                          class="relative h-8 w-8 flex justify-center items-center"
                           :class="[
                             theme.picker.rounded,
                             possibleDate(date)
