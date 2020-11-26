@@ -63,6 +63,9 @@ class PpdbUserDataTable extends DataTable
         $datatables->addColumn('no_kk', function (PpdbUser $ppdbUser) {
             return optional($this->getStudentProfile($ppdbUser))->no_kk;
         });
+        $datatables->addColumn('previous_school', function (PpdbUser $ppdbUser) {
+            return optional($this->getStudentProfile($ppdbUser))->previous_school;
+        });
         $datatables->addColumn('wali_name', function (PpdbUser $ppdbUser) {
             return optional($this->getStudentProfile($ppdbUser))->wali_name;
         });
@@ -106,6 +109,7 @@ class PpdbUserDataTable extends DataTable
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(1, 'asc')
+            ->responsive()
             ->buttons(
                 Button::make('export'),
                 Button::make('print')
@@ -128,6 +132,9 @@ class PpdbUserDataTable extends DataTable
                 ->title('Username'),
             Column::make('user.gender')
                 ->title('L/P'),
+            Column::make('previous_school')
+                ->title('Asal Sekolah')
+                ->content('-'),
             Column::make('wali_name')
                 ->title('Nama Wali')
                 ->content('-'),

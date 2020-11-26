@@ -16,5 +16,7 @@ $fa-font-path: '../fonts/vendor/font-awesome';
 @import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";
 @import "~datatables.net-responsive-bs4/css/responsive.bootstrap4.css";
 
+@import "components/backoffice/datatable";
+
 @tailwind utilities;
 @import "global";
