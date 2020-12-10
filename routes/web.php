@@ -78,7 +78,7 @@ Route::group([
 });
 
 Route::group([
-    'namespace' => 'Backoffice',
+    'namespace' => 'BackOffice',
     'as' => 'backoffice.',
     'middleware' => ['auth', 'sub_permission'],
 ], function () {

@@ -18,7 +18,7 @@ Route::namespace('Api')->group(function () {
         Route::get('/user', 'CurrentUserController@show');
 
         Route::group([
-            'namespace' => 'Backoffice',
+            'namespace' => 'BackOffice',
             'as' => 'backoffice.',
             'middleware' => ['sub_permission'],
         ], function () {
