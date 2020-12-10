@@ -32,7 +32,10 @@
             @if($student->isAccepted())
               <alert
                 state="success"
-                message="{{ "Berdasarkan hasil Observasi yang telah dilakukan, kami memutuskan:<br><br>Selamat, Anda diterima sebagai $roleDesc di $siteTitle." }}"></alert>
+                message="{{
+                    "Berdasarkan hasil Observasi yang telah dilakukan, kami memutuskan:<br><br>" .
+                    "Selamat, Anda diterima sebagai $roleDesc di $siteTitle Tahun Pelajaran " .
+                    $ppdbUser->ppdb->academicYear->name . "." }}"></alert>
             @elseif($student->isDeclined())
               <alert
                 state="danger"
