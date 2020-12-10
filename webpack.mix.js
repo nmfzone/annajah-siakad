@@ -24,6 +24,10 @@ mix.js('resources/js/app.js', 'public/js')
   })
 
 mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts/', 'public/fonts/vendor/font-awesome')
+mix.copy('node_modules/tinymce/themes', 'public/vendor/tinymce/themes')
+mix.copy('node_modules/tinymce/icons', 'public/vendor/tinymce/icons')
+mix.copy('node_modules/tinymce/skins', 'public/vendor/tinymce/skins')
+mix.copy('node_modules/tinymce/plugins', 'public/vendor/tinymce/plugins')
 
 if (mix.inProduction()) {
   mix.version()

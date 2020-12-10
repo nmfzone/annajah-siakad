@@ -53,7 +53,7 @@
           <div class="mt-4">
             Halaman ini hanya bisa diakses satu kali, anda tidak akan bisa mengaksesnya di lain waktu.
             Mohon catat baik-baik informasi ini, dan jangan bagikan ke siapapun.
-            Kami menyarankan Anda untuk mengganti password <a href="{{ sub_route('dashboard.profile') }}"><b>disini</b></a>.
+            Kami menyarankan Anda untuk mengganti password <a href="{{ route('backoffice.profile') }}"><b>disini</b></a>.
           </div>
         </div>
 

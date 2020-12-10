@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\Role;
 use App\Garages\Utility\Unique;
+use App\Models\Concerns\HasProfiles;
 use App\Models\Concerns\HasRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,7 @@ class User extends Authenticatable implements HasMedia
 {
     use HasRole,
         Notifiable,
+        HasProfiles,
         SoftDeletes,
         InteractsWithMedia;
 
@@ -78,18 +80,6 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(PpdbUser::class);
     }
 
-    public function teacherProfiles()
-    {
-        return $this->morphedByMany(Teacher::class, 'userable')
-            ->withPivot('site_id');
-    }
-
-    public function studentProfiles()
-    {
-        return $this->morphedByMany(Student::class, 'userable')
-            ->withPivot('site_id');
-    }
-
     public function setNameAttribute($value)
     {
         $this->attributes['name'] = app('indoNameFormatter')->format($value);
@@ -120,7 +110,7 @@ class User extends Authenticatable implements HasMedia
         $avatar = $this->getFirstMediaUrl('profile_pict', 'thumb');
 
         if (empty($avatar)) {
-            return Avatar::create($this->attributes['name'])->toBase64()->encoded;
+            return Avatar::create($this->getAttribute('name'))->toBase64()->encoded;
         }
 
         return $avatar;
@@ -129,20 +119,6 @@ class User extends Authenticatable implements HasMedia
     public function adminlteImage()
     {
         return $this->getAvatarAttribute();
-    }
-
-    public function studentProfileFor(Site $site)
-    {
-        return $this->studentProfiles
-            ->where('pivot.site_id', $site->id)
-            ->first();
-    }
-
-    public function teacherProfileFor(Site $site)
-    {
-        return $this->teacherProfiles
-            ->where('pivot.site_id', $site->id)
-            ->first();
     }
 
     public function registerMediaCollections(): void

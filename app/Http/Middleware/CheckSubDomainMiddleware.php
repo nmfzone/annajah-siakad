@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Site;
 use Closure;
 
 class CheckSubDomainMiddleware
@@ -16,14 +15,7 @@ class CheckSubDomainMiddleware
      */
     public function handle($request, Closure $next)
     {
-        /** @var \App\Models\Site|null $site */
-        $site = Site::where('domain', $request->getHttpHost())->first();
-
-        if ($site) {
-            app()->extend('site', function () use ($site) {
-                return $site;
-            });
-
+        if (app()->has('site')) {
             return $next($request);
         }
 

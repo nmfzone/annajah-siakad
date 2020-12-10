@@ -22,6 +22,7 @@ class FormRequest extends BaseFormRequest
         $rules = is_array($rule) ? $rule : explode('|', $rule);
 
         if (count($excepts) > 0) {
+            // Filter 'excepts' based on it's value
             $excepts = array_keys(Arr::where($excepts, function ($v) {
                 return $v;
             }));

@@ -34,7 +34,7 @@ class PpdbController extends Controller
             $this->middleware('guest');
         }
 
-        $site = $this->site();
+        $site = site();
 
         $slides = $site->getMedia('ppdb_slides');
 
@@ -62,7 +62,7 @@ class PpdbController extends Controller
 
     public function store(Request $request, $subDomain)
     {
-        $site = $this->site();
+        $site = site();
         $ppdb = $this->ppdbService->currentPpdb();
 
         $userRules = [
@@ -79,7 +79,7 @@ class PpdbController extends Controller
             'wali_phone' => 'required|digits_between:9,20',
         ];
 
-        $this->validate($request, $userRules + $studentRules + [
+        $request->validate($userRules + $studentRules + [
             'selection_method' => ['required', Rule::in(SelectionMethod::asArray())],
             'approval' => 'required',
         ]);

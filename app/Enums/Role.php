@@ -28,7 +28,6 @@ final class Role extends Enum
     {
         return array_diff(static::asArray(), [
             self::SUPERADMIN,
-            self::ADMIN,
         ]);
     }
 }

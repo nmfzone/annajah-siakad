@@ -26,15 +26,13 @@ Route::group([
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 
     Route::group([
-        'namespace' => 'Dashboard',
+        'namespace' => 'BackOffice',
+        'as' => 'backoffice.',
         'middleware' => 'auth',
     ], function () {
         Route::get('/dashboard', 'DashboardController@index')
             ->name('dashboard')
             ->middleware(sprintf('role:%s,%s', Role::EDITOR, Role::SUPERADMIN));
-
-        Route::get('/profil', 'ProfileController')
-            ->name('dashboard.profile');
     });
 });
 
@@ -65,70 +63,30 @@ Route::group([
         ->name('ppdb.store');
 
     Route::group([
-        'namespace' => 'Dashboard',
+        'namespace' => 'BackOffice',
+        'as' => 'backoffice.',
         'middleware' => ['auth', 'sub_permission'],
     ], function () {
         Route::get('/dashboard', 'DashboardController@index')
             ->name('dashboard');
 
-        Route::get('/profil', 'ProfileController')
-            ->name('dashboard.profile');
-
-        Route::get('/ppdb/peserta', 'PpdbController@index')
-            ->name('dashboard.ppdb.users.index');
-
-        Route::get('/ppdb/peserta/detail', 'PpdbController@directShowUser')
-            ->name('dashboard.ppdb.users.direct_show');
-
-        Route::get('/ppdb/peserta/{ppdb_user}', 'PpdbController@showUser')
-            ->name('dashboard.ppdb.users.show');
-
-        Route::get(
-            '/ppdb/peserta/{ppdb_user}/tagihan/{transaction}',
-            'PpdbController@showPayment'
-        )->name('dashboard.ppdb.users.show_payment');
-
-        Route::post(
-            '/ppdb/peserta/{ppdb_user}/tagihan/{transaction}',
-            'PpdbController@storePayment'
-        )->name('dashboard.ppdb.users.store_payment');
-
-        Route::post(
-            '/ppdb/peserta/{ppdb_user}/tagihan/{transaction}/accept',
-            'PpdbController@acceptPayment'
-        )->name('dashboard.ppdb.users.accept_payment');
-
-        Route::post(
-            '/ppdb/peserta/{ppdb_user}/tagihan/{transaction}/decline',
-            'PpdbController@declinePayment'
-        )->name('dashboard.ppdb.users.decline_payment');
-
-        Route::get('/ppdb/observasi', 'ObservationController@index')
-            ->name('dashboard.ppdb.observation.index');
-
-        Route::get('/pengguna/buat', 'UsersController@create')
-            ->name('dashboard.users.create');
-        Route::post('/pengguna/buat', 'UsersController@store')
-            ->name('dashboard.users.store');
-        Route::get('/pengguna/{user}/edit', 'UsersController@edit')
-            ->name('dashboard.users.edit');
-        Route::put('/pengguna/{user}/details', 'UsersController@updateUserable')
-            ->name('dashboard.users.update_userable');
-        Route::put('/pengguna/{user}', 'UsersController@update')
-            ->name('dashboard.users.update');
-        Route::delete('/pengguna/{user}', 'UsersController@destroy')
-            ->name('dashboard.users.destroy');
-
-        Route::get('/pengguna/all/{userType}', 'UsersController@index')
-            ->name('dashboard.users.index')
-            ->where('userType', implode('|', Role::ordinalRoles()));
-
-        Route::get('/pengguna/{user}', 'UsersController@show')
-            ->name('dashboard.users.show');
+        require_once 'partials/ppdb.php';
     });
 
     Route::get('/presensi', 'AttendancesController@index')->name('attendances.index');
     Route::post('/presensi', 'AttendancesController@store')->name('attendances.store');
+});
+
+Route::group([
+    'namespace' => 'Backoffice',
+    'as' => 'backoffice.',
+    'middleware' => ['auth', 'sub_permission'],
+], function () {
+    Route::get('/profil', 'ProfileController')
+        ->name('profile');
+
+    require_once 'partials/article.php';
+    require_once 'partials/user.php';
 });
 
 Route::get('/go/{code}', 'ShortLinksController@show');

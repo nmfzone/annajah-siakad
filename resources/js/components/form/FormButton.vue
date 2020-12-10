@@ -3,7 +3,9 @@
     ref="button"
     :class="classObject"
     :style="btnStyle"
-    :disabled="disabled">
+    :disabled="disabled"
+    v-bind="$attrs"
+    v-on="$listeners">
     <template v-if="loading">
       <i class="fa fa-spinner fa-spin"/>
     </template>

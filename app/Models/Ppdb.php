@@ -48,4 +48,10 @@ class Ppdb extends Model
     {
         return 'Rp ' . number_format($this->price(), 0, ',', '.');
     }
+
+    public function isActive()
+    {
+        return $this->getAttribute('started_at')->lte(now()) &&
+            $this->getAttribute('ended_at')->gte(now());
+    }
 }

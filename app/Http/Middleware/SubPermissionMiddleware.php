@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\Role;
 use Closure;
 
 class SubPermissionMiddleware
@@ -17,12 +16,11 @@ class SubPermissionMiddleware
     public function handle($request, Closure $next)
     {
         return app(Authenticate::class)->handle($request, function ($request) use ($next) {
-            if (! app()->has('site')) {
+            if (auth()->user()->isSuperAdmin() && is_main_app()) {
                 return $next($request);
             }
 
-            /** @var \App\Models\Site|null $site */
-            $site = app()->make('site');
+            $site = site();
 
             if (auth()->user()->isSuperAdmin() ||
                 ($site && $site->users()->find(auth()->user()))) {

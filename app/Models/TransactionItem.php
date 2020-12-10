@@ -28,14 +28,19 @@ class TransactionItem extends Model
         return $this->transaction->isPaid();
     }
 
+    public function isDeclined()
+    {
+        return $this->transaction->isDeclined();
+    }
+
     public function priceTotal()
     {
-        return $this->price * $this->quantity;
+        return $this->getAttribute('price') * $this->getAttribute('quantity');
     }
 
     public function priceFormatted()
     {
-        return 'Rp ' . number_format($this->price, 2, ',', '.');
+        return 'Rp ' . number_format($this->getAttribute('price'), 2, ',', '.');
     }
 
     public function priceTotalFormatted()

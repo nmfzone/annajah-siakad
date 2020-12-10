@@ -13,7 +13,7 @@
               :class="{ 'is-invalid': state === false }"
               class="form-radio h-5 w-5 text-gray-600"
               v-bind="attrs"
-              v-on="$listeners"
+              v-on="listeners"
               :value="item.value"
               :checked="item.value === localValue">
             <span class="ml-2 text-gray-700">{{ item.text }}</span>
@@ -36,7 +36,7 @@
                 height: '25px'
               }"
               v-bind="attrs"
-              v-on="$listeners"
+              v-on="listeners"
               :value="item.value"
               :checked="isSelected(item)">
             <span class="ml-2 text-gray-700">{{ item.text }}</span>
@@ -44,22 +44,30 @@
         </div>
       </template>
       <template v-else-if="typeLower === 'select'">
-        <div class="">
-          <select
-            @change="onChange"
-            :class="{ 'is-invalid': state === false }"
-            class="form-control"
-            v-model="localValue"
-            v-bind="attrs"
-            v-on="$listeners">
-            <option
-              v-for="(item, i) in data"
-              :key="i"
-              :value="item.value">
-              {{ item.text }}
-            </option>
-          </select>
-        </div>
+        <select
+          @change="onChange"
+          :class="{ 'is-invalid': state === false }"
+          class="form-control"
+          :value="localValue"
+          v-bind="attrs"
+          v-on="listeners">
+          <option
+            v-for="(item, i) in data"
+            :key="i"
+            :value="item.value">
+            {{ item.text }}
+          </option>
+        </select>
+      </template>
+      <template v-else-if="typeLower === 'wysiwyg'">
+        <media-selector-button
+          class="mb-3"
+          :wysiwyg-id="localWysiwygId"
+          v-bind="attrs" />
+        <editor
+          :id="localWysiwygId"
+          :init="wysiwygConfig"
+        />
       </template>
       <template v-else>
         <input
@@ -70,7 +78,7 @@
           :autocomplete="autocomplete"
           v-model="localValue"
           v-bind="attrs"
-          v-on="$listeners">
+          v-on="listeners">
       </template>
 
       <div class="invalid-feedback" v-if="state === false">
@@ -86,7 +94,7 @@
           :autocomplete="autocomplete"
           v-model="localValue"
           v-bind="$attrs"
-          v-on="$listeners">
+          v-on="listeners">
 
         <div
           :class="{'password-eye': displayEye, 'input-group-append': true, 'invalid': state === false}">
@@ -121,8 +129,11 @@
 
 <script>
   import { GlobalMixin } from '@mixins'
+  import { isEmpty } from '@root/utils'
   import dayjs from 'dayjs'
   import DatePicker from '@components/picker/DatePicker'
+  import Editor from '@tinymce/tinymce-vue'
+  import MediaSelectorButton from '@components/media-selector/MediaSelectorButton'
 
   export default {
     inheritAttrs: false,
@@ -130,7 +141,9 @@
       GlobalMixin,
     ],
     components: {
-      DatePicker
+      Editor,
+      DatePicker,
+      MediaSelectorButton
     },
     props: {
       value: [Number, String],
@@ -185,7 +198,9 @@
       endDate: {
         type: String,
       },
-      addOnClass: [String, Object, Array]
+      addOnClass: [String, Object, Array],
+      wysiwygId: String,
+      onSaveCallback: Function
     },
     data () {
       return {
@@ -198,6 +213,10 @@
       }
     },
     computed: {
+      listeners() {
+        const { input, ...listeners } = this.$listeners
+        return listeners
+      },
       computedAddOnClass: {
         set (v) {
           this.localAddOnClass = v
@@ -231,12 +250,54 @@
       },
       typeIsCheckboxRadioSelect() {
         return ['radio', 'checkbox', 'select'].includes(this.typeLower)
+      },
+      localWysiwygId() {
+        return this.wysiwygId ? this.wysiwygId : 'wysiwyg-' + this._uid
+      },
+      wysiwygConfig() {
+        return {
+          base_url: '/vendor/tinymce/',
+          language: 'id',
+          height: 500,
+          menubar: false,
+          branding: false,
+          relative_urls: false,
+          remove_script_host: false,
+          plugins: [
+            'advlist autolink autosave lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code wordcount'
+          ],
+          toolbar:
+            'undo redo | formatselect | bold italic underline strikethrough | \
+            alignleft aligncenter alignright alignjustify | \
+            bullist numlist outdent indent | forecolor backcolor removeformat | image media',
+          setup: (editor) => {
+            editor.on('init', () => {
+              if (this.localValue) {
+                editor.setContent(this.localValue)
+              }
+              editor.addShortcut('meta+s', 'Custom Ctrl/Command+S', 'custom_meta_s');
+              editor.addCommand('custom_meta_s', async () => {
+                if (this.onSaveCallback) {
+                  editor.setProgressState(true)
+                  editor.save()
+                  await this.$nextTick(async () => {
+                    await this.onSaveCallback()
+                    editor.setProgressState(false)
+                  })
+                }
+              })
+            })
+
+            editor.on('Change', () => {
+              this.localValue = editor.getContent()
+            })
+          }
+        }
       }
     },
     watch: {
-      value (v) {
-        this.localValue = v
-      },
       localValue (v) {
         if (this.datePicker && !this.viaPicker && this.prevValue) {
           this.localValue = this.prevValue
@@ -257,13 +318,19 @@
         }
       } else {
         let value = this.castInitialValue
-        if (this.selectFirstItem && this.typeIsCheckboxRadioSelect && _.isEmpty(this.initialValue)) {
+        if (this.selectFirstItem && this.typeIsCheckboxRadioSelect && isEmpty(this.initialValue)) {
           value = _.get(this.data, '0.value')
         }
-        this.localValue = value
+
+        if (!isEmpty(value)) {
+          this.localValue = value
+        }
       }
     },
     methods: {
+      updateValue(e) {
+        this.localValue = e.target.value
+      },
       isSelected(item) {
         if (this.typeLower === 'checkbox' && this.multiple) {
           return this.localValue.includes(item.value)

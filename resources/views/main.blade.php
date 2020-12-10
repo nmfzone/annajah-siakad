@@ -25,10 +25,10 @@
     <div class="top-right links">
       @auth
         @if(! is_main_app() || (is_main_app() && in_array(auth()->user()->role, [Role::SUPERADMIN, Role::EDITOR])))
-          <a href="{{ switch_route('auto', 'dashboard') }}">Dashboard</a>
+          <a href="{{ switch_route('auto', 'backoffice.dashboard') }}">Dashboard</a>
         @endif
       @else
-        <a href="{{ main_route('login', ! is_main_app() ? ['next' => sub_route('dashboard')] : []) }}">Masuk</a>
+        <a href="{{ main_route('login', ! is_main_app() ? ['next' => sub_route('backoffice.dashboard')] : []) }}">Masuk</a>
       @endauth
     </div>
 

@@ -2,8 +2,10 @@
 
 namespace App\DataTables;
 
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
@@ -20,7 +22,7 @@ class UsersDataTable extends DataTable
     {
         $this->authUser = $authUser;
         $this->requestedType = $requestedType ? strtolower($requestedType) : null;
-        $this->site = app()->make('site');
+        $this->site = site();
     }
 
     /**
@@ -35,27 +37,29 @@ class UsersDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function (User $user) {
-                $authUser = optional(auth()->user());
                 $deleteMessage = "Apakah Anda yakin ingin menghapus data {$user->role} ini?";
 
                 $buttons = "<div class=\"btn-group btn-group-sm\">";
 
                 $buttons .= "
-                    <a href=\"" . sub_route('dashboard.users.show', $user) . "\" class=\"btn btn-info\">
+                    <a href=\"" . route('backoffice.users.show', $user) . "\"
+                      class=\"btn btn-info\">
                       <i class=\"fas fa-eye\"></i>
                     </a>
                 ";
 
-                if ($authUser->isNotTeacher()) {
+                if (Gate::allows('update', $user)) {
                     $buttons .= "
-                        <a href=\"" . sub_route('dashboard.users.edit', $user) .
-                            "\" class=\"btn btn-success\">
+                        <a href=\"" . route('backoffice.users.edit', $user) . "\"
+                          class=\"btn btn-success\">
                           <i class=\"fas fa-edit\"></i>
                         </a>
                     ";
+                }
 
+                if (Gate::allows('delete', $user)) {
                     $buttons .= "
-                        <a href=\"" . sub_route('dashboard.users.destroy', $user) . "\"
+                        <a href=\"" . route('backoffice.users.destroy', $user) . "\"
                           class=\"btn btn-danger delete-this\"
                           data-message=\"" . $deleteMessage . "\">
                           <i class=\"fas fa-trash\"></i>
@@ -67,11 +71,10 @@ class UsersDataTable extends DataTable
             })
             ->addColumn('gender', function (User $user) {
                 return $user->gender ? 'L' : 'P';
+            })
+            ->editColumn('birth_date', function (User $user) {
+                return optional($user->birth_date)->format('d-m-Y');
             });
-
-        $datatables->editColumn('birth_date', function (User $user) {
-            return optional($user->birth_date)->format('d-m-Y');
-        });
 
         return $datatables;
     }
@@ -87,7 +90,18 @@ class UsersDataTable extends DataTable
             ->with('studentProfiles', 'teacherProfiles');
 
         if ($this->requestedType) {
-            $query->where('role', $this->requestedType);
+            $query->where(function (Builder $query) {
+                if ($this->requestedType === 'administrator+editor') {
+                    $query->where('role', Role::ADMIN)
+                        ->orWhere('role', Role::EDITOR);
+                } else {
+                    $query->where('role', $this->requestedType);
+
+                    if ($this->requestedType == Role::TEACHER) {
+                        $query->orWhere('role', Role::HEAD_MASTER);
+                    }
+                }
+            });
         }
 
         if ($this->site) {
@@ -112,6 +126,7 @@ class UsersDataTable extends DataTable
             ->minifiedAjax()
             ->dom('Bfrtip')
             ->orderBy(1, 'asc')
+            ->responsive()
             ->buttons(
                 Button::make('export'),
                 Button::make('print')

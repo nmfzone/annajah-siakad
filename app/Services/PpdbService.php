@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Ppdb;
 use App\Models\PpdbUser;
-use App\Models\Site;
 use App\Models\User;
 
 class PpdbService extends BaseService
@@ -13,6 +12,11 @@ class PpdbService extends BaseService
      * @var \App\Services\TransactionService
      */
     protected $transactionService;
+
+    /**
+     * @var \App\Models\Ppdb|bool|null
+     */
+    private $currentPpdb_;
 
     /**
      * @var \App\Services\TransactionItemService
@@ -52,9 +56,13 @@ class PpdbService extends BaseService
 
     public function currentPpdb(): ?Ppdb
     {
+        if (! is_null($ppdb = $this->currentPpdb_)) {
+            return $ppdb ? $ppdb : null;
+        }
+
         $ppdb = null;
         /** @var \App\Models\AcademicYear|null $academicYear */
-        $academicYear = $this->site()->academicYears()
+        $academicYear = site()->academicYears()
             ->orderBy('from', 'desc')
             ->first();
 
@@ -65,13 +73,18 @@ class PpdbService extends BaseService
                 ->first();
         }
 
+        $this->currentPpdb_ = is_null($ppdb) ? false : $ppdb;
+
         return $ppdb;
     }
 
-    protected static function site(): ?Site
+    public function latestPpdbUserFor(User $user): ?PpdbUser
     {
-        $site = app()->make('site');
+        /** @var \App\Models\PpdbUser|null $ppdbUser */
+        $ppdbUser = $user->ppdbUsers()
+            ->latest()
+            ->first();
 
-        return empty($site) ? null : $site;
+        return $ppdbUser;
     }
 }

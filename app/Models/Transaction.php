@@ -31,16 +31,16 @@ class Transaction extends Model
 
     public function isPaid()
     {
-        return $this->status === PaymentStatus::PAID;
+        return $this->getAttribute('status') === PaymentStatus::PAID;
     }
 
     public function isDeclined()
     {
-        return $this->status === PaymentStatus::DECLINED;
+        return $this->getAttribute('status') === PaymentStatus::DECLINED;
     }
 
     public function amountFormatted()
     {
-        return 'Rp ' . number_format($this->amount, 2, ',', '.');
+        return 'Rp ' . number_format($this->getAttribute('amount'), 2, ',', '.');
     }
 }

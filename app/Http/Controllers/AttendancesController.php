@@ -38,7 +38,7 @@ class AttendancesController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'attendance' => 'required|exists:attendances,id'
         ], [], [
             'attendance' => 'Jenis Presensi'

@@ -190,7 +190,7 @@ return [
 
     'dashboard_url' => [
         'loc' => 'auto',
-        'path' => 'dashboard',
+        'path' => 'backoffice.dashboard',
     ],
 
     'logout_url' => [

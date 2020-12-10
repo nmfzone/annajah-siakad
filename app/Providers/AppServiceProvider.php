@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Sanctum;
 use League\Flysystem\Filesystem;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
             return new IndonesianNameFormatter();
         });
 
-        $this->app->instance('site', '');
+        Sanctum::$runsMigrations = false;
 
         Storage::extend('google_drive', function ($app, $config) {
             $client = new Google_Client();

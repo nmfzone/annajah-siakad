@@ -1,5 +1,5 @@
 <aside class="main-sidebar {{ config('adminlte.classes_sidebar', 'sidebar-dark-primary elevation-4') }}">
-  @if (config('adminlte.logo_img_xl'))
+  @if(config('adminlte.logo_img_xl'))
     @include('adminlte::partials.common.brand-logo-xl')
   @else
     @include('adminlte::partials.common.brand-logo-xs')
@@ -18,79 +18,112 @@
 
         @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item')
 
-        @if(auth()->user()->isNotStudent())
-          @if (!is_main_app())
-            <li class="nav-item has-treeview
-                      {{ Request::is('pengguna/*') ? 'menu-open' :'' }}">
-              <a class="nav-link
-                      {{ Request::is('pengguna/*') ? 'active' :'' }}"
-                 href="#">
-                <i class="fa fa-fw fa-users"></i>
+        @can('viewAny', App\Models\User::class)
+          <li class="nav-item has-treeview
+                    {{ Request::is('pengguna/*') ? 'menu-open' :'' }}">
+            <a class="nav-link
+                    {{ Request::is('pengguna/*') ? 'active' :'' }}"
+               href="#">
+              <i class="fa fa-fw fa-users"></i>
 
-                <p>Manajemen Pengguna <i class="fas fa-angle-left right"></i></p>
+              <p>Manajemen Pengguna <i class="fas fa-angle-left right"></i></p>
+            </a>
+
+            <ul class="nav nav-treeview">
+              @can('viewAny', [App\Models\User::class, 'administrator+editor'])
+                <li class="nav-item">
+                  <a class="nav-link
+                          {{ Request::is('pengguna/all/administrator+editor') ? 'active' :'' }}"
+                     href="{{ route('backoffice.users.index', 'administrator+editor') }}">
+                    <i class="far fa-fw fa-circle"></i>
+                    <p>Daftar Admin & Editor</p>
+                  </a>
+                </li>
+              @endif
+              <li class="nav-item">
+                <a class="nav-link
+                        {{ Request::is('pengguna/all/asatidz') ? 'active' :'' }}"
+                   href="{{ route('backoffice.users.index', 'asatidz') }}">
+                  <i class="far fa-fw fa-circle"></i>
+                  <p>Daftar Asatidz</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link
+                        {{ Request::is('pengguna/all/santri') ? 'active' :'' }}"
+                   href="{{ route('backoffice.users.index', 'santri') }}">
+                  <i class="far fa-fw fa-circle"></i>
+                  <p>Daftar Santri</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        @endif
+
+        @if(!is_main_app())
+          @if(Gate::allows('viewAny', App\Models\Ppdb::class) || ! is_null($latestPpdbUser))
+            <li class="nav-item has-treeview
+                      {{ Request::is('ppdb/*') ? 'menu-open' :'' }}">
+              <a class="nav-link
+                      {{ Request::is('ppdb/*') ? 'active' :'' }}"
+                 href="#">
+                <i class="fa fa-fw fa-clipboard"></i>
+                <p>PPDB <i class="fas fa-angle-left right"></i></p>
               </a>
 
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a class="nav-link
-                          {{ Request::is('pengguna/all/asatidz') ? 'active' :'' }}"
-                     href="{{ sub_route('dashboard.users.index', 'asatidz') }}">
-                    <i class="far fa-fw fa-circle"></i>
-                    <p>Daftar Asatidz</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link
-                          {{ Request::is('pengguna/all/santri') ? 'active' :'' }}"
-                     href="{{ sub_route('dashboard.users.index', 'santri') }}">
-                    <i class="far fa-fw fa-circle"></i>
-                    <p>Daftar Santri</p>
-                  </a>
-                </li>
+                @if(isset($currentPpdb) && Gate::allows('viewAny', App\Models\PpdbUser::class))
+                  <li class="nav-item">
+                    <a class="nav-link
+                            {{ Request::is('ppdb/*/peserta') ? 'active' :'' }}"
+                       href="{{ sub_route('backoffice.ppdb.users.index', $currentPpdb) }}">
+                      <i class="far fa-fw fa-circle"></i>
+                      <p>Lis Peserta</p>
+                    </a>
+                  </li>
+                @endif
+                @if(! is_null($latestPpdbUser))
+                  <li class="nav-item">
+                    <a class="nav-link
+                            {{ Request::is('ppdb/*/peserta/detail', 'ppdb/*/peserta/*') ? 'active' :'' }}"
+                       href="{{ sub_route('backoffice.ppdb.users.direct_show') }}">
+                      <i class="far fa-fw fa-circle"></i>
+                      <p>Detail Pendaftaran</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link
+                          {{ Request::is('ppdb/observasi') ? 'active' :'' }}"
+                       href="{{ sub_route('backoffice.ppdb.observation.direct_show') }}">
+                      <i class="far fa-fw fa-circle"></i>
+                      <p>Observasi</p>
+                    </a>
+                  </li>
+                @endif
               </ul>
             </li>
           @endif
         @endif
 
-        @if(!is_main_app())
+        @can('viewAny', App\Models\Article::class)
           <li class="nav-item has-treeview
-                    {{ Request::is('ppdb/*') ? 'menu-open' :'' }}">
+                      {{ Request::is('artikel', 'artikel/*') ? 'menu-open' :'' }}">
             <a class="nav-link
-                    {{ Request::is('ppdb/*') ? 'active' :'' }}"
+                      {{ Request::is('artikel', 'artikel/*') ? 'active' :'' }}"
                href="#">
-              <i class="fa fa-fw fa-clipboard"></i>
-              <p>PPDB <i class="fas fa-angle-left right"></i></p>
+              <i class="fas fa-fw fa-newspaper"></i>
+              <p>Manajemen Artikel <i class="fas fa-angle-left right"></i></p>
             </a>
 
             <ul class="nav nav-treeview">
-              @if(auth()->user()->isSuperAdmin() || auth()->user()->isAdmin())
-                <li class="nav-item">
-                  <a class="nav-link
-                          {{ Request::is('ppdb/peserta') ? 'active' :'' }}"
-                     href="{{ sub_route('dashboard.ppdb.users.index') }}">
-                    <i class="far fa-fw fa-circle"></i>
-                    <p>Lis Pendaftar</p>
-                  </a>
-                </li>
-              @endif
-              @if(App\Models\PpdbUser::where('user_id', auth()->user()->id)->exists())
-                <li class="nav-item">
-                  <a class="nav-link
-                          {{ Request::is('ppdb/peserta/detail', 'ppdb/peserta/*') ? 'active' :'' }}"
-                     href="{{ sub_route('dashboard.ppdb.users.direct_show') }}">
-                    <i class="far fa-fw fa-circle"></i>
-                    <p>Detail Pendaftaran</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link
-                        {{ Request::is('ppdb/observasi', 'ppdb/observasi/*') ? 'active' :'' }}"
-                     href="{{ sub_route('dashboard.ppdb.observation.index') }}">
-                    <i class="far fa-fw fa-circle"></i>
-                    <p>Observasi</p>
-                  </a>
-                </li>
-              @endif
+              <li class="nav-item">
+                <a class="nav-link
+                          {{ Request::is('artikel') ? 'active' :'' }}"
+                   href="{{ route('backoffice.articles.index') }}">
+                  <i class="far fa-fw fa-circle"></i>
+                  <p>Lis Artikel</p>
+                </a>
+              </li>
             </ul>
           </li>
         @endif
@@ -100,7 +133,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="{{ switch_route('auto', 'dashboard.profile') }}">
+          <a class="nav-link" href="{{ route('backoffice.profile') }}">
             <i class="fas fa-fw fa-user"></i>
             <p>Profil</p>
           </a>

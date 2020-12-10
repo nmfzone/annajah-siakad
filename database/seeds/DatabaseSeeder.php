@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(ShortLinksSeeder::class);
         $this->call(DummySeeder::class);
+        $this->call(ArticlesSeeder::class);
     }
 }

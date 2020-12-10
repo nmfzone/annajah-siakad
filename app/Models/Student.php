@@ -20,6 +20,7 @@ class Student extends Model implements HasMedia
 
     protected $casts = [
         'accepted_at' => 'datetime',
+        'declined_at' => 'datetime',
         'graduated_at' => 'datetime',
         'father_salary' => 'integer',
         'mother_salary' => 'integer',
@@ -77,6 +78,27 @@ class Student extends Model implements HasMedia
         }
 
         $this->attributes['wali_phone'] = $value;
+    }
+
+    public function isPending(): bool
+    {
+        return is_null($this->getAttribute('accepted_at')) ||
+            is_null($this->getAttribute('declined_at'));
+    }
+
+    public function isAccepted(): bool
+    {
+        return ! is_null($this->getAttribute('accepted_at')) && ! $this->isDeclined();
+    }
+
+    public function isDeclined(): bool
+    {
+        return ! is_null($this->getAttribute('declined_at'));
+    }
+
+    public function isGraduated(): bool
+    {
+        return ! is_null($this->getAttribute('graduated_at'));
     }
 
     public static function generateNis(Site $site, $year = null)

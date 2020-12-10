@@ -139,6 +139,20 @@ if (! function_exists('is_main_app')) {
     }
 }
 
+if (! function_exists('site')) {
+    /**
+     * Get the underlying site model if available.
+     *
+     * @return \App\Models\Site|null
+     */
+    function site()
+    {
+        return app()->has('site')
+            ? app('site')
+            : null;
+    }
+}
+
 if (! function_exists('next_field')) {
     /**
      * Generate a next url form field.

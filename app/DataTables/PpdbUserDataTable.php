@@ -48,7 +48,7 @@ class PpdbUserDataTable extends DataTable
                 $buttons = "<div class=\"btn-group btn-group-sm\">";
 
                 $buttons .= "
-                    <a href=\"" . sub_route('dashboard.ppdb.users.show', $ppdbUser) .
+                    <a href=\"" . sub_route('backoffice.ppdb.users.show', [$ppdbUser->ppdb, $ppdbUser]) .
                         "\" class=\"btn btn-info\">
                       <i class=\"fas fa-eye\"></i>
                     </a>
@@ -58,20 +58,19 @@ class PpdbUserDataTable extends DataTable
             })
             ->editColumn('user.gender', function (PpdbUser $ppdbUser) {
                 return $ppdbUser->user->gender ? 'L' : 'P';
+            })
+            ->addColumn('no_kk', function (PpdbUser $ppdbUser) {
+                return optional($this->getStudentProfile($ppdbUser))->no_kk;
+            })
+            ->addColumn('previous_school', function (PpdbUser $ppdbUser) {
+                return optional($this->getStudentProfile($ppdbUser))->previous_school;
+            })
+            ->addColumn('wali_name', function (PpdbUser $ppdbUser) {
+                return optional($this->getStudentProfile($ppdbUser))->wali_name;
+            })
+            ->addColumn('wali_phone', function (PpdbUser $ppdbUser) {
+                return optional($this->getStudentProfile($ppdbUser))->wali_phone;
             });
-
-        $datatables->addColumn('no_kk', function (PpdbUser $ppdbUser) {
-            return optional($this->getStudentProfile($ppdbUser))->no_kk;
-        });
-        $datatables->addColumn('previous_school', function (PpdbUser $ppdbUser) {
-            return optional($this->getStudentProfile($ppdbUser))->previous_school;
-        });
-        $datatables->addColumn('wali_name', function (PpdbUser $ppdbUser) {
-            return optional($this->getStudentProfile($ppdbUser))->wali_name;
-        });
-        $datatables->addColumn('wali_phone', function (PpdbUser $ppdbUser) {
-            return optional($this->getStudentProfile($ppdbUser))->wali_phone;
-        });
 
         return $datatables;
     }
@@ -107,7 +106,7 @@ class PpdbUserDataTable extends DataTable
             ->setTableId('ppdb-user-table')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->dom('Bfrtip')
+            ->dom('Bflrtip')
             ->orderBy(1, 'asc')
             ->responsive()
             ->buttons(

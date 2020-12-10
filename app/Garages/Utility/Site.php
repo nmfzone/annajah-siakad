@@ -10,47 +10,47 @@ class Site
 {
     public static function title()
     {
-        return object_get(self::model(), 'title', config('app.name', 'Laravel'));
+        return object_get(site(), 'title', config('app.name', 'Laravel'));
     }
 
     public static function email()
     {
-        $value = self::model()->email;
+        $value = site()->email;
 
         return empty($value) ? '-' : $value;
     }
 
     public static function address()
     {
-        $value = self::model()->address;
+        $value = site()->address;
 
         return empty($value) ? '-' : $value;
     }
 
     public static function phone()
     {
-        $value = self::model()->phone;
+        $value = site()->phone;
 
         return empty($value) ? '-' : $value;
     }
 
     public static function instagram()
     {
-        $value = self::model()->instagram;
+        $value = site()->instagram;
 
         return empty($value) ? '-' : 'https://instagram.com/' . $value;
     }
 
     public static function facebook()
     {
-        $value = self::model()->facebook;
+        $value = site()->facebook;
 
         return empty($value) ? '-' : 'https://facebook.com/' . $value;
     }
 
     public static function twitter()
     {
-        $value = self::model()->twitter;
+        $value = site()->twitter;
 
         return empty($value) ? '-' : 'https://twitter.com/' . $value;
     }
@@ -59,7 +59,7 @@ class Site
     {
         return is_main_app()
             ? asset('images/logo.png')
-            : self::model()->logo;
+            : site()->logo;
     }
 
     public static function menus()
@@ -67,7 +67,7 @@ class Site
         if (is_main_app()) {
             $menus = [];
         } else {
-            $menus = self::model()->settings()->get(SiteSetting::MENUS);
+            $menus = site()->settings()->get(SiteSetting::MENUS);
 
             $menus = [
                 [
@@ -111,7 +111,7 @@ class Site
             $menus = array_merge($menus, [
                 [
                     'id' => 900,
-                    'url' => main_route('login', ['next' => sub_route('dashboard')]),
+                    'url' => main_route('login', ['next' => sub_route('backoffice.dashboard')]),
                     'title' => 'Login'
                 ]
             ]);
@@ -119,20 +119,13 @@ class Site
             $menus = array_merge($menus, [
                 [
                     'id' => 901,
-                    'url' => sub_route('dashboard'),
+                    'url' => sub_route('backoffice.dashboard'),
                     'title' => 'Dashboard'
                 ]
             ]);
         }
 
         return $menus;
-    }
-
-    public static function model(): ?SiteModel
-    {
-        $site = app()->make('site');
-
-        return empty($site) ? null : $site;
     }
 
     public static function __callStatic($method, $parameters)

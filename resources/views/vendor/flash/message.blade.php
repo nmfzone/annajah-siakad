@@ -10,7 +10,7 @@
       state="{{ $message['level'] }}"
       message="{{ $message['message'] }}"
       {{ isset($dismissible) ? 'dismissible' : null }}
-      timer="{{ isset($timer) ? $timer : '10' }}"></alert>
+      :timer="{{ isset($timer) ? $timer : 10 }}"></alert>
   @endif
 @endforeach
 

@@ -19,7 +19,7 @@ class ExceptRoleMiddleware
     public function handle($request, Closure $next, ...$roles)
     {
         return app(Authenticate::class)->handle($request, function ($request) use ($next, $roles) {
-            if (!in_array(auth()->user()->role, $roles)) {
+            if (! in_array(auth()->user()->role, $roles)) {
                 return $next($request);
             }
 

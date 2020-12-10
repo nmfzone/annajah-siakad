@@ -31,4 +31,16 @@ class UrlGenerator extends BaseUrlGenerator
 
         return $fullPath;
     }
+
+    /**
+     * @inheritDoc
+     */
+    protected function routeUrl()
+    {
+        if (! $this->routeGenerator) {
+            $this->routeGenerator = new RouteUrlGenerator($this, $this->request);
+        }
+
+        return $this->routeGenerator;
+    }
 }

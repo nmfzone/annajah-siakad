@@ -187,6 +187,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
+        App\Providers\ViewComposerServiceProvider::class,
 
     ],
 

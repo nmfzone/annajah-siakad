@@ -22,22 +22,14 @@ class IndonesianNameFormatter
     {
         foreach ($this->indonesianTitles as $value) {
             $rgxVal = preg_quote(ucwords(mb_strtolower($value)));
-            array_push($this->patterns, "/^{$rgxVal}\s/");
-            array_push($this->replacements, $value . ' ');
-            array_push($this->patterns, "/^{$rgxVal}\.\s/");
-            array_push($this->replacements, $value . '. ');
-            array_push($this->patterns, "/\s{$rgxVal}$/");
-            array_push($this->replacements, ' ' . $value);
-            array_push($this->patterns, "/\s{$rgxVal}\.$/");
-            array_push($this->replacements, ' ' . $value . '.');
-            array_push($this->patterns, "/\s{$rgxVal}\s/");
-            array_push($this->replacements, ' ' . $value . ' ');
-            array_push($this->patterns, "/\s{$rgxVal}.\s/");
-            array_push($this->replacements, ' ' . $value . '. ');
-            array_push($this->patterns, "/\s{$rgxVal},/");
-            array_push($this->replacements, ' ' . $value . ',');
-            array_push($this->patterns, "/\s{$rgxVal}\.,/");
-            array_push($this->replacements, ' ' . $value . '.,');
+            $this->addPatternAndReplacement("/^{$rgxVal}\s/", $value . ' ');
+            $this->addPatternAndReplacement("/^{$rgxVal}\.\s/", $value . '. ');
+            $this->addPatternAndReplacement("/\s{$rgxVal}$/", ' ' . $value);
+            $this->addPatternAndReplacement("/\s{$rgxVal}\.$/", ' ' . $value . '.');
+            $this->addPatternAndReplacement("/\s{$rgxVal}\s/", ' ' . $value . ' ');
+            $this->addPatternAndReplacement("/\s{$rgxVal}.\s/", ' ' . $value . '. ');
+            $this->addPatternAndReplacement("/\s{$rgxVal},/", ' ' . $value . ',');
+            $this->addPatternAndReplacement("/\s{$rgxVal}\.,/", ' ' . $value . '.,');
         }
     }
 
@@ -52,5 +44,11 @@ class IndonesianNameFormatter
             $this->replacements,
             mb_convert_case(mb_strtolower($name), MB_CASE_TITLE)
         );
+    }
+
+    protected function addPatternAndReplacement($pattern, $replacement)
+    {
+        array_push($this->patterns, $pattern);
+        array_push($this->replacements, $replacement);
     }
 }

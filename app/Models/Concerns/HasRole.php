@@ -11,6 +11,11 @@ trait HasRole
         return $this->isSuperAdmin() || $this->isAdmin();
     }
 
+    public function isNotSuperAdminOrAdmin()
+    {
+        return ! $this->isSuperAdminOrAdmin();
+    }
+
     public function isSuperAdmin()
     {
         return $this->attributes['role'] == Role::SUPERADMIN;

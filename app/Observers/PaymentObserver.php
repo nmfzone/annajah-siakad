@@ -26,7 +26,8 @@ class PaymentObserver
             $payment->transaction->update([
                 'status' => PaymentStatus::DECLINED,
             ]);
-        } elseif (! $payment->isVerified() && ! is_null($payment->getOriginal('verified_at'))) {
+        } elseif ((! $payment->isVerified() && $payment->isVerifiedOriginal()) ||
+            (! $payment->isFraud() && $payment->isFraudOriginal())) {
             $payment->transaction->update([
                 'status' => PaymentStatus::UNPAID,
             ]);

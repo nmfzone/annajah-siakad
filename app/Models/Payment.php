@@ -25,12 +25,22 @@ class Payment extends Model implements HasMedia
 
     public function isVerified()
     {
-        return ! is_null($this->verified_at);
+        return ! is_null($this->getAttribute('verified_at'));
+    }
+
+    public function isVerifiedOriginal()
+    {
+        return ! is_null($this->getOriginal('verified_at'));
     }
 
     public function isFraud()
     {
-        return $this->fraud_status == PaymentFraudStatus::FRAUD;
+        return $this->getAttribute('fraud_status') == PaymentFraudStatus::FRAUD;
+    }
+
+    public function isFraudOriginal()
+    {
+        return $this->getOriginal('fraud_status') == PaymentFraudStatus::FRAUD;
     }
 
     public function registerMediaCollections(): void

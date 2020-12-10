@@ -6,7 +6,7 @@ use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy
+class UserPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
@@ -17,10 +17,10 @@ class UserPolicy
         }
     }
 
-    public function viewAny(User $user, $userType)
+    public function viewAny(User $user, $userType = null)
     {
-        if ($userType == Role::ADMIN) {
-            return $user->isAdmin();
+        if (in_array($userType, [Role::ADMIN, Role::EDITOR, 'administrator+editor'])) {
+            return false;
         }
 
         return $user->isNotStudent();
@@ -28,7 +28,7 @@ class UserPolicy
 
     public function view(User $user, User $model)
     {
-        return $user->is($model) or $user->isNotStudent();
+        return $user->is($model) || $user->isNotStudent();
     }
 
     public function create(User $user)

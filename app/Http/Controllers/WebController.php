@@ -81,9 +81,7 @@ class WebController extends Controller
                 ]
             ];
 
-            $site = $this->site();
-
-            $viewName = sprintf('subs.%s.index', $site->id);
+            $viewName = sprintf('subs.%s.index', site()->id);
 
             if (! view()->exists($viewName)) {
                 return view('main');
