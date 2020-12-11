@@ -82,8 +82,7 @@ class Student extends Model implements HasMedia
 
     public function isPending(): bool
     {
-        return is_null($this->getAttribute('accepted_at')) ||
-            is_null($this->getAttribute('declined_at'));
+        return ! ($this->isAccepted() || $this->isDeclined());
     }
 
     public function isAccepted(): bool

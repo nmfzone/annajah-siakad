@@ -26,7 +26,7 @@
               <h3 class="card-title">Detail Peserta PPDB</h3>
             </div>
             <div class="col-md-6 flex justify-end">
-              @if(Gate::allows('acceptAsStudent', $ppdbUser) && ! ($student->isAccepted() || $student->isDeclined()))
+              @if(Gate::allows('acceptAsStudent', $ppdbUser) && $student->isPending())
                 <a class="btn btn-success submit-this"
                    data-message="Apakah Anda yakin akan menerima peserta ini?"
                    href="{{ sub_route('backoffice.ppdb.users.accept', [
@@ -38,14 +38,14 @@
               @endif
               @if(Gate::allows('declineOrCancelAsStudent', $ppdbUser))
                 <a class="btn btn-danger ml-2 submit-this"
-                   data-message="{{ $student->isAccepted() || $student->isDeclined()
+                   data-message="{{ ! $student->isPending()
                       ? 'Apakah Anda yakin akan membatalkan ' . ($student->isAccepted() ? 'penerimaan' : 'penolakan') . ' peserta ini?'
                       : 'Apakah Anda yakin akan menolak peserta ini?' }}"
                    href="{{ sub_route('backoffice.ppdb.users.decline_or_cancel', [
                       'ppdb' => $ppdbUser->ppdb,
                       'ppdb_user' => $ppdbUser,
                   ]) }}">
-                  @if($student->isAccepted() || $student->isDeclined())
+                  @if(! $student->isPending())
                     Batal {{ $student->isAccepted() ? 'Terima' : 'Tolak' }} {{ Role::getDescription(Role::STUDENT) }}
                   @else
                     Tolak {{ Role::getDescription(Role::STUDENT) }}

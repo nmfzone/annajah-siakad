@@ -60,9 +60,8 @@
                           <template v-if="!media.uploading">
                             <img :src="media.url">
                           </template>
-
                           <template v-else>
-                            Uploading
+                            <i class="fa fa-spinner fa-spin text-5xl"/>
                           </template>
                         </div>
                       </div>
@@ -93,6 +92,12 @@
                     </div>
                   </div>
                 </template>
+
+                <div class="h-full" v-else>
+                  <div class="flex flex-col h-full items-center justify-center">
+                    <i class="fa fa-spinner fa-spin text-5xl"/>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -211,7 +216,7 @@ export default {
         const newMediaIdx = _.findIndex(this.allMedia, (m) => m.id == tmpId)
         this.allMedia.splice(newMediaIdx, 1)
         this.uploadError = true
-        this.errorMessage = _.get(e, 'response.data.errors.file.0')
+        this.errorMessage = _.get(e, 'response.data.errors.file.0', _.get(e, 'response.data.message'))
 
         if (fromTab === 1) {
           this.activeTab = 1

@@ -18,6 +18,11 @@ class Article extends Model implements HasMedia
         'published_at' => 'datetime',
     ];
 
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');

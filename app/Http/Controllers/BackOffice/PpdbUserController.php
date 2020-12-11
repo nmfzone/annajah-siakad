@@ -139,13 +139,19 @@ class PpdbUserController extends Controller
         $this->userShouldOwnTransaction($ppdbUser, $transaction);
         $this->authorize('acceptPayment', $ppdbUser);
 
-        $transaction->payment->forceFill([
-            'verified_at' => now(),
-        ])->save();
+        if ($transaction->payment->isVerified()) {
+            flash(
+                'Pembayaran telah terverifikasi sebelumnya.'
+            )->error();
+        } else {
+            $transaction->payment->forceFill([
+                'verified_at' => now(),
+            ])->save();
 
-        flash(
-            'Berhasil memverifikasi pembayaran.'
-        )->success();
+            flash(
+                'Berhasil memverifikasi pembayaran.'
+            )->success();
+        }
 
         return redirect()->back();
     }
@@ -160,7 +166,7 @@ class PpdbUserController extends Controller
         $this->userShouldOwnTransaction($ppdbUser, $transaction);
         $this->authorize('declineOrCancelPayment', $ppdbUser);
 
-        if ($transaction->isPaid() || $transaction->isDeclined()) {
+        if (! $transaction->isPending()) {
             $fraudStatus = null;
 
             flash(
@@ -192,13 +198,23 @@ class PpdbUserController extends Controller
         /** @var \App\Models\Student $student */
         $student = $ppdbUser->user->studentProfileFor($site);
 
-        $student->forceFill([
-            'accepted_at' => now(),
-        ])->save();
+        if ($student->isAccepted()) {
+            flash(
+                'Peserta telah diterima sebagai ' .
+                Role::getDescription(Role::STUDENT) .
+                ' sebelumnya.'
+            )->error();
+        } else {
+            $student->forceFill([
+                'accepted_at' => now(),
+                'declined_at' => null,
+            ])->save();
 
-        flash(
-            'Berhasil menerima peserta menjadi ' . ucwords(Role::STUDENT) . '.'
-        )->success();
+            flash(
+                'Berhasil menerima peserta menjadi ' .
+                Role::getDescription(Role::STUDENT) . '.'
+            )->success();
+        }
 
         return redirect()->back();
     }
@@ -213,14 +229,15 @@ class PpdbUserController extends Controller
         /** @var \App\Models\Student $student */
         $student = $ppdbUser->user->studentProfileFor($site);
 
-        if ($student->isAccepted() || $student->isDeclined()) {
+        if (! $student->isPending()) {
             $student->forceFill([
                 'accepted_at' => null,
                 'declined_at' => null,
             ])->save();
 
             flash(
-                'Berhasil membatalkan peserta menjadi ' . ucwords(Role::STUDENT) . '.'
+                'Berhasil membatalkan peserta menjadi ' .
+                Role::getDescription(Role::STUDENT) . '.'
             )->success();
         } else {
             $student->forceFill([
@@ -229,7 +246,8 @@ class PpdbUserController extends Controller
             ])->save();
 
             flash(
-                'Berhasil menolak peserta menjadi ' . ucwords(Role::STUDENT) . '.'
+                'Berhasil menolak peserta menjadi ' .
+                Role::getDescription(Role::STUDENT) . '.'
             )->success();
         }
 

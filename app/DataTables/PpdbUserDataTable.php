@@ -41,8 +41,7 @@ class PpdbUserDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        $datatables = datatables()
-            ->eloquent($query)
+        $datatables = datatables($query)
             ->addIndexColumn()
             ->addColumn('action', function (PpdbUser $ppdbUser) {
                 $buttons = "<div class=\"btn-group btn-group-sm\">";
@@ -131,13 +130,13 @@ class PpdbUserDataTable extends DataTable
                 ->title('Username'),
             Column::make('user.gender')
                 ->title('L/P'),
-            Column::make('previous_school')
+            Column::computed('previous_school')
                 ->title('Asal Sekolah')
                 ->content('-'),
-            Column::make('wali_name')
+            Column::computed('wali_name')
                 ->title('Nama Wali')
                 ->content('-'),
-            Column::make('wali_phone')
+            Column::computed('wali_phone')
                 ->title('No Telfon Wali')
                 ->content('-')
                 ->hidden(),

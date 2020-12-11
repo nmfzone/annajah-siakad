@@ -33,8 +33,7 @@ class UsersDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        $datatables = datatables()
-            ->eloquent($query)
+        $datatables = datatables($query)
             ->addIndexColumn()
             ->addColumn('action', function (User $user) {
                 $deleteMessage = "Apakah Anda yakin ingin menghapus data {$user->role} ini?";

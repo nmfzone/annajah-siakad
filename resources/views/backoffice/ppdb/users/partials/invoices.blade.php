@@ -25,22 +25,14 @@
                   Unggah Bukti
                 </a>
               @else
-                @if(! $transactionItem->isPaid())
-                  @if($transactionItem->isDeclined())
-                    <div class="{{ auth()->user()->isSuperAdminOrAdmin()
-                                    ? 'text-red-600' : 'py-2 px-6 bg-red-600 text-white' }}
-                      font-bold rounded-lg text-center">
-                      Pembayaran Ditolak
-                    </div>
-                  @else
-                    <div class="{{ auth()->user()->isSuperAdminOrAdmin()
-                                    ? 'text-yellow-600' : 'py-2 px-6 bg-yellow-600 text-white' }}
-                      font-bold rounded-lg text-center">
-                      Proses Verifikasi
-                    </div>
-                  @endif
+                @if($transactionItem->isPending())
+                  <div class="{{ auth()->user()->isSuperAdminOrAdmin()
+                                  ? 'text-yellow-600' : 'py-2 px-6 bg-yellow-600 text-white' }}
+                    font-bold rounded-lg text-center">
+                    Proses Verifikasi
+                  </div>
 
-                  @if(Gate::allows('acceptPayment', $ppdbUser) && ! ($transactionItem->isPaid() || $transactionItem->isDeclined()))
+                  @if(Gate::allows('acceptPayment', $ppdbUser))
                     <a class="mt-2 w-full border-none py-2 px-6 bg-blue-600 hover:bg-blue-800
                               text-white rounded-lg text-center submit-this"
                        data-message="Apakah Anda yakin akan menerima pembayaran dari peserta ini?"
@@ -53,17 +45,25 @@
                     </a>
                   @endif
                 @else
-                  <div class="{{ auth()->user()->isSuperAdminOrAdmin()
-                                    ? 'text-green-600' : 'py-2 px-6 bg-green-600 text-white' }}
-                    font-bold rounded-lg text-center">
-                    Terverifikasi
-                  </div>
+                  @if($transactionItem->isDeclined())
+                    <div class="{{ auth()->user()->isSuperAdminOrAdmin()
+                                    ? 'text-red-600' : 'py-2 px-6 bg-red-600 text-white' }}
+                      font-bold rounded-lg text-center">
+                      Pembayaran Ditolak
+                    </div>
+                  @else
+                    <div class="{{ auth()->user()->isSuperAdminOrAdmin()
+                                      ? 'text-green-600' : 'py-2 px-6 bg-green-600 text-white' }}
+                      font-bold rounded-lg text-center">
+                      Terverifikasi
+                    </div>
+                  @endif
                 @endif
 
                 @can('declineOrCancelPayment', $ppdbUser)
                   <a class="mt-2 w-full border-none py-2 px-6 bg-red-600 hover:bg-red-800
                           text-white rounded-lg text-center submit-this"
-                     data-message="{{ $transactionItem->isPaid() || $transactionItem->isDeclined()
+                     data-message="{{ ! $transactionItem->isPending()
                           ? 'Apakah Anda yakin akan membatalkan '. ($transactionItem->isPaid() ? 'penerimaan' : 'penolakan') . ' pembayaran dari peserta ini?'
                           : 'Apakah Anda yakin akan menolak pembayaran dari peserta ini?' }}"
                      href="{{ sub_route('backoffice.ppdb.users.decline_or_cancel_payment', [
@@ -71,7 +71,7 @@
                         'ppdb_user' => $ppdbUser,
                         'transaction' => $transactionItem->transaction
                     ]) }}">
-                      @if($transactionItem->isPaid() || $transactionItem->isDeclined())
+                      @if(! $transactionItem->isPending())
                         Batal {{ $transactionItem->isPaid() ? 'Menerima' : 'Menolak' }} Pembayaran
                       @else
                         Tolak Pembayaran
@@ -86,7 +86,7 @@
                 @endif
               @endif
             </div>
-            @if(auth()->user()->isStudent() && ! $transactionItem->isPaid())
+            @if(auth()->user()->isStudent() && $transactionItem->isPending())
               <div class="w-full mt-5">
                 <p>Metode Pembayaran: {{ PaymentType::getDescription($transactionItem->transaction->payment_type) }}</p>
                 <p>Provider: {{ Str::upper($transactionItem->transaction->provider) }}</p>

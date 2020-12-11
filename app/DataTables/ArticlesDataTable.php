@@ -30,8 +30,7 @@ class ArticlesDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        $datatables = datatables()
-            ->eloquent($query)
+        $datatables = datatables($query)
             ->addIndexColumn()
             ->addColumn('action', function (Article $article) {
                 $buttons = "<div class=\"btn-group btn-group-sm\">";
@@ -170,11 +169,10 @@ class ArticlesDataTable extends DataTable
     protected function getColumns()
     {
         $columns = [
-            Column::make('id')
+            Column::computed('id')
                 ->title('Index')
                 ->printable(false)
                 ->exportable(false)
-                ->searchable(false)
                 ->hidden(),
             Column::make('title')
                 ->title('Judul'),

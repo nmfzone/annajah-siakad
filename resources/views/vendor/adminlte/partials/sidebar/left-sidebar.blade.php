@@ -85,7 +85,7 @@
                 @if(! is_null($latestPpdbUser))
                   <li class="nav-item">
                     <a class="nav-link
-                            {{ Request::is('ppdb/*/peserta/detail', 'ppdb/*/peserta/*') ? 'active' :'' }}"
+                            {{ Request::is('ppdb/peserta/detail', 'ppdb/*/peserta/*') ? 'active' :'' }}"
                        href="{{ sub_route('backoffice.ppdb.users.direct_show') }}">
                       <i class="far fa-fw fa-circle"></i>
                       <p>Detail Pendaftaran</p>

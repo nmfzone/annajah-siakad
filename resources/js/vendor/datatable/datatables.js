@@ -10,7 +10,7 @@ $.extend(true, $.fn.dataTable.defaults, {
   pageLength: 25,
   pagingType: 'full_numbers',
   language: {
-    'mptyTable': 'Tidak ada data yang tersedia pada tabel ini',
+    'sEmptyTable': 'Tidak ada data yang tersedia pada tabel ini',
     'sProcessing': 'Sedang memproses...',
     'sLengthMenu': 'Tampilkan _MENU_ entri',
     'sZeroRecords': 'Tidak ditemukan data yang sesuai',

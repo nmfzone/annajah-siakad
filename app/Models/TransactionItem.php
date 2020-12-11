@@ -23,6 +23,11 @@ class TransactionItem extends Model
         return $this->morphTo();
     }
 
+    public function isPending()
+    {
+        return $this->transaction->isPending();
+    }
+
     public function isPaid()
     {
         return $this->transaction->isPaid();

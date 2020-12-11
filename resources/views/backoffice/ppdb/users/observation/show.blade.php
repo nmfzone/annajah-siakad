@@ -24,26 +24,7 @@
           </div>
         </div>
         <div class="card-body">
-          @php
-            $roleDesc = Role::getDescription(Role::STUDENT);
-            $siteTitle = Site::title();
-          @endphp
-          @if(auth()->user()->isStudent())
-            @if($student->isAccepted())
-              <alert
-                state="success"
-                message="{{
-                    "Berdasarkan hasil Observasi yang telah dilakukan, kami memutuskan:<br><br>" .
-                    "Selamat, Anda diterima sebagai $roleDesc di $siteTitle Tahun Pelajaran " .
-                    $ppdbUser->ppdb->academicYear->name . "." }}"></alert>
-            @elseif($student->isDeclined())
-              <alert
-                state="danger"
-                message="{{ "Berdasarkan hasil Observasi yang telah dilakukan, kami memutuskan:<br><br>Anda belum diterima sebagai $roleDesc di $siteTitle" }}."></alert>
-            @endif
-          @endif
-
-          @if(!$student->isPending())
+          @if($student->isPending())
             <div class="text-center text-lg">
               <p>Observasi PPDB {{ $ppdbUser->ppdb->academicYear->name }}</p>
 
@@ -51,6 +32,23 @@
                 Klik Disini
               </a>
             </div>
+          @else
+            @php
+              $roleDesc = Role::getDescription(Role::STUDENT);
+              $siteTitle = Site::title();
+            @endphp
+            @if($student->isAccepted())
+              <alert
+                state="success"
+                message="{{
+                  "Berdasarkan hasil Observasi yang telah dilakukan, kami memutuskan:<br><br>" .
+                  "Selamat, Anda diterima sebagai $roleDesc di $siteTitle Tahun Pelajaran " .
+                  $ppdbUser->ppdb->academicYear->name . "." }}"></alert>
+            @else
+              <alert
+                state="danger"
+                message="{{ "Berdasarkan hasil Observasi yang telah dilakukan, kami memutuskan:<br><br>Anda belum diterima sebagai $roleDesc di $siteTitle" }}."></alert>
+            @endif
           @endif
         </div>
       </div>

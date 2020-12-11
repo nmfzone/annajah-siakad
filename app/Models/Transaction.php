@@ -29,6 +29,11 @@ class Transaction extends Model
         return $this->hasMany(TransactionItem::class);
     }
 
+    public function isPending()
+    {
+        return ! ($this->isPaid() || $this->isDeclined());
+    }
+
     public function isPaid()
     {
         return $this->getAttribute('status') === PaymentStatus::PAID;
