@@ -1,6 +1,7 @@
 const mix = require('laravel-mix')
 require('./webpack.config')
 require('laravel-mix-tailwind')
+require('laravel-mix-browser-sync-multi')
 
 /*
  |--------------------------------------------------------------------------
@@ -18,10 +19,16 @@ mix.js('resources/js/app.js', 'public/js')
   .sass('resources/sass/app.scss', 'public/css')
   .sass('resources/sass/dashboard.scss', 'public/css')
   .tailwind('./tailwind.config.js')
-  .browserSync({
-    proxy: process.env.APP_PROTOCOL + '://' + process.env.APP_HOST,
-    port: 3000
-  })
+  .browserSyncMulti([
+    {
+      proxy: process.env.APP_PROTOCOL + '://' + process.env.APP_HOST,
+      port: 3000
+    },
+    {
+      proxy: process.env.APP_PROTOCOL + '://smpit.' + process.env.APP_HOST,
+      port: 3001
+    }
+  ])
 
 mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts/', 'public/fonts/vendor/font-awesome')
 mix.copy('node_modules/tinymce/themes', 'public/vendor/tinymce/themes')

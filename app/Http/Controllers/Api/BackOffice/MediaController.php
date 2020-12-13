@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\BackOffice;
 
+use App\Garages\ImageOptimizer\OptimizerChainFactory;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Resources\MediaCollection;
 use App\Http\Resources\MediaResource;
@@ -10,7 +11,6 @@ use App\Rules\WysiwygMediaModel;
 use App\Services\MediaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class MediaController extends Controller
 {

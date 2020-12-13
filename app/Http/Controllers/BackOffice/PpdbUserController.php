@@ -5,6 +5,7 @@ namespace App\Http\Controllers\BackOffice;
 use App\DataTables\PpdbUserDataTable;
 use App\Enums\PaymentFraudStatus;
 use App\Enums\Role;
+use App\Garages\ImageOptimizer\OptimizerChainFactory;
 use App\Http\Controllers\Concerns\HasSiteContext;
 use App\Http\Controllers\Controller;
 use App\Models\Payment;
@@ -15,7 +16,6 @@ use App\Services\PpdbService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Spatie\ImageOptimizer\OptimizerChainFactory;
 
 class PpdbUserController extends Controller
 {

@@ -4555,6 +4555,11 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
+laravel-mix-browser-sync-multi@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/laravel-mix-browser-sync-multi/-/laravel-mix-browser-sync-multi-0.1.0.tgz#e3a32b4d85ffe6fd956fada42d8822919424cddf"
+  integrity sha512-UTaODyL1SSu8nWaYKtai6gfn4FQ6qG6cxx8i6J+zN/5TG/+nT4E3YtbcFE0cGZkdvH6GeDlOXkjfZtbzPWAwTw==
+
 laravel-mix-tailwind@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/laravel-mix-tailwind/-/laravel-mix-tailwind-0.1.0.tgz#5dee3cb7a85aef6354912982a31ba387997e3289"

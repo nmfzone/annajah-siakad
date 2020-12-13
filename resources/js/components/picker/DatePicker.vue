@@ -2,11 +2,7 @@
   <div
     ref="vTailwindPickerRef"
     class="relative select-none"
-    v-closable="{
-      handler: 'onAway',
-      exclude: ['currentPicker'],
-    }"
-    @click="onFeedBack"
+    v-click-outside="onAway"
     :style="`--bg-tailwind-picker: ${theme.background};`">
     <slot></slot>
     <transition name="v-tailwind-picker">
@@ -372,45 +368,9 @@ dayjs.extend(localizedFormat)
 dayjs.extend(advancedFormat)
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
-let handleOutsideClick
 
 export default {
   name: 'VueTailwindPicker',
-  directives: {
-    closable: {
-      bind(el, binding, vnode) {
-        handleOutsideClick = (e) => {
-          e.stopPropagation()
-          const { handler, exclude } = binding.value
-          let clickedOnExcludedEl = false
-          if (exclude) {
-            exclude.forEach((refName) => {
-              if (!clickedOnExcludedEl) {
-                const excludedEl = vnode.context.$refs[refName]
-                clickedOnExcludedEl = excludedEl
-                  ? excludedEl.contains(e.target)
-                  : false
-              }
-            })
-          }
-
-          if (clickedOnExcludedEl && vnode.context.autoClose) {
-            vnode.context[handler]()
-          }
-          if (!el.contains(e.target) && !clickedOnExcludedEl) {
-            vnode.context[handler]()
-          }
-        }
-
-        document.addEventListener('click', handleOutsideClick)
-        document.addEventListener('touchstart', handleOutsideClick)
-      },
-      unbind() {
-        document.removeEventListener('click', handleOutsideClick)
-        document.removeEventListener('touchstart', handleOutsideClick)
-      },
-    },
-  },
   props: {
     init: {
       type: Boolean,
@@ -635,7 +595,7 @@ export default {
     changePicker(date) {
       this.localSelectedDate = date
       this.emit()
-      this.showPicker = !this.showPicker
+      this.showPicker = false
     },
     onPrevious() {
       if (this.visiblePrev) {

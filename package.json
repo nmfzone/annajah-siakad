@@ -23,6 +23,7 @@
         "icheck-bootstrap": "^3.0.1",
         "jquery": "^3.2",
         "laravel-mix": "^5.0.1",
+        "laravel-mix-browser-sync-multi": "^0.1.0",
         "laravel-mix-tailwind": "^0.1.0",
         "lodash": "^4.17.19",
         "overlayscrollbars": "^1.13.0",

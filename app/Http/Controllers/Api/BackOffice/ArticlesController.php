@@ -27,6 +27,7 @@ class ArticlesController extends Controller
             'type' => $request->get('type'),
             'title' => $request->get('title'),
             'content' => $request->get('content'),
+            'site_id' => optional(site())->id,
             'user_id' => $request->user()->id,
         ]);
 
