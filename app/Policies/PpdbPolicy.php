@@ -10,44 +10,46 @@ class PpdbPolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
-    public function before($user, $ability)
+    public function before($user, $ability): ?bool
     {
         if ($user->isSuperAdmin()) {
             return true;
         }
+
+        return null;
     }
 
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $user->isAdmin();
     }
 
-    public function view(User $user, PpdbUser $ppdbUser)
+    public function view(User $user, PpdbUser $ppdbUser): bool
     {
         return $user->isAdmin();
     }
 
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $user->isAdmin();
     }
 
-    public function update(User $user, PpdbUser $ppdbUser)
+    public function update(User $user, PpdbUser $ppdbUser): bool
     {
         return $user->isAdmin();
     }
 
-    public function delete(User $user, PpdbUser $ppdbUser)
+    public function delete(User $user, PpdbUser $ppdbUser): bool
     {
         return $user->isAdmin();
     }
 
-    public function restore(User $user, ?PpdbUser $ppdbUser = null)
+    public function restore(User $user, ?PpdbUser $ppdbUser = null): bool
     {
         return $user->isAdmin();
     }
 
-    public function forceDelete(User $user, PpdbUser $ppdbUser)
+    public function forceDelete(User $user, PpdbUser $ppdbUser): bool
     {
         return $user->isAdmin();
     }

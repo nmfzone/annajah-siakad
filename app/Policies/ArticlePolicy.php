@@ -10,54 +10,56 @@ class ArticlePolicy extends BasePolicy
 {
     use HandlesAuthorization;
 
-    public function before($user, $ability)
+    public function before($user, $ability): ?bool
     {
         if ($user->isSuperAdmin()) {
             return true;
         }
+
+        return null;
     }
 
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $this->onlyAcceptedStudent($user);
     }
 
-    public function view(User $user, Article $article)
+    public function view(User $user, Article $article): bool
     {
         return $article->author->is($user) || $user->isAdmin();
     }
 
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $this->onlyAcceptedStudent($user);
     }
 
-    public function update(User $user, Article $article)
+    public function update(User $user, Article $article): bool
     {
         return $this->onlyAcceptedStudent($user) && ($article->author->is($user) || $user->isAdmin());
     }
 
-    public function publishArticle(User $user, Article $article)
+    public function publishArticle(User $user, Article $article): bool
     {
         return $this->onlyAcceptedStudent($user) && ($article->author->is($user) || $user->isAdmin());
     }
 
-    public function delete(User $user, Article $article)
+    public function delete(User $user, Article $article): bool
     {
         return $this->onlyAcceptedStudent($user) && ($article->author->is($user) || $user->isAdmin());
     }
 
-    public function restore(User $user, ?Article $article = null)
+    public function restore(User $user, ?Article $article = null): bool
     {
         return $user->isAdmin();
     }
 
-    public function forceDelete(User $user, Article $article)
+    public function forceDelete(User $user, Article $article): bool
     {
         return $user->isAdmin();
     }
 
-    protected function onlyAcceptedStudent(User $user)
+    protected function onlyAcceptedStudent(User $user): bool
     {
         $site = site();
 
