@@ -89,7 +89,7 @@ class MacroServiceProvider extends ServiceProvider
             }
 
             return substr(str_shuffle(
-                str_repeat($pool, ceil($length / strlen($pool)))
+                str_repeat($pool, (int) ceil($length / strlen($pool)))
             ), 0, $length);
         });
 
@@ -128,7 +128,8 @@ class MacroServiceProvider extends ServiceProvider
                 }
 
                 if ($url->getHost() == config('app.host') ||
-                    Str::endsWith($url->getHost(), '.' . config('app.host'))) {
+                    Str::endsWith($url->getHost(), '.' . config('app.host')) ||
+                    app()->isLocal()) {
                     $path = (string) $url;
                 }
             }
