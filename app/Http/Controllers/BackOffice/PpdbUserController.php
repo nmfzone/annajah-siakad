@@ -8,12 +8,12 @@ use App\Enums\Role;
 use App\Garages\ImageOptimizer\OptimizerChainFactory;
 use App\Http\Controllers\Concerns\HasSiteContext;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PaymentCreateRequest;
 use App\Models\Payment;
 use App\Models\Ppdb;
 use App\Models\PpdbUser;
 use App\Models\Transaction;
 use App\Services\PpdbService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -79,7 +79,7 @@ class PpdbUserController extends Controller
     }
 
     public function storePayment(
-        Request $request,
+        PaymentCreateRequest $request,
         $subDomain,
         Ppdb $ppdb,
         PpdbUser $ppdbUser,
@@ -87,41 +87,22 @@ class PpdbUserController extends Controller
     ) {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
         $this->userShouldOwnTransaction($ppdbUser, $transaction);
-        $this->authorize('createPayment', $ppdbUser);
+        $this->authorize('createPayment', [$ppdbUser, $transaction]);
 
-        if (! is_null($transaction->payment)) {
-            abort(403);
-        }
+        $requestData = $request->validated();
 
-        $request->validate([
-            'provider_holder_name' => 'required|max:50',
-            'provider_number' => 'required|digits_between:5,30',
-            'payment_date' => 'required|date_format:d-m-Y',
-            'payment_time' => 'nullable:date_format:"H:i"',
-            'proof_file' => 'required|file|mimes:png,jpg,jpeg|max:1000',
-        ], [], [
-            'provider_holder_name' => 'Nama Pengirim',
-            'provider_number' => 'Nomor Rekening',
-            'payment_date' => 'Tanggal Pembayaran',
-            'payment_time' => 'Waktu Pembayaran',
-            'proof_file' => 'Bukti Pembayaran',
-        ]);
-
-        DB::transaction(function () use ($request, $transaction) {
-            $optimizerChain = OptimizerChainFactory::create(['quality' => 60]);
-            $optimizerChain->optimize($request->file('proof_file')->path());
+        DB::transaction(function () use ($requestData, $transaction) {
+            $optimizerChain = OptimizerChainFactory::create(['quality' => 40]);
+            $optimizerChain->optimize($requestData['proof_file']->path());
 
             /** @var \App\Models\Payment $payment */
             $payment = $transaction->payment()->save(new Payment([
-                'provider_holder_name' => $request->provider_holder_name,
-                'provider_number' => $request->provider_number,
-                'paid_on' => Carbon::createFromFormat(
-                    'd-m-Y H:i',
-                    $request->payment_date . ' ' . ($request->payment_time ?? '00:00')
-                ),
+                'provider_holder_name' => $requestData['provider_holder_name'],
+                'provider_number' => $requestData['provider_number'],
+                'paid_on' => $requestData['payment_datetime'],
             ]));
 
-            $payment->addMedia($request->file('proof_file'))
+            $payment->addMedia($requestData['proof_file'])
                 ->toMediaCollection('proof');
         });
 
