@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\PpdbUser;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -39,8 +40,12 @@ class PpdbUserPolicy extends BasePolicy
         return true;
     }
 
-    public function createPayment(User $user, PpdbUser $ppdbUser): bool
+    public function createPayment(User $user, PpdbUser $ppdbUser, Transaction $transaction): bool
     {
+        if (! is_null($transaction->payment)) {
+            return false;
+        }
+
         return $user->is($ppdbUser->user) || $user->isAdmin();
     }
 
