@@ -29,6 +29,7 @@ class ArticleCreateRequest extends FormRequest
         $validated = collect(parent::validated());
 
         $validated->put('user_id', $this->user()->id);
+        $validated->put('site_id', optional(site())->id);
 
         return $validated->toArray();
     }

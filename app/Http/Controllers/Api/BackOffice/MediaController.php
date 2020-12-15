@@ -6,6 +6,7 @@ use App\Garages\ImageOptimizer\OptimizerChainFactory;
 use App\Http\Controllers\Api\Controller;
 use App\Http\Resources\MediaCollection;
 use App\Http\Resources\MediaResource;
+use App\Models\Article;
 use App\Models\Media;
 use App\Rules\WysiwygMediaModel;
 use App\Services\MediaService;
@@ -23,6 +24,8 @@ class MediaController extends Controller
 
     public function wysiwygMedia(Request $request)
     {
+        $this->authorize('viewAny', Article::class);
+
         $request->validate([
             'model' => ['required', new WysiwygMediaModel],
             'model_id' => [new WysiwygMediaModel($request->get('model'))],
@@ -50,6 +53,8 @@ class MediaController extends Controller
 
     public function storeWysiwygMedia(Request $request)
     {
+        $this->authorize('create', Article::class);
+
         $request->validate([
             'model' => ['required', new WysiwygMediaModel],
             'model_id' => [new WysiwygMediaModel($request->get('model'))],

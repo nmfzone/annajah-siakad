@@ -95,7 +95,6 @@
                     :on-save-callback="data.onSaveCallback"
                     model-type="article"
                     @if(isset($article))
-                    :model-id="{{ $article->id }}"
                     initial-value="{{ $article->content }}"
                     @endif
                     name="content"

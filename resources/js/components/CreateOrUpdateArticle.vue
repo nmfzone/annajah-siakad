@@ -86,22 +86,17 @@ export default {
         const publishedAt = _.get(this.model, 'published_at')
         this.loadingSaveOrPublish = true
 
-        if (isEmpty(publishedAt)) {
-          try {
-            await this.performSave({
+        try {
+          if (isEmpty(publishedAt)) {
+            await this.onSaveCallback({
               published_at: dayjs().format('YYYY-MM-DD HH:mm:ss'),
             })
             this.successMessage = 'Artikel berhasil dipublish.'
-          } catch (e) {
-            //
+          } else {
+            await this.onSaveCallback()
           }
-        } else {
-          try {
-            await this.performSave()
-            this.successMessage = 'Artikel berhasil diperbarui.'
-          } catch (e) {
-            //
-          }
+        } catch (e) {
+          //
         }
 
         this.loadingSaveOrPublish = false
@@ -116,21 +111,11 @@ export default {
         this.loadingSaveDraft = true
 
         try {
-          if (this.modelId) {
-            await this.onSaveCallback()
-          } else {
-            if (!this.isDirty) {
-              return
-            }
-            const {data} = await axios.post(`/api/artikel`, {
-              type: this.type,
-              title: this.title,
-              content: this.content
-            })
-
-            this.modelId = data.data.id
-            this.redirectToEditPage()
+          if (!this.modelId && !this.isDirty) {
+            return
           }
+
+          await this.onSaveCallback()
         } catch (e) {
           //
         }
@@ -139,16 +124,16 @@ export default {
         this.editor.setProgressState(false)
       })
     },
-    async onSaveCallback() {
+    async onSaveCallback(data = null) {
       const cachedModelId = _.get(window.mediaSelectorData, 'article')
 
       if (cachedModelId) {
         this.modelId = cachedModelId
       }
 
-      if (this.modelId) {
-        await this.performSave()
+      await this.performSave(data)
 
+      if (this.modelId) {
         const publishedAt = _.get(this.model, 'published_at')
 
         if (isEmpty(publishedAt)) {
@@ -156,25 +141,39 @@ export default {
         } else {
           this.successMessage = 'Artikel berhasil diperbarui.'
         }
+      } else {
+        this.successMessage = 'Berhasil menyimpan sebagai Draf.'
       }
     },
-    async performSave(data) {
+    async performSave(data = null) {
       this.submitted = false
+      let resultId = this.modelId
 
-      await axios.put(`/api/artikel/${this.modelId}`, {
-        title: this.title,
-        content: this.content,
-        ...data && data
-      })
+      if (this.modelId) {
+        await axios.put(`/api/artikel/${this.modelId}`, {
+          title: this.title,
+          content: this.content,
+          ...data && data
+        })
+      } else {
+        const response = await axios.post(`/api/artikel`, {
+          type: this.type,
+          title: this.title,
+          content: this.content,
+          ...data && data
+        })
+
+        resultId = response.data.data.id
+      }
 
       window.onbeforeunload = undefined
       this.submitted = true
 
-      this.redirectToEditPage()
+      this.redirectToEditPage(resultId)
     },
-    redirectToEditPage() {
+    redirectToEditPage(id) {
       if (!(/\/artikel\/([0-9]+)\/edit$/).test(this.currentUrl.pathname)) {
-        window.location.replace(`/artikel/${this.modelId}/edit`);
+        window.location.replace(`/artikel/${id}/edit`);
       }
     },
     watchValueChanges() {

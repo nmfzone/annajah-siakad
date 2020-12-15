@@ -4,23 +4,21 @@ namespace App\Services;
 
 use App\Garages\Utility\Unique;
 use App\Models\Article;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class ArticleService extends BaseService
 {
     public function create(array $data, $isAutoDraft = false): Article
     {
-        $article = Article::create([
+        return Article::create([
             'slug' => $this->generateSlug($data['title'] ?? 'Untitled', $isAutoDraft),
             'title' => $data['title'],
             'type' => $data['type'],
             'content' => $data['content'],
-            'site_id' => Arr::get($data, 'site_id'),
+            'published_at' => $data['published_at'] ?? null,
+            'site_id' => $data['site_id'] ?? null,
             'user_id' => $data['user_id'],
         ]);
-
-        return $article;
     }
 
     public function generateSlug($title, $isAutoDraft = false): string

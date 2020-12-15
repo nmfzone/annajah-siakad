@@ -23,13 +23,9 @@ class ArticlesController extends Controller
 
     public function store(ArticleCreateRequest $request)
     {
-        $article = $this->articleService->create([
-            'type' => $request->get('type'),
-            'title' => $request->get('title'),
-            'content' => $request->get('content'),
-            'site_id' => optional(site())->id,
-            'user_id' => $request->user()->id,
-        ]);
+        $this->authorize('create', Article::class);
+
+        $article = $this->articleService->create($request->validated());
 
         return new ArticleResource($article);
     }
@@ -37,6 +33,7 @@ class ArticlesController extends Controller
     public function update(ArticleUpdateRequest $request, Article $article)
     {
         $this->articleShouldBelongsToCurrentSite($article);
+        $this->authorize('update', $article);
 
         $article->update($request->validated());
 
