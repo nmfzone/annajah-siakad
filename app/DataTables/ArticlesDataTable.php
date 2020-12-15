@@ -120,7 +120,7 @@ class ArticlesDataTable extends DataTable
      */
     public function query()
     {
-        /** @var \App\Models\User $authUser */
+        /** @var \App\Models\User|\Illuminate\Support\Optional $authUser */
         $authUser = optional(auth()->user());
         $query = Article::query()
             ->latest()
