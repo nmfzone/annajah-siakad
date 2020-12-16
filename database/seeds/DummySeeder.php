@@ -166,5 +166,20 @@ class DummySeeder extends Seeder
         $ppdbService->addNewRegistrar($ppdb, $user, [
             'selection_method' => SelectionMethod::PRESTASI,
         ]);
+
+        factory(User::class, 100)->make()->each(function ($user) use ($site) {
+            $user->role = Role::STUDENT;
+            /** @var \App\Models\User $user */
+            $user = $site->users()->save($user);
+
+            $year = rand(2016, 2019);
+            $user->studentProfiles()->save(
+                new Student([
+                    'nis' => Student::generateNis($site, $year),
+                    'accepted_at' => Carbon::create($year, 7, 1),
+                ]),
+                ['site_id' => $site->id]
+            );
+        });
     }
 }

@@ -8,10 +8,10 @@ class ArticlesSeeder extends Seeder
 {
     public function run()
     {
-        factory(Article::class, 5)->create();
+        factory(Article::class, 50)->create();
 
         Site::all()->each(function (Site $site) {
-            factory(Article::class, 5)
+            factory(Article::class, 50)
                 ->create([
                     'site_id' => $site->id,
                 ]);
