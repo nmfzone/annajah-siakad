@@ -361,13 +361,13 @@
                         Jenis Kelamin <span class="required">*</span>
                       </label>
 
-                      @php($gender = [['value' => 0, 'text' => 'Perempuan'], ['value' => 1, 'text' => 'Laki-Laki']])
+                      @php($gender = [['value' => 1, 'text' => 'Laki-Laki'], ['value' => 0, 'text' => 'Perempuan']])
 
                       <form-input
                         inline
                         :data='@json($gender)'
                         initial-type="int"
-                        initial-value="{{ old('gender', 0) }}"
+                        initial-value="{{ old('gender', 1) }}"
                         type="radio"
                         @error('gender')
                         :state="false"

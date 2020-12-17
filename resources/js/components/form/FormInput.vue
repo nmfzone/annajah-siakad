@@ -2,7 +2,7 @@
   <div>
     <template v-if="!withAddOn || typeIsCheckboxRadioSelect">
       <template v-if="typeLower === 'radio'">
-        <div class="flex" :class="[inline ? 'flex-row' : 'flex-col']">
+        <div class="flex flex-wrap" :class="[inline ? 'flex-row' : 'flex-col']">
           <label
             v-for="(item, i) in data"
             :key="i"
@@ -30,11 +30,7 @@
             @click="onClick($event, item)">
             <input
               type="checkbox"
-              class="form-checkbox text-gray-600 pt-4"
-              :style="{
-                width: '25px',
-                height: '25px'
-              }"
+              class="form-checkbox text-gray-600 mt-1.5"
               v-bind="attrs"
               v-on="listeners"
               :value="item.value"
