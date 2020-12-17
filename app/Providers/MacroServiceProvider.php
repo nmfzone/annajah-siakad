@@ -113,7 +113,7 @@ class MacroServiceProvider extends ServiceProvider
         });
 
         Request::macro('getNextUrl', function ($default = '/') {
-            $intended = $this->session->get('url.intended');
+            $intended = $this->session->pull('url.intended');
             $next = $this->get('next');
             $path = null;
 
