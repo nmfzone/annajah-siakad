@@ -3,19 +3,23 @@
 namespace App\DataTables;
 
 use App\Models\Article;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
 class ArticlesDataTable extends DataTable
 {
+    /**
+     * @var \App\Models\User|null
+     */
     protected $authUser;
 
     protected $site;
 
     protected $type;
 
-    public function __construct($type, $authUser)
+    public function __construct($type, User $authUser = null)
     {
         $this->type = $type;
         $this->authUser = $authUser;
@@ -121,7 +125,7 @@ class ArticlesDataTable extends DataTable
     public function query()
     {
         /** @var \App\Models\User|\Illuminate\Support\Optional $authUser */
-        $authUser = optional(auth()->user());
+        $authUser = optional($this->authUser);
         $query = Article::query()
             ->latest()
             ->with('author')
