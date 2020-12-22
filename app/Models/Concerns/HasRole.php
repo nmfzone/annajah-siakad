@@ -6,72 +6,72 @@ use App\Enums\Role;
 
 trait HasRole
 {
-    public function isSuperAdminOrAdmin()
+    public function isSuperAdminOrAdmin(): bool
     {
         return $this->isSuperAdmin() || $this->isAdmin();
     }
 
-    public function isNotSuperAdminOrAdmin()
+    public function isNotSuperAdminOrAdmin(): bool
     {
         return ! $this->isSuperAdminOrAdmin();
     }
 
-    public function isSuperAdmin()
+    public function isSuperAdmin(): bool
     {
-        return $this->attributes['role'] == Role::SUPERADMIN;
+        return $this->getAttribute('role') === Role::SUPERADMIN;
     }
 
-    public function isNotSuperAdmin()
+    public function isNotSuperAdmin(): bool
     {
         return ! $this->isSuperAdmin();
     }
 
-    public function isAdmin()
+    public function isAdmin(): bool
     {
-        return $this->attributes['role'] == Role::ADMIN;
+        return $this->getAttribute('role') === Role::ADMIN;
     }
 
-    public function isNotAdmin()
+    public function isNotAdmin(): bool
     {
         return ! $this->isAdmin();
     }
 
-    public function isHeadMaster()
+    public function isHeadMaster(): bool
     {
-        return $this->attributes['role'] == Role::HEAD_MASTER;
+        return $this->getAttribute('role') === Role::HEAD_MASTER;
     }
 
-    public function isNotHeadMatser()
+    public function isNotHeadMatser(): bool
     {
         return ! $this->isHeadMaster();
     }
 
-    public function isEditor()
+    public function isEditor(): bool
     {
-        return $this->attributes['role'] == Role::EDITOR;
+        return $this->getAttribute('role') === Role::EDITOR;
     }
 
-    public function isNotEditor()
+    public function isNotEditor(): bool
     {
         return ! $this->isEditor();
     }
 
-    public function isTeacher()
+    public function isTeacher(): bool
     {
-        return $this->attributes['role'] == Role::TEACHER;
+        return $this->getAttribute('role') === Role::TEACHER;
     }
 
-    public function isNotTeacher()
+    public function isNotTeacher(): bool
     {
         return ! $this->isTeacher();
     }
 
-    public function isStudent()
+    public function isStudent(): bool
     {
-        return $this->attributes['role'] == Role::STUDENT;
+        return $this->getAttribute('role') === Role::STUDENT;
     }
 
-    public function isNotStudent()
+    public function isNotStudent(): bool
     {
         return ! $this->isStudent();
     }

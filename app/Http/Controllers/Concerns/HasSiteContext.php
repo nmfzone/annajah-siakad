@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Concerns;
 
-use App\Models\Site;
 use App\Models\User;
 
 trait HasSiteContext
