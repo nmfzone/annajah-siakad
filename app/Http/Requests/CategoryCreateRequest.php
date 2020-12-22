@@ -20,7 +20,7 @@ class CategoryCreateRequest extends FormRequest
             'name' => ['required', 'max:100'],
             'parent_id' => [
                 'nullable',
-                Rule::exists(Category::class)
+                Rule::exists(Category::class, 'id')
                     ->where('site_id', optional(site())->id),
             ],
         ];
