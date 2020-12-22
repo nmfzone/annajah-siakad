@@ -19,7 +19,7 @@ class ArticleCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'type' => 'required|in:' . implode(',', ArticleType::getValues()),
+            'type' => ['required', Rule::in(ArticleType::getValues())],
             'title' => ['nullable', 'max:100', new RequiredIfEmpty('content')],
             'content' => ['nullable', 'string', new RequiredIfEmpty('title')],
             // @TODO: Correctly validate thumbnail id
