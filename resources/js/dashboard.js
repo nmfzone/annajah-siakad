@@ -14,8 +14,10 @@ import './vendor/datatable/datatables'
 
 
 import CreateOrUpdateArticle from './components/CreateOrUpdateArticle'
+import ThumbnailPicker from './components/ThumbnailPicker'
 
 Vue.component('create-or-update-article', CreateOrUpdateArticle)
+Vue.component('thumbnail-picker', ThumbnailPicker)
 
 const app = new Vue({
   el: '#app',

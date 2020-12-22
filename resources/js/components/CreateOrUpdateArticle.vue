@@ -37,6 +37,7 @@ export default {
       modelId: null,
       title: null,
       content: null,
+      thumbnailId: null,
       successMessage: null,
       loadingSaveDraft: false,
       loadingUpdateOrPublish: false,
@@ -153,6 +154,7 @@ export default {
         await axios.put(`/api/artikel/${this.modelId}`, {
           title: this.title,
           content: this.content,
+          thumbnail_id: this.thumbnailId,
           ...data && data
         })
       } else {
@@ -160,6 +162,7 @@ export default {
           type: this.type,
           title: this.title,
           content: this.content,
+          thumbnail_id: this.thumbnailId,
           ...data && data
         })
 

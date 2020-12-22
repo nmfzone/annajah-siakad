@@ -33,6 +33,11 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(Site::class);
     }
 
+    public function thumbnail()
+    {
+        return $this->belongsTo(Media::class, 'thumbnail_id');
+    }
+
     public function title()
     {
         $title = $this->getAttribute('title');
@@ -48,10 +53,6 @@ class Article extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('images')
-            ->useDisk('public');
-
-        $this->addMediaCollection('thumb')
-            ->singleFile()
             ->useDisk('public');
     }
 }

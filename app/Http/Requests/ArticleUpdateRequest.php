@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Gate;
 
 class ArticleUpdateRequest extends ArticleCreateRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         return Gate::allows('update', $this->route('article'));
     }
 
-    public function rules()
+    public function rules(): array
     {
         $rules = parent::rules();
 

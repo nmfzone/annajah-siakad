@@ -100,6 +100,23 @@
                     name="content"
                     required></form-input>
                 </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="content" class="col-form-label">
+                        Gambar Unggulan
+                      </label>
+
+                      <div class="">
+                        <thumbnail-picker
+                          model-type="article"
+                          @selected-image="data.updateProps($event.id, 'thumbnailId')"
+                          @deselect-image="data.updateProps(null, 'thumbnailId')"></thumbnail-picker>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
