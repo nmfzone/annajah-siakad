@@ -6,7 +6,6 @@ use App\Models\Article;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Services\DataTable;
 
 class ArticlesDataTable extends DataTable
 {
@@ -127,9 +126,12 @@ class ArticlesDataTable extends DataTable
         /** @var \App\Models\User|\Illuminate\Support\Optional $authUser */
         $authUser = optional($this->authUser);
         $query = Article::query()
-            ->latest()
             ->with('author')
             ->where('type', $this->type);
+
+        if ($this->isOrderedWithDefaultOrder()) {
+            $query->latest();
+        }
 
         if ($this->site) {
             $query->where('site_id', $this->site->id);

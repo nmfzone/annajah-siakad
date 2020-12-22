@@ -5,7 +5,6 @@ namespace App\DataTables;
 use App\Models\Category;
 use Illuminate\Support\Facades\Gate;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Services\DataTable;
 
 class CategoriesDataTable extends DataTable
 {
@@ -70,8 +69,11 @@ class CategoriesDataTable extends DataTable
     public function query()
     {
         $query = Category::query()
-            ->latest()
             ->with('articles');
+
+        if ($this->isOrderedWithDefaultOrder()) {
+            $query->latest();
+        }
 
         if ($this->site) {
             $query->where('site_id', $this->site->id);

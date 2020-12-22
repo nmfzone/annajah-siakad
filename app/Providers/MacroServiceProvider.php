@@ -12,9 +12,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Spatie\Url\Url;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Yajra\DataTables\Html\Builder as DataTableBuilder;
 
 class MacroServiceProvider extends ServiceProvider
 {
@@ -182,6 +182,10 @@ class MacroServiceProvider extends ServiceProvider
 
         Blade::directive('next', function () {
             return '<?php echo next_field(); ?>';
+        });
+
+        DataTableBuilder::macro('getAttributes', function () {
+            return $this->attributes;
         });
     }
 }

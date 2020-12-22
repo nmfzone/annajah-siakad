@@ -7,7 +7,6 @@ use App\Models\PpdbUser;
 use App\Models\Student;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Services\DataTable;
 
 class PpdbUserDataTable extends DataTable
 {
