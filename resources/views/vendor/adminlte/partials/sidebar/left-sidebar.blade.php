@@ -118,10 +118,49 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a class="nav-link
+                          {{ Request::is('artikel/buat') ? 'active' :'' }}"
+                   href="{{ route('backoffice.articles.create') }}">
+                  <i class="far fa-fw fa-circle"></i>
+                  <p>Tambah Artikel</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link
                           {{ Request::is('artikel') ? 'active' :'' }}"
                    href="{{ route('backoffice.articles.index') }}">
                   <i class="far fa-fw fa-circle"></i>
                   <p>Lis Artikel</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        @endif
+
+        @can('viewAny', App\Models\Category::class)
+          <li class="nav-item has-treeview
+                      {{ Request::is('kategori', 'kategori/*') ? 'menu-open' :'' }}">
+            <a class="nav-link
+                      {{ Request::is('kategori', 'kategori/*') ? 'active' :'' }}"
+               href="#">
+              <i class="fas fa-fw fa-tag"></i>
+              <p>Manajemen Kategori <i class="fas fa-angle-left right"></i></p>
+            </a>
+
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a class="nav-link
+                          {{ Request::is('kategori/buat') ? 'active' :'' }}"
+                   href="{{ route('backoffice.categories.create') }}">
+                  <i class="far fa-fw fa-circle"></i>
+                  <p>Tambah Kategori</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link
+                          {{ Request::is('kategori') ? 'active' :'' }}"
+                   href="{{ route('backoffice.categories.index') }}">
+                  <i class="far fa-fw fa-circle"></i>
+                  <p>Lis Kategori</p>
                 </a>
               </li>
             </ul>

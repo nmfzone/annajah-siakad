@@ -10,7 +10,6 @@ use App\Models\Site;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\File;
 
 class PreliminaryDataSeeder extends Seeder
 {

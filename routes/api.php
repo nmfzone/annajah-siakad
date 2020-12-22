@@ -24,6 +24,8 @@ Route::namespace('Api')->group(function () {
         ], function () {
             Route::post('/artikel', 'ArticlesController@store');
             Route::put('/artikel/{article}', 'ArticlesController@update');
+            Route::get('/artikel/{article}/kategori', 'ArticleCategoriesController')
+                ->name('articles.categoris.index');
 
             Route::get('/media/wysiwyg', 'MediaController@wysiwygMedia');
             Route::post('/media/wysiwyg', 'MediaController@storeWysiwygMedia');

@@ -14,10 +14,12 @@ use App\Models\Course;
 use App\Models\Ppdb;
 use App\Models\Site;
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\User;
 use App\Services\PpdbService;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 
 class DummySeeder extends Seeder
 {
@@ -167,19 +169,25 @@ class DummySeeder extends Seeder
             'selection_method' => SelectionMethod::PRESTASI,
         ]);
 
-        factory(User::class, 100)->make()->each(function ($user) use ($site) {
-            $user->role = Role::STUDENT;
-            /** @var \App\Models\User $user */
-            $user = $site->users()->save($user);
+        factory(User::class, 100)
+            ->make()
+            ->each(function (User $user) use ($site) {
+                $user->role = Arr::random([Role::STUDENT, Role::TEACHER]);
+                /** @var \App\Models\User $user */
+                $user = $site->users()->save($user);
 
-            $year = rand(2016, 2019);
-            $user->studentProfiles()->save(
-                new Student([
-                    'nis' => Student::generateNis($site, $year),
-                    'accepted_at' => Carbon::create($year, 7, 1),
-                ]),
-                ['site_id' => $site->id]
-            );
-        });
+                if ($user->role === Role::STUDENT) {
+                    $year = rand(2016, 2019);
+                    $user->studentProfiles()->save(
+                        new Student([
+                            'nis' => Student::generateNis($site, $year),
+                            'accepted_at' => Carbon::create($year, 7, 1),
+                        ]),
+                        ['site_id' => $site->id]
+                    );
+                } else {
+                    $user->teacherProfiles()->save(new Teacher(), ['site_id' => $site->id]);
+                }
+            });
     }
 }

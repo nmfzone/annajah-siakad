@@ -47,6 +47,11 @@ class Site extends Model implements HasMedia
         return $this->hasMany(Article::class);
     }
 
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
     public function getLogoAttribute()
     {
         $logo = $this->getFirstMediaUrl('logo');

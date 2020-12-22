@@ -86,6 +86,7 @@ Route::group([
         ->name('profile');
 
     require_once 'partials/article.php';
+    require_once 'partials/category.php';
     require_once 'partials/user.php';
 });
 

@@ -106,12 +106,6 @@ class MacroServiceProvider extends ServiceProvider
             return $this;
         });
 
-        EloquentBuilder::macro('firstWhere', function () {
-            $query = call_user_func_array([$this, 'where'], func_get_args());
-
-            return $query->first();
-        });
-
         Request::macro('getNextUrl', function ($default = '/') {
             $intended = $this->session->pull('url.intended');
             $next = $this->get('next');

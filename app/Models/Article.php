@@ -49,5 +49,9 @@ class Article extends Model implements HasMedia
     {
         $this->addMediaCollection('images')
             ->useDisk('public');
+
+        $this->addMediaCollection('thumb')
+            ->singleFile()
+            ->useDisk('public');
     }
 }
