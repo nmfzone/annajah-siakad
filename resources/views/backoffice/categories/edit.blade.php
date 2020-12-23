@@ -56,6 +56,7 @@
                     type="text"
                     id="name"
                     name="name"
+                    required
                     class="form-control @error('name') is-invalid @enderror"
                     value="{{ old('name', $category->name) }}">
 
