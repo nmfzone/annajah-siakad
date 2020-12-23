@@ -274,12 +274,16 @@
                 editor.setContent(this.localValue)
               }
               editor.addShortcut('meta+s', 'Custom Ctrl/Command+S', 'custom_meta_s');
-              editor.addCommand('custom_meta_s', async () => {
+              editor.addCommand('custom_meta_s', () => {
                 if (this.onSaveCallback) {
                   editor.setProgressState(true)
                   editor.save()
-                  await this.$nextTick(async () => {
-                    await this.onSaveCallback()
+                  this.$nextTick(async () => {
+                    try {
+                      await this.onSaveCallback()
+                    } catch (e) {
+                      //
+                    }
                     editor.setProgressState(false)
                   })
                 }
