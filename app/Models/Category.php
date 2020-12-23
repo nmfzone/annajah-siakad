@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Garages\Utility\Unique;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Category extends Model
 {
@@ -36,5 +38,29 @@ class Category extends Model
     public function site()
     {
         return $this->belongsTo(Site::class);
+    }
+
+    public static function generateSlug($name): string
+    {
+        $slug = Str::slug($name);
+        $prefix = $slug . '-';
+
+        $generate = function ($index) use ($slug, $prefix) {
+            if ($index == 0) {
+                return $slug;
+            }
+
+            return $prefix . $index;
+        };
+
+        $count = Category::where('slug', 'like', $prefix . '%')
+            ->count();
+
+        return Unique::generate(
+            Category::class,
+            $generate,
+            'slug',
+            $count == 0 ? -1 : $count
+        );
     }
 }

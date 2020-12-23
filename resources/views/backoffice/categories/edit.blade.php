@@ -37,7 +37,6 @@
                     type="text"
                     id="slug"
                     name="slug"
-                    required
                     class="form-control @error('slug') is-invalid @enderror"
                     value="{{ old('slug', $category->slug) }}">
 

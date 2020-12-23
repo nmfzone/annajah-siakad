@@ -4,11 +4,13 @@ namespace App\Providers;
 
 use App\Models\AcademicClassCourse;
 use App\Models\AcademicYear;
+use App\Models\Category;
 use App\Models\Payment;
 use App\Models\TransactionItem;
 use App\Models\User;
 use App\Observers\AcademicClassCourseObserver;
 use App\Observers\AcademicYearObserver;
+use App\Observers\CategoryObserver;
 use App\Observers\PaymentObserver;
 use App\Observers\TransactionItemObserver;
 use App\Observers\UserObserver;
@@ -25,6 +27,7 @@ class ObserverServiceProvider extends ServiceProvider
     {
         User::observe(UserObserver::class);
         Payment::observe(PaymentObserver::class);
+        Category::observe(CategoryObserver::class);
         TransactionItem::observe(TransactionItemObserver::class);
         AcademicYear::observe(AcademicYearObserver::class);
         AcademicClassCourse::observe(AcademicClassCourseObserver::class);
