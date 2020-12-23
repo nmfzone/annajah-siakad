@@ -89,13 +89,15 @@ class ArticleService extends BaseService
     public function generateSlug($title, $isAutoDraft = false): string
     {
         $title = $isAutoDraft ? 'Konsep Otomatis' : $title;
-        $title = Str::slug($title);
+        $slug = Str::slug($title);
+        $prefix = $slug . '-';
 
-        $count = Article::where('slug', $title)->orWhere('slug', 'like', $title . '-%')->count();
+        $count = Article::Where('slug', 'like', $prefix . '%')
+            ->count();
         $count = $count == 0 ? -1 : $count;
 
-        $generate = function ($index) use ($title) {
-            return $index == 0 ? $title : $title . '-' . $index;
+        $generate = function ($index) use ($slug, $prefix) {
+            return $index == 0 ? $slug : $prefix . $index;
         };
 
         return Unique::generate(Article::class, $generate, 'slug', $count);
