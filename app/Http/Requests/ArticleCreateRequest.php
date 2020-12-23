@@ -20,8 +20,8 @@ class ArticleCreateRequest extends FormRequest
     {
         return [
             'type' => ['required', Rule::in(ArticleType::getValues())],
-            'title' => ['nullable', 'max:100', new RequiredIfEmpty('content')],
-            'content' => ['nullable', 'string', new RequiredIfEmpty('title')],
+            'title' => ['max:100', new RequiredIfEmpty('content')],
+            'content' => [new RequiredIfEmpty('title')],
             // @TODO: Correctly validate thumbnail id
             'thumbnail_id' => ['nullable', 'numeric', Rule::exists(Media::class, 'id')],
             'published_at' => 'nullable|date',
