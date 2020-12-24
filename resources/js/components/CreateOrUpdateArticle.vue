@@ -12,6 +12,8 @@
       :loadingSaveDraft="loadingSaveDraft"
       :loadingUpdateOrPublish="loadingUpdateOrPublish"
       :updateProps="updateProps"
+      :pushToProps="pushToProps"
+      :pullFromProps="pullFromProps"
       :saveDraft="saveDraft"
       :updateOrPublishArticle="updateOrPublishArticle"
       :onSaveCallback="onSaveCallback"></slot>
@@ -29,7 +31,11 @@ export default {
       type: String,
       required: true
     },
-    model: Object
+    model: Object,
+    initialCategories: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {
@@ -37,6 +43,7 @@ export default {
       modelId: null,
       title: null,
       content: null,
+      categories: [],
       thumbnailId: null,
       successMessage: null,
       loadingSaveDraft: false,
@@ -63,7 +70,13 @@ export default {
     },
     editor() {
       return window.tinyMCE.get(this.wysiwygId)
+    },
+    categoryIds() {
+      return this.categories.map((c) => c.id)
     }
+  },
+  beforeMount() {
+    this.categories = this.initialCategories
   },
   mounted() {
     this.attributes.forEach(key => {
@@ -155,6 +168,7 @@ export default {
           title: this.title,
           content: this.content,
           thumbnail_id: this.thumbnailId,
+          categories: this.categoryIds,
           ...data && data
         })
       } else {
@@ -163,6 +177,7 @@ export default {
           title: this.title,
           content: this.content,
           thumbnail_id: this.thumbnailId,
+          categories: this.categoryIds,
           ...data && data
         })
 
@@ -182,8 +197,16 @@ export default {
     watchValueChanges() {
       window.onbeforeunload = () => ''
     },
-    updateProps(value, field) {
+    updateProps(field, value) {
       this[field] = value
+    },
+    pushToProps(field, value) {
+      this[field].push(value)
+    },
+    pullFromProps(field, value, key) {
+      const index = _.findIndex(this[field], (v) => v[key] == value)
+
+      this[field].splice(index, 1)
     }
   }
 }

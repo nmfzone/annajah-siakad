@@ -16,7 +16,12 @@ class CategoryCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'slug' => ['nullable', 'max:100', Rule::unique(Category::class, 'slug')],
+            'slug' => [
+                'nullable',
+                'alpha_dash',
+                'max:100',
+                Rule::unique(Category::class, 'slug')
+            ],
             'name' => ['required', 'max:100'],
             'parent_id' => [
                 'nullable',

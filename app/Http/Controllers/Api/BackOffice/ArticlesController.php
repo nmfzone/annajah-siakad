@@ -65,7 +65,7 @@ class ArticlesController extends Controller
 
         $article = DB::transaction(function () use ($authUser, $request, $article) {
             $requestData = $request->validated();
-            $article->update($requestData);
+            $article = $this->articleService->update($article, $requestData);
 
             if (! ($authUser->isStudent() || $authUser->isTeacher())) {
                 $categories = array_filter(Arr::wrap(Arr::get($requestData, 'categories')));

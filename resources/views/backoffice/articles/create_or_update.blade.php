@@ -13,7 +13,10 @@
     <create-or-update-article
       type="article"
       @if(isset($articleResource))
-      :model='@json($articleResource)'
+      :model='@json(Arr::only($articleResource, 'published_at'))'
+      @endif
+      @if(isset($article))
+      :initial-categories='@json($article->categories->map(function ($c) { return $c->only('id'); }))'
       @endif
       v-slot="data">
       <div class="col-10 mx-auto">
@@ -55,7 +58,7 @@
             <form-input
               type="hidden"
               :value="data.modelId"
-              @input="data.updateProps($event, 'modelId')"
+              @input="data.updateProps('modelId', $event)"
               @if(isset($article))
               initial-value="{{ $article->id }}"
               @endif></form-input>
@@ -76,7 +79,7 @@
                     initial-value="{{ $article->title }}"
                     @endif
                     :value="data.title"
-                    @input="data.updateProps($event, 'title')"
+                    @input="data.updateProps('title', $event)"
                     name="title"
                     required></form-input>
                 </div>
@@ -91,7 +94,7 @@
                     :wysiwyg-id="data.wysiwygId"
                     type="wysiwyg"
                     :value="data.content"
-                    @input="data.updateProps($event, 'content')"
+                    @input="data.updateProps('content', $event)"
                     :on-save-callback="data.onSaveCallback"
                     model-type="article"
                     @if(isset($article))
@@ -102,7 +105,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 pr-md-4">
                     <div class="form-group">
                       <label for="content" class="col-form-label">
                         Gambar Unggulan
@@ -111,11 +114,29 @@
                       <div class="">
                         <thumbnail-picker
                           model-type="article"
-                          @selected-image="data.updateProps($event.id, 'thumbnailId')"
-                          @deselect-image="data.updateProps(null, 'thumbnailId')"></thumbnail-picker>
+                          @selected-image="data.updateProps('thumbnailId', $event.id)"
+                          @deselect-image="data.updateProps('thumbnailId', null)"></thumbnail-picker>
                       </div>
                     </div>
                   </div>
+                  @if (auth()->user()->isSuperAdminOrAdmin())
+                    <div class="col-md-6 pl-md-4">
+                      <div class="form-group">
+                        <label for="content" class="col-form-label">
+                          Kategori
+                        </label>
+
+                        <div class="">
+                          <category-picker
+                            @if(isset($article))
+                            :initial-value='@json($article->categories->map(function ($c) { return $c->only('id'); }))'
+                            @endif
+                            @item-checked="data.pushToProps('categories', $event)"
+                            @item-unchecked="data.pullFromProps('categories', $event.id, 'id')"></category-picker>
+                        </div>
+                      </div>
+                    </div>
+                  @endif
                 </div>
               </div>
             </div>

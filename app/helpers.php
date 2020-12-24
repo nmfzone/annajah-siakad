@@ -197,3 +197,20 @@ if (! function_exists('tmp_path')) {
         return join_paths(sys_get_temp_dir(), $path);
     }
 }
+
+if (! function_exists('value_get')) {
+    /**
+     * Return default value whenever the value is empty.
+     *
+     * @param  mixed  $value
+     * @param  string|array|int|null  $key
+     * @param  mixed  $default
+     * @return mixed
+     */
+    function value_get($value, $key, $default = null)
+    {
+        $data = data_get($value, $key);
+
+        return empty($data) ? $default : $data;
+    }
+}

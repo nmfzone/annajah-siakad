@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\ArticleType;
 use App\Models\Article;
+use App\Models\Category;
 use App\Models\Media;
 use App\Rules\RequiredIfEmpty;
 use Illuminate\Support\Facades\Gate;
@@ -25,6 +26,12 @@ class ArticleCreateRequest extends FormRequest
             // @TODO: Correctly validate thumbnail id
             'thumbnail_id' => ['nullable', 'numeric', Rule::exists(Media::class, 'id')],
             'published_at' => 'nullable|date',
+            'categories' => [
+                'nullable',
+                'array',
+                Rule::exists(Category::class, 'id')
+                    ->where('site_id', optional(site())->id),
+            ],
         ];
     }
 

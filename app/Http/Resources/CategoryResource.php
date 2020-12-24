@@ -18,7 +18,7 @@ class CategoryResource extends JsonResource
             'parent' => $this->whenLoaded('parent'),
             'parents' => $this->whenLoaded('parents'),
             'children' => $this->whenLoaded('children'),
-            'allChildren' => $this->whenLoaded('allChildren'),
+            'all_children' => $this->whenLoaded('allChildren'),
         ];
     }
 }

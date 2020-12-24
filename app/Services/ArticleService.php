@@ -23,6 +23,16 @@ class ArticleService extends BaseService
         ]);
     }
 
+    public function update(Article $article, array $data): Article
+    {
+        return tap($article)->update([
+            'slug' => Str::slug(value_get($data, 'slug', $article->slug)),
+            'title' => value_get($data, 'title', $article->content),
+            'content' => value_get($data, 'content', $article->content),
+            'published_at' => value_get($data, 'published_at', $article->published_at),
+        ]);
+    }
+
     public function getDefaultCategory(): Category
     {
         $key = 'articles.default-category';

@@ -21,20 +21,23 @@ use Illuminate\Support\Str;
 
 $factory->define(Category::class, function (Faker $faker) {
     $name = $faker->unique()->words(rand(1, 3), true);
+    $siteId = Arr::random([
+        null,
+        optional(Site::inRandomOrder()->first())->id,
+    ]);
 
     return [
         'slug' => Str::slug($name),
         'name' => $name,
-        'site_id' => function () {
+        'site_id' => $siteId,
+        'parent_id' => function () use ($siteId) {
             return Arr::random([
                 null,
-                optional(Site::inRandomOrder()->first())->id,
-            ]);
-        },
-        'parent_id' => function () {
-            return Arr::random([
-                null,
-                optional(Category::inRandomOrder()->first())->id,
+                optional(
+                    Category::inRandomOrder()
+                        ->where('site_id', $siteId)
+                        ->first()
+                )->id,
             ]);
         },
     ];
