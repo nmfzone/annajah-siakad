@@ -77,7 +77,7 @@ class CategoriesController extends Controller
             }
 
             $category->delete();
-            flash('Berhasil menghapus kategory.')->success();
+            flash('Berhasil menghapus kategori.')->success();
         } catch (Exception $e) {
             flash('Tidak dapat menghapus kategori.')->error();
         }
