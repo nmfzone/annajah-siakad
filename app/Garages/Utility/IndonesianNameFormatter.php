@@ -11,7 +11,8 @@ class IndonesianNameFormatter
         'M.Hum', 'M.M', 'M.Pd', 'M.Psi', 'M.Pd.I', 'M.Kes',
         'S.Ked', 'S.Hum', 'B.Sc', 'S.Gz', 'A.Md', 'M.Arch',
         'A.Md.Pd', 'A.Md.Bid', 'A.Md.Par', 'A.Md.Kes',
-        'S.Sos.I', 'S.Kes', 'M.Ag', 'M.T', 'MT',
+        'S.Sos.I', 'S.Kes', 'M.Ag', 'M.T', 'MT', 'S.Farm',
+        'S.Fil', 'S.E.I', 'S.H.I', 'S.Kep', 'S.IP', 'S.Pt',
     ];
 
     protected $patterns = [];
