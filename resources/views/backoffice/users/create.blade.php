@@ -4,7 +4,7 @@
 
 @section('content_header')
   <div class="col-10 mx-auto">
-    <h1 class="mb-2 text-dark">Manajemen Pengguna</h1>
+    <h1 class="mb-2 text-dark">Pengguna</h1>
   </div>
 @endsection
 

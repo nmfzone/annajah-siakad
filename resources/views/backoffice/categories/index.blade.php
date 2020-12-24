@@ -1,10 +1,10 @@
 @extends('adminlte::page')
 
-@section('title', 'Daftar Kategori')
+@section('title', 'Lis Kategori')
 
 @section('content_header')
   <div class="col-10 mx-auto">
-    <h1 class="mb-2 text-dark">Manajemen Kategori</h1>
+    <h1 class="mb-2 text-dark">Kategori</h1>
   </div>
 @endsection
 
@@ -15,7 +15,7 @@
         <div class="card-header">
           <div class="row">
             <div class="col-md-6 my-auto">
-              <h3 class="card-title">Daftar Kategori</h3>
+              <h3 class="card-title">Lis Kategori</h3>
             </div>
             @can('create', App\Models\Category::class)
               <div class="col-md-6">

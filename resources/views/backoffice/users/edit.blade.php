@@ -5,7 +5,7 @@
 @section('content_header')
   <div class="col-10 mx-auto">
     <h1 class="mb-2 text-dark">
-      {{ isset($profileContext) ? 'Profil Anda' : 'Manajemen Pengguna' }}
+      {{ isset($profileContext) ? 'Profil Anda' : 'Pengguna' }}
     </h1>
   </div>
 @endsection

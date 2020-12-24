@@ -4,7 +4,7 @@
 
 @section('content_header')
   <div class="col-10 mx-auto">
-    <h1 class="mb-2 text-dark">Manajemen Pengguna</h1>
+    <h1 class="mb-2 text-dark">Pengguna</h1>
   </div>
 @endsection
 
@@ -15,7 +15,7 @@
         <div class="card-header">
           <div class="row">
             <div class="col-md-6 my-auto">
-              <h3 class="card-title">Daftar {{ $userTypeFormatted }}</h3>
+              <h3 class="card-title">Lis {{ $userTypeFormatted }}</h3>
             </div>
             @can('create', App\Models\User::class)
               <div class="col-md-6">

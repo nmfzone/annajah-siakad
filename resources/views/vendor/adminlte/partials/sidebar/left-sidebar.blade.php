@@ -26,7 +26,7 @@
                href="#">
               <i class="fa fa-fw fa-users"></i>
 
-              <p>Manajemen Pengguna <i class="fas fa-angle-left right"></i></p>
+              <p>Pengguna <i class="fas fa-angle-left right"></i></p>
             </a>
 
             <ul class="nav nav-treeview">
@@ -36,7 +36,7 @@
                           {{ Request::is('pengguna/all/administrator+editor') ? 'active' :'' }}"
                      href="{{ route('backoffice.users.index', 'administrator+editor') }}">
                     <i class="far fa-fw fa-circle"></i>
-                    <p>Daftar Admin & Editor</p>
+                    <p>Lis Admin & Editor</p>
                   </a>
                 </li>
               @endif
@@ -45,7 +45,7 @@
                         {{ Request::is('pengguna/all/asatidz') ? 'active' :'' }}"
                    href="{{ route('backoffice.users.index', 'asatidz') }}">
                   <i class="far fa-fw fa-circle"></i>
-                  <p>Daftar Asatidz</p>
+                  <p>Lis Asatidz</p>
                 </a>
               </li>
               <li class="nav-item">
@@ -53,7 +53,7 @@
                         {{ Request::is('pengguna/all/santri') ? 'active' :'' }}"
                    href="{{ route('backoffice.users.index', 'santri') }}">
                   <i class="far fa-fw fa-circle"></i>
-                  <p>Daftar Santri</p>
+                  <p>Lis Santri</p>
                 </a>
               </li>
             </ul>
@@ -107,12 +107,12 @@
 
         @can('viewAny', App\Models\Article::class)
           <li class="nav-item has-treeview
-                      {{ Request::is('artikel', 'artikel/*') ? 'menu-open' :'' }}">
+                      {{ Request::is('artikel', 'artikel/*', 'kategori', 'kategori/*') ? 'menu-open' :'' }}">
             <a class="nav-link
-                      {{ Request::is('artikel', 'artikel/*') ? 'active' :'' }}"
+                      {{ Request::is('artikel', 'artikel/*', 'kategori', 'kategori/*') ? 'active' :'' }}"
                href="#">
               <i class="fas fa-fw fa-newspaper"></i>
-              <p>Manajemen Artikel <i class="fas fa-angle-left right"></i></p>
+              <p>Artikel <i class="fas fa-angle-left right"></i></p>
             </a>
 
             <ul class="nav nav-treeview">
@@ -132,37 +132,16 @@
                   <p>Lis Artikel</p>
                 </a>
               </li>
-            </ul>
-          </li>
-        @endif
-
-        @can('viewAny', App\Models\Category::class)
-          <li class="nav-item has-treeview
-                      {{ Request::is('kategori', 'kategori/*') ? 'menu-open' :'' }}">
-            <a class="nav-link
-                      {{ Request::is('kategori', 'kategori/*') ? 'active' :'' }}"
-               href="#">
-              <i class="fas fa-fw fa-tag"></i>
-              <p>Manajemen Kategori <i class="fas fa-angle-left right"></i></p>
-            </a>
-
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a class="nav-link
-                          {{ Request::is('kategori/buat') ? 'active' :'' }}"
-                   href="{{ route('backoffice.categories.create') }}">
-                  <i class="far fa-fw fa-circle"></i>
-                  <p>Tambah Kategori</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link
-                          {{ Request::is('kategori') ? 'active' :'' }}"
-                   href="{{ route('backoffice.categories.index') }}">
-                  <i class="far fa-fw fa-circle"></i>
-                  <p>Lis Kategori</p>
-                </a>
-              </li>
+              @can('viewAny', App\Models\Category::class)
+                <li class="nav-item">
+                  <a class="nav-link
+                            {{ Request::is('kategori') ? 'active' :'' }}"
+                     href="{{ route('backoffice.categories.index') }}">
+                    <i class="far fa-fw fa-circle"></i>
+                    <p>Lis Kategori</p>
+                  </a>
+                </li>
+              @endif
             </ul>
           </li>
         @endif
