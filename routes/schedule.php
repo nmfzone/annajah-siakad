@@ -5,9 +5,12 @@
 $schedule->command('telescope:prune --hours=48')->daily();
 
 $isCommandRunning = function ($command) {
-    exec('ps aux -ww', $process_status);
+    $cmd = \Symfony\Component\Process\Process::fromShellCommandline('ps aux -ww');
+    $cmd->run();
 
-    $result = array_filter($process_status, function ($var) use ($command) {
+    $output = explode("\n", $cmd->getOutput());
+
+    $result = array_filter($output, function ($var) use ($command) {
         return strpos($var, $command);
     });
 
