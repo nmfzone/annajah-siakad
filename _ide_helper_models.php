@@ -137,6 +137,7 @@ namespace App\Models{
  * @property string|null $title
  * @property string|null $content
  * @property \Illuminate\Support\Carbon|null $published_at
+ * @property int|null $thumbnail_id
  * @property int|null $site_id
  * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -148,6 +149,7 @@ namespace App\Models{
  * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|\App\Models\Media[] $media
  * @property-read int|null $media_count
  * @property-read \App\Models\Site|null $site
+ * @property-read \App\Models\Media|null $thumbnail
  * @method static \Illuminate\Database\Eloquent\Builder|Article newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Article newQuery()
  * @method static \Illuminate\Database\Query\Builder|Article onlyTrashed()
@@ -159,6 +161,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Article wherePublishedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereSiteId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Article whereThumbnailId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Article whereUpdatedAt($value)
@@ -219,6 +222,12 @@ namespace App\Models{
  * @property int|null $site_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $articles
+ * @property-read int|null $articles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Category[] $children
+ * @property-read int|null $children_count
+ * @property-read Category|null $parent
+ * @property-read \App\Models\Site|null $site
  * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category query()
@@ -452,6 +461,8 @@ namespace App\Models{
  * @property-read int|null $academic_years_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Article[] $articles
  * @property-read int|null $articles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Category[] $categories
+ * @property-read int|null $categories_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Course[] $courses
  * @property-read int|null $courses_count
  * @property-read mixed $logo
