@@ -1,6 +1,6 @@
 /*!
-  * Bootstrap v4.5.2 (https://getbootstrap.com/)
-  * Copyright 2011-2020 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap v4.6.0 (https://getbootstrap.com/)
+  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 
@@ -32,12 +32,6 @@
  * https://js.foundation/
  *
  * Date: 2020-03-14
- */
-
-/*!
- * Vue.js v2.6.12
- * (c) 2014-2020 Evan You
- * Released under the MIT License.
  */
 
 /*!
@@ -76,11 +70,11 @@
  * ©2016 SpryMedia Ltd - datatables.net/license
  */
 
-/*! Buttons for DataTables 1.6.3
+/*! Buttons for DataTables 1.6.5
  * ©2016-2020 SpryMedia Ltd - datatables.net/license
  */
 
-/*! DataTables 1.10.21
+/*! DataTables 1.10.23
  * ©2008-2020 SpryMedia Ltd - datatables.net/license
  */
 
@@ -88,8 +82,8 @@
  * ©2011-2017 SpryMedia Ltd - datatables.net/license
  */
 
-/*! Responsive 2.2.5
- * 2014-2020 SpryMedia Ltd - datatables.net/license
+/*! Responsive 2.2.7
+ * 2014-2021 SpryMedia Ltd - datatables.net/license
  */
 
 /**
