@@ -13,7 +13,7 @@
       <a href="{{ url('/') }}">
         <img src="{{ asset('images/logo.png') }}" class="m-auto" width="180px" />
 
-        <div class="text-2lg mt-3">
+        <div class="text-2xl mt-3">
           {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
         </div>
       </a>

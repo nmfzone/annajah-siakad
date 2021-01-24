@@ -30,3 +30,9 @@
 }
 
 @import url('https://fonts.googleapis.com/css?family=Exo+2:200,300,400,600,700|Roboto:200,300,400,600,700|Muli:200,300,400,600,700|Lato:200,300,400,600,700');
+
+$fa-font-path: '../vendor/font-awesome';
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/regular";
+@import "@fortawesome/fontawesome-free/scss/solid";
+@import "@fortawesome/fontawesome-free/scss/brands";

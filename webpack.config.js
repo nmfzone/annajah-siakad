@@ -1,5 +1,6 @@
-const mix = require('laravel-mix');
-const root = path.resolve(__dirname);
+const mix = require('laravel-mix')
+const path = require('path')
+const root = path.resolve(__dirname)
 
 /*
  |--------------------------------------------------------------------------
@@ -21,8 +22,8 @@ const webpackConfig = {
       '@images': `${root}/resources/images`,
     }
   }
-};
+}
 
-mix.webpackConfig(webpackConfig);
+mix.webpackConfig(webpackConfig)
 
-module.exports = webpackConfig;
+module.exports = webpackConfig

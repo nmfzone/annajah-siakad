@@ -187,7 +187,7 @@
         @apply relative;
 
         &::before {
-          @apply bg-white bottom-0 absolute left-2/4 w-full invisible left-0 h-0.5;
+          @apply bg-white bottom-0 absolute w-full invisible left-0 h-0.5;
 
           content: "";
           transform: translate3d(0, 0, 0) scaleX(0);
@@ -241,7 +241,7 @@
       @apply px-5;
 
       > a {
-        @apply relative align-middle whitespace-no-wrap px-5;
+        @apply relative align-middle whitespace-nowrap px-5;
 
         margin: 0 -9.375px;
       }

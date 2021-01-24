@@ -2,21 +2,15 @@
 
 @tailwind base;
 
-$fa-font-path: '../fonts/vendor/font-awesome';
-@import "@fortawesome/fontawesome-free/scss/fontawesome";
-@import "@fortawesome/fontawesome-free/scss/regular";
-@import "@fortawesome/fontawesome-free/scss/solid";
-@import "@fortawesome/fontawesome-free/scss/brands";
+@import "vendor/overlayscrollbars/OverlayScrollbars";
 
-@import "~overlayscrollbars/css/OverlayScrollbars.css";
+@import "vendor/icheck-bootstrap/icheck-bootstrap";
 
-@import "~icheck-bootstrap/icheck-bootstrap.css";
+@import "vendor/almasaeed2010/adminlte";
 
-@import "~@vendor/almasaeed2010/adminlte/dist/css/adminlte.css";
-
-@import "~datatables.net-bs4/css/dataTables.bootstrap4.css";
-@import "~datatables.net-buttons-bs4/css/buttons.bootstrap4.css";
-@import "~datatables.net-responsive-bs4/css/responsive.bootstrap4.css";
+@import "vendor/datatables.net-bs4/dataTables.bootstrap4";
+@import "vendor/datatables.net-buttons-bs4/buttons.bootstrap4";
+@import "vendor/datatables.net-responsive-bs4/responsive.bootstrap4";
 
 @import "components/backoffice/datatable";
 

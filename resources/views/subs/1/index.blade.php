@@ -63,14 +63,14 @@
   <transition-viewport name="fadeUp">
     <div class="flex flex-wrap items-start px-4 lg:px-12 xl:px-36 2xl:px-60 mt-16">
       <div class="w-full md:w-1/2 p-4 flex flex-col">
-        <div class="border-l-8 border-gray-400 pl-6">
-          <h3 class="text-3xl flex flex-col md:text-6xl lg:text-7.5xl font-bold font-inter">
+        <div class="border-l-8 border-gray-300 pl-6">
+          <h3 class="text-3xl flex flex-col md:text-6xl lg:text-7.5xl leading-normal-imp font-bold font-inter">
             <span class="text-blue-550 md:-mt-6 lg:-mt-8">Ulul Albab</span>
             <span class="text-yellow-350 md:-mt-12 md:-mb-4 lg:-mt-18 lg:-mb-6">Generation</span>
           </h3>
         </div>
 
-        <div class="w-full mt-4 sm:mt-16 font-muli text-base sm:text-lg leading-10 text-justify">
+        <div class="w-full mt-4 sm:mt-16 font-muli text-base sm:text-lg leading-10-imp text-justify">
           Ululalbab sering diartikan dengan yang mempunyai akal atau orang yang berakal.
           Aktivitas utama ulul albab adalah berpikir dan berdzikir.
           Berpikir yaitu melibatkan beragam obyek atau fenomena alam, sedangkan Berdzikir yaitu mengingat Allah dalam situasi apapun.
@@ -293,7 +293,7 @@
 {{--    </transition-viewport>--}}
 {{--  </div>--}}
 
-  <div class="bg-gray-100 mt-20 pt-4 pb-16">
+  <div class="bg-blue-50 mt-20 pt-4 pb-16">
     <div class="flex flex-col items-center mt-10 px-8 lg:px-16 xl:px-40 2xl:px-64">
       <h3 class="text-3xl font-bold font-exo">
         <span class="text-blue-600">Basis</span>

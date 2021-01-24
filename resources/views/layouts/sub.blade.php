@@ -27,7 +27,7 @@
       <div class="flex flex-col sm:flex-row sm:flex-wrap">
         <div class="w-full sm:w-1/2 lg:w-1/5 px-0 sm:px-6">
           <h6 class="text-sm font-bold uppercase">Menu</h6>
-          <ul class="mt-4 list-unstyled text-gray-300">
+          <ul class="mt-4 list-unstyled text-gray-200">
             <li class="hover:text-white"><a href="#">Resources</a></li>
             <li class="mt-2 hover:text-white"><a href="#">Careers</a></li>
           </ul>
@@ -35,7 +35,7 @@
 
         <div class="w-full sm:w-1/2 lg:w-1/5 mt-6 sm:mt-0 px-0 sm:px-6">
           <h6 class="text-sm font-bold uppercase">Situs</h6>
-          <ul class="mt-4 list-unstyled text-gray-300">
+          <ul class="mt-4 list-unstyled text-gray-200">
             <li class="hover:text-white"><a href="#">Todo</a></li>
             <li class="mt-2 hover:text-white"><a href="#">Done</a></li>
           </ul>
@@ -43,7 +43,7 @@
 
         <div class="w-full sm:w-1/2 lg:w-1/5 mt-6 sm:mt-12 lg:mt-0 px-0 sm:px-6">
           <h6 class="text-sm font-bold uppercase">Media Sosial</h6>
-          <ul class="mt-4 list-unstyled text-gray-300">
+          <ul class="mt-4 list-unstyled text-gray-200">
             @if(Site::hasInstagram())
               <li class="hover:text-red-700 text-xl">
                 <a href="{{ Site::instagram() }}"><i class="fab fa-instagram mr-2"></i> Instagram</a>
