@@ -71,6 +71,7 @@ Route::group([
             ->name('dashboard');
 
         require_once 'partials/ppdb.php';
+        require_once 'partials/academicYear.php';
     });
 
     Route::get('/presensi', 'AttendancesController@index')->name('attendances.index');

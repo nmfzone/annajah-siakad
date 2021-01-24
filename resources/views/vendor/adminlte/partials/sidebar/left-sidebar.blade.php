@@ -147,6 +147,43 @@
         @endif
 
         <li class="nav-header">
+          PENGATURAN SITUS
+        </li>
+
+        @if(!is_main_app())
+          @can('viewAny', App\Models\AcademicYear::class)
+            <li class="nav-item has-treeview
+                        {{ Request::is('tahun-akademik', 'tahun-akademik/*') ? 'menu-open' :'' }}">
+              <a class="nav-link
+                        {{ Request::is('tahun-akademik', 'tahun-akademik/*') ? 'active' :'' }}"
+                 href="#">
+                <i class="fas fa-fw fa-newspaper"></i>
+                <p>Tahun Akademik <i class="fas fa-angle-left right"></i></p>
+              </a>
+
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a class="nav-link
+                            {{ Request::is('tahun-akademik/buat') ? 'active' :'' }}"
+                     href="{{ sub_route('backoffice.academic_years.create') }}">
+                    <i class="far fa-fw fa-circle"></i>
+                    <p>Tambah Tahun Akademik</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link
+                            {{ Request::is('tahun-akademik') ? 'active' :'' }}"
+                     href="{{ sub_route('backoffice.academic_years.index') }}">
+                    <i class="far fa-fw fa-circle"></i>
+                    <p>Lis Tahun Akademik</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          @endif
+        @endif
+
+        <li class="nav-header">
           PENGATURAN AKUN
         </li>
 

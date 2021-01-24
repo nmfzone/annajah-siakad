@@ -13,7 +13,8 @@ class AcademicYear extends Model
 
     protected $fillable = [
         'from',
-        'to'
+        'to',
+        'site_id',
     ];
 
     public function academicClasses()
