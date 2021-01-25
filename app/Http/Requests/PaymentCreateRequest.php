@@ -39,7 +39,7 @@ class PaymentCreateRequest extends FormRequest
         return $validated->toArray();
     }
 
-    public function messages(): array
+    public function attributes(): array
     {
         return [
             'provider_holder_name' => 'Nama Pengirim',

@@ -24,7 +24,7 @@ class PpdbCreateRequest extends FormRequest
             ],
             'start_time' => [
                 'required',
-                'date_format:H:i',
+                'date_format:"H:i"',
             ],
             'end_date' => [
                 'required',
@@ -33,7 +33,7 @@ class PpdbCreateRequest extends FormRequest
             ],
             'end_time' => [
                 'required',
-                'date_format:H:i',
+                'date_format:"H:i"',
             ],
             'academic_year_id' => [
                 'required',
@@ -66,7 +66,7 @@ class PpdbCreateRequest extends FormRequest
         return $validated->toArray();
     }
 
-    public function messages(): array
+    public function attributes(): array
     {
         return [
             'start_date' => 'Tanggal Mulai PPDB',
