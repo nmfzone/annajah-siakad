@@ -156,9 +156,11 @@
           </li>
         @endif
 
-        <li class="nav-header">
-          PENGATURAN SITUS
-        </li>
+        @if(Gate::allows('viewAny', App\Models\AcademicYear::class))
+          <li class="nav-header">
+            PENGATURAN SITUS
+          </li>
+        @endif
 
         @if(!is_main_app())
           @can('viewAny', App\Models\AcademicYear::class)

@@ -65,4 +65,15 @@ class PpdbCreateRequest extends FormRequest
 
         return $validated->toArray();
     }
+
+    public function messages(): array
+    {
+        return [
+            'start_date' => 'Tanggal Mulai PPDB',
+            'start_time' => 'Waktu Mulai PPDB',
+            'end_date' => 'Tanggal Selesai PPDB',
+            'end_time' => 'Waktu Selesai PPDB',
+            'academic_year_id' => 'Tahun Akademik',
+        ];
+    }
 }
