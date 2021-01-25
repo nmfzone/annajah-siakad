@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\PpdbUser;
+use App\Models\Ppdb;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -24,7 +24,7 @@ class PpdbPolicy extends BasePolicy
         return $user->isAdmin();
     }
 
-    public function view(User $user, PpdbUser $ppdbUser): bool
+    public function view(User $user, Ppdb $ppdb): bool
     {
         return $user->isAdmin();
     }
@@ -34,22 +34,22 @@ class PpdbPolicy extends BasePolicy
         return $user->isAdmin();
     }
 
-    public function update(User $user, PpdbUser $ppdbUser): bool
+    public function update(User $user, Ppdb $ppdb): bool
     {
         return $user->isAdmin();
     }
 
-    public function delete(User $user, PpdbUser $ppdbUser): bool
+    public function delete(User $user, Ppdb $ppdb): bool
     {
         return $user->isAdmin();
     }
 
-    public function restore(User $user, ?PpdbUser $ppdbUser = null): bool
+    public function restore(User $user, ?Ppdb $ppdb = null): bool
     {
         return $user->isAdmin();
     }
 
-    public function forceDelete(User $user, PpdbUser $ppdbUser): bool
+    public function forceDelete(User $user, Ppdb $ppdb): bool
     {
         return $user->isAdmin();
     }

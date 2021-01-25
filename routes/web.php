@@ -65,12 +65,14 @@ Route::group([
     Route::group([
         'namespace' => 'BackOffice',
         'as' => 'backoffice.',
+        'prefix' => 'backoffice',
         'middleware' => ['auth', 'sub_permission'],
     ], function () {
         Route::get('/dashboard', 'DashboardController@index')
             ->name('dashboard');
 
         require_once 'partials/ppdb.php';
+        require_once 'partials/ppdbUser.php';
         require_once 'partials/academicYear.php';
     });
 
@@ -81,6 +83,7 @@ Route::group([
 Route::group([
     'namespace' => 'BackOffice',
     'as' => 'backoffice.',
+    'prefix' => 'backoffice',
     'middleware' => ['auth', 'sub_permission'],
 ], function () {
     Route::get('/profil', 'ProfileController')

@@ -1,46 +1,22 @@
 <?php
 
-Route::get('/ppdb/{ppdb}/peserta', 'PpdbUserController@index')
-    ->name('ppdb.users.index');
+Route::get('/ppdb', 'PpdbController@index')
+    ->name('ppdb.index');
 
-Route::get('/ppdb/peserta/detail', 'PpdbUserController@directShow')
-    ->name('ppdb.users.direct_show');
+Route::get('/ppdb/buat', 'PpdbController@create')
+    ->name('ppdb.create');
 
-Route::get('/ppdb/{ppdb}/peserta/{ppdb_user}', 'PpdbUserController@show')
-    ->name('ppdb.users.show');
+Route::post('/ppdb/buat', 'PpdbController@store')
+    ->name('ppdb.store');
 
-Route::get(
-    '/ppdb/{ppdb}/peserta/{ppdb_user}/tagihan/{transaction}',
-    'PpdbUserController@showPayment'
-)->name('ppdb.users.show_payment');
+Route::get('/ppdb/{ppdb}/edit', 'PpdbController@edit')
+    ->name('ppdb.edit');
 
-Route::post(
-    '/ppdb/{ppdb}/peserta/{ppdb_user}/tagihan/{transaction}',
-    'PpdbUserController@storePayment'
-)->name('ppdb.users.store_payment');
+Route::put('/ppdb/{ppdb}', 'PpdbController@update')
+    ->name('ppdb.update');
 
-Route::post(
-    '/ppdb/{ppdb}/peserta/{ppdb_user}/tagihan/{transaction}/accept',
-    'PpdbUserController@acceptPayment'
-)->name('ppdb.users.accept_payment');
+Route::get('/ppdb/{ppdb}', 'PpdbController@show')
+    ->name('ppdb.show');
 
-Route::post(
-    '/ppdb/{ppdb}/peserta/{ppdb_user}/tagihan/{transaction}/decline-or-cancel',
-    'PpdbUserController@declineOrCancelPayment'
-)->name('ppdb.users.decline_or_cancel_payment');
-
-Route::post(
-    '/ppdb/{ppdb}/peserta/{ppdb_user}/accept',
-    'PpdbUserController@acceptAsStudent'
-)->name('ppdb.users.accept');
-
-Route::post(
-    '/ppdb/{ppdb}/peserta/{ppdb_user}/decline-or-cancel',
-    'PpdbUserController@declineOrCancelAsStudent'
-)->name('ppdb.users.decline_or_cancel');
-
-Route::get('/ppdb/observasi', 'ObservationController@directShow')
-    ->name('ppdb.observation.direct_show');
-
-Route::get('/ppdb/{ppdb}/peserta/{ppdb_user}/observasi', 'ObservationController@show')
-    ->name('ppdb.observation.show');
+Route::delete('/ppdb/{ppdb}', 'PpdbController@destroy')
+    ->name('ppdb.destroy');

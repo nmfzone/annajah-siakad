@@ -18,12 +18,14 @@ import ThumbnailPicker from './components/ThumbnailPicker'
 import CategoryPicker from '@components/category-picker/CategoryPicker'
 import CategoryItem from '@components/category-picker/CategoryItem'
 import CategoryChildren from '@components/category-picker/CategoryChildren'
+import AcademicYearPicker from '@components/picker/AcademicYearPicker'
 
 Vue.component('create-or-update-article', CreateOrUpdateArticle)
 Vue.component('thumbnail-picker', ThumbnailPicker)
 Vue.component('category-picker', CategoryPicker)
 Vue.component('category-item', CategoryItem)
 Vue.component('category-children', CategoryChildren)
+Vue.component('academic-year-picker', AcademicYearPicker)
 
 const app = new Vue({
   el: '#app',

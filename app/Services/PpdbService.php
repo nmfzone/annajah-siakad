@@ -63,7 +63,7 @@ class PpdbService extends BaseService
         $ppdb = null;
         /** @var \App\Models\AcademicYear|null $academicYear */
         $academicYear = site()->academicYears()
-            ->orderBy('from', 'desc')
+            ->orderByDesc('from')
             ->first();
 
         if ($academicYear) {

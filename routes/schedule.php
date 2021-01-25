@@ -2,7 +2,13 @@
 
 /** @var \Illuminate\Console\Scheduling\Schedule $schedule */
 
-$schedule->command('telescope:prune --hours=168')->daily();
+if (app()->environment('local')) {
+    $schedule->command('telescope:prune --hours=3')
+        ->hourly();
+} else {
+    $schedule->command('telescope:prune --hours=168')
+        ->daily();
+}
 
 $isCommandRunning = function ($command) {
     $cmd = \Symfony\Component\Process\Process::fromShellCommandline('ps aux -ww');

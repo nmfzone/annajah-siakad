@@ -12,11 +12,7 @@ class Ppdb extends Model
 
     protected $table = 'ppdb';
 
-    protected $fillable = [
-        'started_at',
-        'ended_at',
-        'is_open',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'started_at' => 'datetime',

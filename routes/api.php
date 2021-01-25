@@ -25,8 +25,7 @@ Route::namespace('Api')->group(function () {
     ], function () {
         Route::group([
             'namespace' => 'BackOffice',
-            'as' => 'backoffice.',
-            'middleware' => ['sub_permission'],
+            'middleware' => ['auth:sanctum', 'sub_permission'],
         ], function () {
             Route::get('/tahun-akademik', 'AcademicYearsController@index');
         });
@@ -34,7 +33,6 @@ Route::namespace('Api')->group(function () {
 
     Route::group([
         'namespace' => 'BackOffice',
-        'as' => 'backoffice.',
         'middleware' => ['auth:sanctum', 'sub_permission'],
     ], function () {
         Route::post('/artikel', 'ArticlesController@store');

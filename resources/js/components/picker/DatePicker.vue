@@ -205,10 +205,16 @@
                               date.$D === localSelectedDate.$D
                                 ? `${theme.picker.selected.background} shadow-xs`
                                 : '',
-                            ]"
-                            @click="changePicker(date)"></div>
+                            ]"></div>
                           <div
-                            class="flex justify-center items-center"
+                            class="flex justify-center items-center z-10"
+                            :class="[
+                              {
+                                  'text-white':
+                                    date.$D === localSelectedDate.$D && possibleDate(date),
+                                }
+                            ]"
+                            @click="changePicker(date)"
                             :data-tailwind-datepicker="date.$d">
                             <div
                               :class="[
@@ -219,10 +225,6 @@
                                 date.day() === 5 && date.$D !== localSelectedDate.$D
                                   ? theme.picker.weekend
                                   : '',
-                                {
-                                  'z-10 text-white ':
-                                    date.$D === localSelectedDate.$D && possibleDate(date),
-                                },
                                 {
                                   'opacity-50': !possibleDate(date),
                                 },
@@ -593,9 +595,11 @@ export default {
       this.$emit('change', this.localSelectedDate)
     },
     changePicker(date) {
-      this.localSelectedDate = date
-      this.emit()
-      this.showPicker = false
+      if (this.possibleDate(date)) {
+        this.localSelectedDate = date
+        this.emit()
+        this.showPicker = false
+      }
     },
     onPrevious() {
       if (this.visiblePrev) {

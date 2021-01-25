@@ -20,9 +20,9 @@
 
         @can('viewAny', App\Models\User::class)
           <li class="nav-item has-treeview
-                    {{ Request::is('pengguna/*') ? 'menu-open' :'' }}">
+                    {{ Request::is('backoffice/pengguna/*') ? 'menu-open' :'' }}">
             <a class="nav-link
-                    {{ Request::is('pengguna/*') ? 'active' :'' }}"
+                    {{ Request::is('backoffice/pengguna/*') ? 'active' :'' }}"
                href="#">
               <i class="fa fa-fw fa-users"></i>
 
@@ -33,7 +33,7 @@
               @can('viewAny', [App\Models\User::class, 'administrator+editor'])
                 <li class="nav-item">
                   <a class="nav-link
-                          {{ Request::is('pengguna/all/administrator+editor') ? 'active' :'' }}"
+                          {{ Request::is('backoffice/pengguna/all/administrator+editor') ? 'active' :'' }}"
                      href="{{ route('backoffice.users.index', 'administrator+editor') }}">
                     <i class="far fa-fw fa-circle"></i>
                     <p>Lis Admin & Editor</p>
@@ -42,7 +42,7 @@
               @endif
               <li class="nav-item">
                 <a class="nav-link
-                        {{ Request::is('pengguna/all/asatidz') ? 'active' :'' }}"
+                        {{ Request::is('backoffice/pengguna/all/asatidz') ? 'active' :'' }}"
                    href="{{ route('backoffice.users.index', 'asatidz') }}">
                   <i class="far fa-fw fa-circle"></i>
                   <p>Lis Asatidz</p>
@@ -50,7 +50,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link
-                        {{ Request::is('pengguna/all/santri') ? 'active' :'' }}"
+                        {{ Request::is('backoffice/pengguna/all/santri') ? 'active' :'' }}"
                    href="{{ route('backoffice.users.index', 'santri') }}">
                   <i class="far fa-fw fa-circle"></i>
                   <p>Lis Santri</p>
@@ -63,9 +63,9 @@
         @if(!is_main_app())
           @if(Gate::allows('viewAny', App\Models\Ppdb::class) || ! is_null($latestPpdbUser))
             <li class="nav-item has-treeview
-                      {{ Request::is('ppdb/*') ? 'menu-open' :'' }}">
+                      {{ Request::is('backoffice/ppdb', 'backoffice/ppdb/*') ? 'menu-open' :'' }}">
               <a class="nav-link
-                      {{ Request::is('ppdb/*') ? 'active' :'' }}"
+                      {{ Request::is('backoffice/ppdb', 'backoffice/ppdb/*') ? 'active' :'' }}"
                  href="#">
                 <i class="fa fa-fw fa-clipboard"></i>
                 <p>PPDB <i class="fas fa-angle-left right"></i></p>
@@ -75,17 +75,27 @@
                 @if(isset($currentPpdb) && Gate::allows('viewAny', App\Models\PpdbUser::class))
                   <li class="nav-item">
                     <a class="nav-link
-                            {{ Request::is('ppdb/*/peserta') ? 'active' :'' }}"
+                            {{ Request::is('backoffice/ppdb/*/peserta') ? 'active' :'' }}"
                        href="{{ sub_route('backoffice.ppdb.users.index', $currentPpdb) }}">
                       <i class="far fa-fw fa-circle"></i>
-                      <p>Lis Peserta</p>
+                      <p>Lis Peserta Terkini</p>
+                    </a>
+                  </li>
+                @endif
+                @if(Gate::allows('viewAny', App\Models\Ppdb::class))
+                  <li class="nav-item">
+                    <a class="nav-link
+                          {{ Request::is('backoffice/ppdb') ? 'active' :'' }}"
+                       href="{{ sub_route('backoffice.ppdb.index') }}">
+                      <i class="far fa-fw fa-circle"></i>
+                      <p>Lis PPDB</p>
                     </a>
                   </li>
                 @endif
                 @if(! is_null($latestPpdbUser))
                   <li class="nav-item">
                     <a class="nav-link
-                            {{ Request::is('ppdb/peserta/detail', 'ppdb/*/peserta/*') ? 'active' :'' }}"
+                            {{ Request::is('backoffice/ppdb/peserta/detail', 'backoffice/ppdb/*/peserta/*') ? 'active' :'' }}"
                        href="{{ sub_route('backoffice.ppdb.users.direct_show') }}">
                       <i class="far fa-fw fa-circle"></i>
                       <p>Detail Pendaftaran</p>
@@ -93,7 +103,7 @@
                   </li>
                   <li class="nav-item">
                     <a class="nav-link
-                          {{ Request::is('ppdb/observasi') ? 'active' :'' }}"
+                          {{ Request::is('backoffice/ppdb/observasi') ? 'active' :'' }}"
                        href="{{ sub_route('backoffice.ppdb.observation.direct_show') }}">
                       <i class="far fa-fw fa-circle"></i>
                       <p>Observasi</p>
@@ -107,9 +117,9 @@
 
         @can('viewAny', App\Models\Article::class)
           <li class="nav-item has-treeview
-                      {{ Request::is('artikel', 'artikel/*', 'kategori', 'kategori/*') ? 'menu-open' :'' }}">
+                      {{ Request::is('backoffice/artikel', 'backoffice/artikel/*', 'backoffice/kategori', 'backoffice/kategori/*') ? 'menu-open' :'' }}">
             <a class="nav-link
-                      {{ Request::is('artikel', 'artikel/*', 'kategori', 'kategori/*') ? 'active' :'' }}"
+                      {{ Request::is('backoffice/artikel', 'backoffice/artikel/*', 'backoffice/kategori', 'backoffice/kategori/*') ? 'active' :'' }}"
                href="#">
               <i class="fas fa-fw fa-newspaper"></i>
               <p>Artikel <i class="fas fa-angle-left right"></i></p>
@@ -118,7 +128,7 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a class="nav-link
-                          {{ Request::is('artikel/buat') ? 'active' :'' }}"
+                          {{ Request::is('backoffice/artikel/buat') ? 'active' :'' }}"
                    href="{{ route('backoffice.articles.create') }}">
                   <i class="far fa-fw fa-circle"></i>
                   <p>Tambah Artikel</p>
@@ -126,7 +136,7 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link
-                          {{ Request::is('artikel') ? 'active' :'' }}"
+                          {{ Request::is('backoffice/artikel') ? 'active' :'' }}"
                    href="{{ route('backoffice.articles.index') }}">
                   <i class="far fa-fw fa-circle"></i>
                   <p>Lis Artikel</p>
@@ -135,7 +145,7 @@
               @can('viewAny', App\Models\Category::class)
                 <li class="nav-item">
                   <a class="nav-link
-                            {{ Request::is('kategori') ? 'active' :'' }}"
+                            {{ Request::is('backoffice/kategori') ? 'active' :'' }}"
                      href="{{ route('backoffice.categories.index') }}">
                     <i class="far fa-fw fa-circle"></i>
                     <p>Lis Kategori</p>
@@ -153,9 +163,9 @@
         @if(!is_main_app())
           @can('viewAny', App\Models\AcademicYear::class)
             <li class="nav-item has-treeview
-                        {{ Request::is('tahun-akademik', 'tahun-akademik/*') ? 'menu-open' :'' }}">
+                        {{ Request::is('backoffice/tahun-akademik', 'backoffice/tahun-akademik/*') ? 'menu-open' :'' }}">
               <a class="nav-link
-                        {{ Request::is('tahun-akademik', 'tahun-akademik/*') ? 'active' :'' }}"
+                        {{ Request::is('backoffice/tahun-akademik', 'backoffice/tahun-akademik/*') ? 'active' :'' }}"
                  href="#">
                 <i class="fas fa-fw fa-newspaper"></i>
                 <p>Tahun Akademik <i class="fas fa-angle-left right"></i></p>
@@ -164,7 +174,7 @@
               <ul class="nav nav-treeview">
                 <li class="nav-item">
                   <a class="nav-link
-                            {{ Request::is('tahun-akademik/buat') ? 'active' :'' }}"
+                            {{ Request::is('backoffice/tahun-akademik/buat') ? 'active' :'' }}"
                      href="{{ sub_route('backoffice.academic_years.create') }}">
                     <i class="far fa-fw fa-circle"></i>
                     <p>Tambah Tahun Akademik</p>
@@ -172,7 +182,7 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link
-                            {{ Request::is('tahun-akademik') ? 'active' :'' }}"
+                            {{ Request::is('backoffice/tahun-akademik') ? 'active' :'' }}"
                      href="{{ sub_route('backoffice.academic_years.index') }}">
                     <i class="far fa-fw fa-circle"></i>
                     <p>Lis Tahun Akademik</p>

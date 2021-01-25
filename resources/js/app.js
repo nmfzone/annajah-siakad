@@ -2,10 +2,6 @@ import './bootstrap'
 import './global'
 import './container-screen'
 import './front/sticky-menu'
-import vClickOutside from 'v-click-outside'
-
-
-Vue.use(vClickOutside)
 
 import NavbarMenu from './components/menu/Menu'
 import NavbarMenuItem from './components/menu/MenuItem'

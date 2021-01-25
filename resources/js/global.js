@@ -3,8 +3,11 @@ import vSelect from 'vue-select'
 import dayjs from 'dayjs'
 import 'dayjs/locale/id'
 import dayjsTimezone from 'dayjs/plugin/timezone'
+import vClickOutside from 'v-click-outside'
+
 
 window.Vue = Vue
+Vue.use(vClickOutside)
 
 window.dayjs = dayjs
 dayjs.locale('id')

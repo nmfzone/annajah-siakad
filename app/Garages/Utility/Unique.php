@@ -16,7 +16,7 @@ class Unique
      * @param  int  $data
      * @param  mixed  $except
      * @param  string  $exceptColumn
-     * @return string
+     * @return mixed
      */
     public static function generate(
         $model,
@@ -27,15 +27,14 @@ class Unique
         $exceptColumn = 'id'
     ) {
         $code = $generate(++$data);
-
-        $query = $model::where($column, $code);
+        $query = $model::query();
 
         if (! is_null($except)) {
             $query->where($exceptColumn, '!=', $except);
         }
 
         $i = 0;
-        while ($query->count() > 0) {
+        while ($query->where($column, $code)->count() > 0) {
             $code = $generate($data + $i);
 
             if ($i++ == 10) {

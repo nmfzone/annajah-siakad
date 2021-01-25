@@ -16,8 +16,12 @@ class AcademicYearsController extends Controller
     {
         $categories = AcademicYear::query()
             ->where('site_id', site()->id)
-            ->paginate();
+            ->orderByDesc('from');
 
-        return new AcademicYearCollection($categories);
+        if (! empty($search = $request->get('q'))) {
+            $categories->where('name', 'like', '%' . $search . '%');
+        }
+
+        return new AcademicYearCollection($categories->paginate());
     }
 }
