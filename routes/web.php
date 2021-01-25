@@ -71,8 +71,8 @@ Route::group([
         Route::get('/dashboard', 'DashboardController@index')
             ->name('dashboard');
 
-        require_once 'partials/ppdb.php';
         require_once 'partials/ppdbUser.php';
+        require_once 'partials/ppdb.php';
         require_once 'partials/academicYear.php';
     });
 
