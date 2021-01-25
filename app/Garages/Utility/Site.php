@@ -3,7 +3,6 @@
 namespace App\Garages\Utility;
 
 use App\Enums\SiteSetting;
-use App\Models\Site as SiteModel;
 use Illuminate\Support\Str;
 
 class Site
