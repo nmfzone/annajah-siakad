@@ -169,7 +169,7 @@
               <a class="nav-link
                         {{ Request::is('backoffice/tahun-akademik', 'backoffice/tahun-akademik/*') ? 'active' :'' }}"
                  href="#">
-                <i class="fas fa-fw fa-newspaper"></i>
+                <i class="fas fa-fw fa-calendar-alt"></i>
                 <p>Tahun Akademik <i class="fas fa-angle-left right"></i></p>
               </a>
 
