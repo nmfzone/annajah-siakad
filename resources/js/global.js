@@ -18,9 +18,11 @@ import FormInput from './components/form/FormInput'
 import Alert from './components/Alert'
 import FormSelect from './components/form/FormSelect'
 import FormButton from './components/form/FormButton'
+import DynamicFormInput from './components/form/DynamicFormInput'
 
 Vue.component('form-input', FormInput)
 Vue.component('alert', Alert)
 Vue.component('v-select', vSelect)
 Vue.component('form-select', FormSelect)
 Vue.component('form-button', FormButton)
+Vue.component('dynamic-form-input', DynamicFormInput)

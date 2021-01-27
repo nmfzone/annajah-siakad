@@ -1,7 +1,6 @@
 <?php
 
 use App\Enums\PaymentType;
-use App\Enums\PpdbSetting;
 use App\Enums\Role;
 use App\Imports\StudentsImport;
 use App\Models\AcademicYear;
@@ -98,16 +97,16 @@ class PreliminaryDataSeeder extends Seeder
             'ended_at' => now()->addMonths(2),
         ]));
 
-        $ppdb->settings()->set(PpdbSetting::PAYMENT, [
+        $ppdb->settings()->set('payment', [
             'payment_type' => PaymentType::BANK_TRANSFER,
             'provider' => 'bni',
             'provider_number' => '0912570453',
             'provider_holder_name' => 'Kartika Nur Kholidah',
         ]);
 
-        $ppdb->settings()->set(PpdbSetting::PRICE, 100000);
+        $ppdb->settings()->set('price', 100000);
 
-        $ppdb->settings()->set(PpdbSetting::CONTACT_PERSONS, [
+        $ppdb->settings()->set('contact_persons', [
             [
                 'name' => 'Ustadzah Ratri',
                 'number' => '082135002033',

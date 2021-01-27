@@ -242,7 +242,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Role' => App\Enums\Role::class,
         'PaymentType' => App\Enums\PaymentType::class,
-        'PpdbSetting' => App\Enums\PpdbSetting::class,
         'SelectionMethod' => App\Enums\SelectionMethod::class,
         'Site' => App\Garages\Utility\Site::class,
     ],

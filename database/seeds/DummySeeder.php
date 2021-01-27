@@ -2,7 +2,6 @@
 
 use App\Enums\AttendanceType;
 use App\Enums\PaymentType;
-use App\Enums\PpdbSetting;
 use App\Enums\Role;
 use App\Enums\SelectionMethod;
 use App\Models\AcademicClass;
@@ -147,16 +146,16 @@ class DummySeeder extends Seeder
             'ended_at' => now()->addMonths(2),
         ]));
 
-        $ppdb->settings()->set(PpdbSetting::PAYMENT, [
+        $ppdb->settings()->set('payment', [
             'payment_type' => PaymentType::BANK_TRANSFER,
             'provider' => 'bni',
             'provider_number' => '28371903874',
             'provider_holder_name' => 'John Doe',
         ]);
 
-        $ppdb->settings()->set(PpdbSetting::PRICE, 200000);
+        $ppdb->settings()->set('price', 200000);
 
-        $ppdb->settings()->set(PpdbSetting::CONTACT_PERSONS, [
+        $ppdb->settings()->set('contact_persons', [
             [
                 'name' => 'John Doe',
                 'number' => '081726367482',

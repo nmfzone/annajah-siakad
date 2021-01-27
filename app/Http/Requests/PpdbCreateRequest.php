@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\PaymentProvider;
+use App\Enums\PaymentType;
 use App\Models\AcademicYear;
 use App\Models\Ppdb;
 use Illuminate\Support\Carbon;
@@ -39,7 +41,49 @@ class PpdbCreateRequest extends FormRequest
                 'required',
                 Rule::exists(AcademicYear::class, 'id')
                     ->where('site_id', (string) site()->id)
-            ]
+            ],
+            'price' => [
+                'required',
+                'numeric',
+            ],
+            'payment' => [
+                'required',
+                'array',
+            ],
+            'payment.provider' => [
+                'required',
+                Rule::in(PaymentProvider::getValues()),
+            ],
+            'payment.payment_type' => [
+                'required',
+                Rule::in(PaymentType::getValues()),
+            ],
+            'payment.provider_number' => [
+                'required',
+                'numeric',
+            ],
+            'payment.provider_holder_name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:50',
+            ],
+            'contact_persons' => [
+                'required',
+                'array',
+                'min:1',
+                'max:2',
+            ],
+            'contact_persons.*.name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:50',
+            ],
+            'contact_persons.*.number' => [
+                'required',
+                'numeric',
+            ],
         ];
     }
 
@@ -74,6 +118,15 @@ class PpdbCreateRequest extends FormRequest
             'end_date' => 'Tanggal Selesai PPDB',
             'end_time' => 'Waktu Selesai PPDB',
             'academic_year_id' => 'Tahun Akademik',
+            'price' => 'Biaya Pendaftaran',
+            'payment' => 'Pembayaran',
+            'payment.provider' => 'Nama Provider',
+            'payment.payment_type' => 'Jenis Pembayaran',
+            'payment.provider_number' => 'Nomor Provider',
+            'payment.provider_holder_name' => 'Nama Pemilik Provider',
+            'contact_persons' => 'Narahubung',
+            'contact_persons.*.name' => 'Nama Narahubung',
+            'contact_persons.*.number' => 'Nomor Narahubung',
         ];
     }
 }

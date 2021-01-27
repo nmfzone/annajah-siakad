@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\BackOffice;
 
 use App\DataTables\PpdbDataTable;
+use App\Http\Controllers\Concerns\HasPpdbContext;
 use App\Http\Controllers\Concerns\HasSiteContext;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PpdbCreateRequest;
@@ -11,10 +12,12 @@ use App\Models\Ppdb;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class PpdbController extends Controller
 {
-    use HasSiteContext;
+    use HasSiteContext,
+        HasPpdbContext;
 
     public function index(Request $request)
     {
@@ -34,11 +37,21 @@ class PpdbController extends Controller
 
     public function store(PpdbCreateRequest $request)
     {
-        Ppdb::create(Arr::only($request->validated(), [
-            'started_at',
-            'ended_at',
-            'academic_year_id',
-        ]));
+        DB::transaction(function () use ($request) {
+            $data = $request->validated();
+
+            $ppdb = Ppdb::create(Arr::only($data, [
+                'started_at',
+                'ended_at',
+                'academic_year_id',
+            ]));
+
+            $ppdb->settings()->setMultiple(Arr::only($data, [
+                'price',
+                'payment',
+                'contact_persons',
+            ]));
+        });
 
         flash('Berhasil menambahkan PPDB.')->success();
 
@@ -64,11 +77,22 @@ class PpdbController extends Controller
     public function update(PpdbUpdateRequest $request, $subDomain, Ppdb $ppdb)
     {
         $this->ppdbShouldBelongsToCurrentSite($ppdb);
-        $ppdb->update(Arr::only($request->validated(), [
-            'started_at',
-            'ended_at',
-            'academic_year_id',
-        ]));
+
+        DB::transaction(function () use ($request, $ppdb) {
+            $data = $request->validated();
+
+            $ppdb->update(Arr::only($data, [
+                'started_at',
+                'ended_at',
+                'academic_year_id',
+            ]));
+
+            $ppdb->settings()->setMultiple(Arr::only($data, [
+                'price',
+                'payment',
+                'contact_persons',
+            ]));
+        });
 
         flash('Berhasil memperbarui PPDB.')->success();
 
@@ -98,19 +122,5 @@ class PpdbController extends Controller
         }
 
         return redirect()->to(sub_route('backoffice.ppdb.index'));
-    }
-
-    protected function ppdbShouldBelongsToCurrentSite(Ppdb $ppdb)
-    {
-        $site = site();
-
-        if (is_null($site) && is_null($ppdb->academicYear->site)) {
-            return;
-        }
-
-        if ((is_null($site) && ! is_null($ppdb->academicYear->site)) ||
-            is_null($site->academicYears()->find($ppdb->academicYear))) {
-            abort(404);
-        }
     }
 }

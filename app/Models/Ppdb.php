@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\PpdbSetting;
 use Glorand\Model\Settings\Traits\HasSettingsTable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,12 +31,12 @@ class Ppdb extends Model
 
     public function paymentDetails()
     {
-        return $this->settings()->get(PpdbSetting::PAYMENT);
+        return $this->settings()->get('payment');
     }
 
     public function price()
     {
-        return $this->settings()->get(PpdbSetting::PRICE, 0);
+        return $this->settings()->get('price', 0);
     }
 
     public function priceFormatted()

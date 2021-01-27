@@ -33,7 +33,7 @@ export default {
     },
     valueKey: {
       type: String,
-      required: true
+      default: 'value'
     },
     noOptionsMessage: String
   },

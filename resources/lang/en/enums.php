@@ -7,13 +7,13 @@ use App\Enums\Role;
 return [
     Role::class => [
         Role::ADMIN => 'Administrator',
-        Role::TEACHER => 'Asatidz',
-        Role::STUDENT => 'Santri',
-        Role::HEAD_MASTER => 'Kepala Sekolah',
+        Role::TEACHER => 'Teacher',
+        Role::STUDENT => 'Student',
+        Role::HEAD_MASTER => 'Head Master',
     ],
 
     PaymentType::class => [
-        PaymentType::BANK_TRANSFER => 'Transfer Bank',
+        PaymentType::BANK_TRANSFER => 'Bank Transfer',
     ],
 
     PaymentProvider::class => [
