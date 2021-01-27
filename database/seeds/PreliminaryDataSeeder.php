@@ -22,6 +22,7 @@ class PreliminaryDataSeeder extends Seeder
         /** @var \App\Models\Site $site */
         $site = Site::create([
             'title' => 'SMPIT Muhammadiyah An Najah',
+            'site_title' => 'SMPIT Muhammadiyah An Najah Jatinom Klaten',
             'domain' => 'smpit.' . config('app.host'),
             'address' => 'Jalan Lingkar Utara Jatinom, Dukuh Bonyokan, Jatinom, Klaten',
             'email' => 'info@smpit.muhannajah.sch.id',
@@ -37,6 +38,7 @@ class PreliminaryDataSeeder extends Seeder
 
         Site::create([
             'title' => 'SDIT Muhammadiyah An Najah',
+            'site_title' => 'SDIT Muhammadiyah An Najah Jatinom Klaten',
             'domain' => 'sdit.' . config('app.host'),
             'address' => 'Jalan Lingkar Utara Jatinom, Dk. Dukuh, Dukuh Bonyokan, Jatinom, Klaten',
             'email' => 'info@sdit.muhannajah.sch.id',

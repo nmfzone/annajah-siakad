@@ -12,6 +12,11 @@ class Site
         return object_get(site(), 'title', config('app.name', 'Laravel'));
     }
 
+    public static function siteTitle()
+    {
+        return object_get(site(), 'site_title', self::title());
+    }
+
     public static function email()
     {
         $value = site()->email;

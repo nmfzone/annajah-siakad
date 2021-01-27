@@ -14,7 +14,7 @@
     @hasSection('title')
       @yield('title', 'Welcome') |
     @endif
-    {{ Site::title() }}
+    {{ Site::siteTitle() }}
   </title>
 
   <link href="{{ mix('css/app.css') }}" rel="stylesheet">

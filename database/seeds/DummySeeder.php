@@ -34,6 +34,7 @@ class DummySeeder extends Seeder
             'domain' => 'smpit.' . config('app.host'),
         ], [
             'title' => 'SMPIT Muhammadiyah An Najah',
+            'site_title' => 'SMPIT Muhammadiyah An Najah Jatinom Klaten',
             'address' => 'Jalan Lingkar Utara Jatinom, Dukuh Bonyokan, Jatinom, Klaten',
             'email' => 'info@smpit.muhannajah.sch.id',
             'phone' => '(0272) 3393415',

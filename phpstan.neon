@@ -22,7 +22,7 @@ parameters:
             message: '#Unsafe usage of new static\(\)#'
             path: app/Providers/MacroServiceProvider.php
 
-    excludes_analyse:
+    excludePaths:
         - app/Garages/GoogleDrive/
         - bootstrap/
         - config/
