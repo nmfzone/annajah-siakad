@@ -30,6 +30,9 @@ class AddThumbnailIdToArticlesTable extends Migration
     public function down()
     {
         Schema::table('articles', function (Blueprint $table) {
+            if (DB::getDriverName() != 'sqlite') {
+                $table->dropForeign(['thumbnail_id']);
+            }
             $table->dropColumn('thumbnail_id');
         });
     }

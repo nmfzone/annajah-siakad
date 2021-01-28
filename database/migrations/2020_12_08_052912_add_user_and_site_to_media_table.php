@@ -35,7 +35,18 @@ class AddUserAndSiteToMediaTable extends Migration
     public function down()
     {
         Schema::table('media', function (Blueprint $table) {
+            if (DB::getDriverName() != 'sqlite') {
+                $table->dropForeign(['user_id']);
+            }
+
             $table->dropColumn('user_id');
+        });
+
+        Schema::table('media', function (Blueprint $table) {
+            if (DB::getDriverName() != 'sqlite') {
+                $table->dropForeign(['site_id']);
+            }
+
             $table->dropColumn('site_id');
         });
     }
