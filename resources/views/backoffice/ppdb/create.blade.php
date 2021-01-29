@@ -26,12 +26,13 @@
                   </label>
 
                   <academic-year-picker
+                    id="academic_year_id"
                     name="academic_year_id"
                     class="from-control @error('academic_year_id') is-invalid @enderror"
                     required></academic-year-picker>
 
                   @error('academic_year_id')
-                  <span class="invalid-feedback" role="alert">
+                    <span class="invalid-feedback" role="alert">
                       <b>{{ $message }}</b>
                     </span>
                   @enderror
