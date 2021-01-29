@@ -19,6 +19,12 @@ use Faker\Generator as Faker;
 $factory->define(Site::class, function (Faker $faker) {
     return [
         'title' => $faker->randomElement(['SDIT', 'SMPIT']) . ' Muhammadiyah An Najah',
-        'domain' => $faker->randomElement(['sdit', 'smpit']) . '.' . config('app.host')
+        'domain' => $faker->randomElement(['sdit', 'smpit']) . '.' . config('app.host'),
+        'address' => $faker->address,
+        'email' => $faker->email,
+        'phone' => $faker->phoneNumber,
+        'instagram' => 'ig_' . $faker->userName,
+        'facebook' => 'fb_' . $faker->userName,
+        'twitter' => 'tw_' . $faker->userName,
     ];
 });
