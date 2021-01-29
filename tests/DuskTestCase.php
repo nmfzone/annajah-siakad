@@ -5,6 +5,10 @@ namespace Tests;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 
 abstract class DuskTestCase extends BaseTestCase
@@ -22,14 +26,24 @@ abstract class DuskTestCase extends BaseTestCase
         if (! static::runningInSail()) {
             static::startChromeDriver();
         }
+
+        (new Filesystem)->put(
+            __DIR__ . '/../storage/framework/testing/duskdb.sqlite',
+            ''
+        );
     }
 
-    /**
-     * Create the RemoteWebDriver instance.
-     *
-     * @return \Facebook\WebDriver\Remote\RemoteWebDriver
-     */
-    protected function driver()
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Storage::fake('local');
+        Storage::fake('public');
+
+        $this->setupBrowserMacro();
+    }
+
+    protected function driver(): RemoteWebDriver
     {
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',
@@ -40,8 +54,19 @@ abstract class DuskTestCase extends BaseTestCase
         return RemoteWebDriver::create(
             $_ENV['DUSK_DRIVER_URL'] ?? 'http://localhost:9515',
             DesiredCapabilities::chrome()->setCapability(
-                ChromeOptions::CAPABILITY, $options
+                ChromeOptions::CAPABILITY_W3C, $options
             )
         );
+    }
+
+    public function setupBrowserMacro()
+    {
+        Browser::macro('findElementByText', function ($selector, $text) {
+            foreach ($this->resolver->all($selector) as $element) {
+                if (Str::contains($element->getText(), $text)) {
+                    return $element;
+                }
+            }
+        });
     }
 }
