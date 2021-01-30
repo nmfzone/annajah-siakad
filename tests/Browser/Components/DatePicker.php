@@ -122,8 +122,7 @@ class DatePicker extends BaseComponent
     protected function getMonthElement(
         RemoteWebElement $pickerEl,
         int $month
-    ): ?RemoteWebElement
-    {
+    ): ?RemoteWebElement {
         $elements = $pickerEl->findElements(
             WebDriverBy::cssSelector('.picker-months .picker-month')
         );
@@ -172,7 +171,7 @@ class DatePicker extends BaseComponent
             if (! in_array($year, $years)) {
                 if ($years[0] > $year) {
                     $this->moveToPreviousOrNext($pickerEl);
-                } else if (last($years) < $year) {
+                } elseif (last($years) < $year) {
                     $this->moveToPreviousOrNext($pickerEl, false);
                 }
                 $this->pause(100);
