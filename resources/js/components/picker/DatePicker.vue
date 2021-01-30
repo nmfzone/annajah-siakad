@@ -49,7 +49,7 @@
                       v-if="!enableMonth"
                       class="rounded-full overflow-hidden">
                       <div
-                        class="transition duration-150 ease-out p-2"
+                        class="picker-previous transition duration-150 ease-out p-2"
                         :class="[
                           visiblePrev
                             ? 'cursor-pointer'
@@ -72,7 +72,7 @@
                 </div>
                 <div class="flex flex-1">
                   <div
-                    class="flex-1 rounded overflow-hidden py-1 ml-2 mr-1 text-center cursor-pointer transition duration-150 ease-out"
+                    class="picker-toggle-month flex-1 rounded overflow-hidden py-1 ml-2 mr-1 text-center cursor-pointer transition duration-150 ease-out"
                     :class="[
                       enableMonth ? theme.navigation.focus : '',
                       theme.navigation.hover,
@@ -81,7 +81,7 @@
                     {{ localSelectedDate.format('MMMM') }}
                   </div>
                   <div
-                    class="flex-1 rounded overflow-hidden py-1 mr-2 ml-1 text-center cursor-pointer transition duration-150 ease-out"
+                    class="picker-toggle-year flex-1 rounded overflow-hidden py-1 mr-2 ml-1 text-center cursor-pointer transition duration-150 ease-out"
                     :class="[
                       enableYear ? theme.navigation.focus : '',
                       theme.navigation.hover,
@@ -97,7 +97,7 @@
                       v-if="!enableMonth"
                       class="rounded-full overflow-hidden">
                       <div
-                        class="transition duration-150 ease-out p-2"
+                        class="picker-next transition duration-150 ease-out p-2"
                         :class="[
                           visibleNext
                             ? 'cursor-pointer'
@@ -144,7 +144,9 @@
                     </div>
                   </div>
 
-                  <div ref="currentPicker" class="flex flex-wrap relative">
+                  <div
+                    ref="currentPicker"
+                    class="picker-dates flex flex-wrap relative">
                     <div
                       v-for="(date, i) in previousPicker"
                       :key="`${date.$D}${date.$M}${date.$y}-previous`"
@@ -207,7 +209,7 @@
                                 : '',
                             ]"></div>
                           <div
-                            class="flex justify-center items-center z-10"
+                            class="picker-date flex justify-center items-center z-10"
                             :class="[
                               {
                                   'text-white':
@@ -267,7 +269,7 @@
                 <div
                   v-if="enableMonth"
                   class="relative flex items-center smooth-scrolling overflow-y-auto overflow-x-hidden">
-                  <div class="flex flex-wrap py-1">
+                  <div class="picker-months flex flex-wrap py-1">
                     <div
                       v-for="(month, i) in months"
                       :key="i"
@@ -281,7 +283,7 @@
                             ? `cursor-pointer ${theme.picker.selected.hover}`
                             : 'cursor-not-allowed opacity-50',
                         ]"
-                        class="w-full flex justify-center items-center py-2 my-1 transition duration-150 ease-out rounded border"
+                        class="picker-month w-full flex justify-center items-center py-2 my-1 transition duration-150 ease-out rounded border"
                         @click="setMonth(i)">
                         <span class="font-medium">{{ month }}</span>
                       </div>
@@ -293,7 +295,7 @@
                 <div
                   v-if="enableYear"
                   class="relative flex items-center h-full">
-                  <div class="flex flex-wrap py-1 justify-center">
+                  <div class="picker-years flex flex-wrap py-1 justify-center">
                     <div
                       v-for="(year, i) in years"
                       :key="i"
@@ -307,7 +309,7 @@
                             ? `cursor-pointer ${theme.picker.selected.hover}`
                             : 'cursor-not-allowed opacity-50',
                         ]"
-                        class="w-full flex justify-center items-center py-2 my-1 transition duration-150 ease-out rounded border"
+                        class="picker-year w-full flex justify-center items-center py-2 my-1 transition duration-150 ease-out rounded border"
                         @click="setYear(year)">
                         <span class="font-medium">{{ year }}</span>
                       </div>
@@ -466,7 +468,7 @@ export default {
   data() {
     const startDatepicker = this.startDate
       ? dayjs(this.startDate, this.dateFormat)
-      : dayjs().add(-100, 'year')
+      : dayjs().add(-100, 'year').month(0).date(1)
     const endDatepicker = this.endDate
       ? dayjs(this.endDate, this.dateFormat)
       : undefined
@@ -551,16 +553,13 @@ export default {
     },
     visiblePrev() {
       if (!this.dateRange) {
-        const endOfMonth = this.localSelectedDate.subtract(1, 'month').endOf('month')
-        const diff = this.startDatepicker.diff(endOfMonth, 'day')
-        return diff < this.localSelectedDate.daysInMonth() - this.localSelectedDate.$D
+        return this.getPreviousDate() !== null
       }
       return true
     },
     visibleNext() {
       if (!this.dateRange && this.endDate) {
-        const startOfMonth = this.localSelectedDate.add(1, 'month').startOf('month')
-        return this.endDatepicker.diff(startOfMonth, 'day') > 0
+        return this.getNextDate() !== null
       }
       return true
     },
@@ -603,37 +602,49 @@ export default {
     },
     onPrevious() {
       if (this.visiblePrev) {
-        let localSelectedDate
-        if (this.enableYear) {
-          localSelectedDate = this.localSelectedDate
-            .set('year', this.localSelectedDate.$y - 12)
-        } else {
-          localSelectedDate = this.localSelectedDate
-            .set('month', this.localSelectedDate.$M === 0 ? 11 : this.localSelectedDate.$M - 1)
-            .set('year', this.localSelectedDate.$M === 0 ? this.localSelectedDate.$y - 1 : this.localSelectedDate.$y)
-        }
-        if (this.possibleDate(localSelectedDate)) {
-          this.localSelectedDate = localSelectedDate
-        }
+        const previousDate = this.getPreviousDate()
+        if (previousDate) this.localSelectedDate = previousDate
         this.emit()
       }
     },
+    getPreviousDate() {
+      let localSelectedDate = null
+      if (this.enableYear) {
+        localSelectedDate = this.localSelectedDate
+          .set('year', this.localSelectedDate.$y - 12)
+      } else {
+        localSelectedDate = this.localSelectedDate
+          .set('month', this.localSelectedDate.$M === 0 ? 11 : this.localSelectedDate.$M - 1)
+          .set('year', this.localSelectedDate.$M === 0 ? this.localSelectedDate.$y - 1 : this.localSelectedDate.$y)
+      }
+      if (this.possibleDate(localSelectedDate)) {
+        return localSelectedDate
+      }
+
+      return null
+    },
     onNext() {
       if (this.visibleNext) {
-        let localSelectedDate
-        if (this.enableYear) {
-          localSelectedDate = this.localSelectedDate
-            .set('year', this.localSelectedDate.$y + 12)
-        } else {
-          localSelectedDate = this.localSelectedDate
-            .set('month', (this.localSelectedDate.$M + 1) % 12)
-            .set('year', this.localSelectedDate.$M === 11 ? this.localSelectedDate.$y + 1 : this.localSelectedDate.$y)
-        }
-        if (this.possibleDate(localSelectedDate)) {
-          this.localSelectedDate = localSelectedDate
-        }
+        const nextDate = this.getNextDate()
+        if (nextDate) this.localSelectedDate = nextDate
         this.emit()
       }
+    },
+    getNextDate() {
+      let localSelectedDate
+      if (this.enableYear) {
+        localSelectedDate = this.localSelectedDate
+          .set('year', this.localSelectedDate.$y + 12)
+      } else {
+        localSelectedDate = this.localSelectedDate
+          .set('month', (this.localSelectedDate.$M + 1) % 12)
+          .set('year', this.localSelectedDate.$M === 11 ? this.localSelectedDate.$y + 1 : this.localSelectedDate.$y)
+      }
+      if (this.possibleDate(localSelectedDate)) {
+        return localSelectedDate
+      }
+
+      return null
     },
     possibleStartDate(date) {
       return this.dateRange
