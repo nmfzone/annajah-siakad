@@ -2,6 +2,7 @@
 
 namespace Tests\Browser\Components;
 
+use Exception;
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use Facebook\WebDriver\WebDriverBy;
 use Illuminate\Support\Carbon;
@@ -159,10 +160,9 @@ class DatePicker extends BaseComponent
         while ($yearEl == null) {
             $years = $this->getPickerYears($pickerEl, true);
 
-            PHPUnit::assertTrue(
-                count($years) > 0,
-                'Year elements not available.'
-            );
+            if ($years == 0) {
+                throw new Exception('Year elements not available.');
+            }
 
             if (! in_array($year, $years)) {
                 if ($years[0] > $year) {
