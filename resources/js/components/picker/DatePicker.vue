@@ -189,7 +189,8 @@
                               : '',
                           }"></div>
                         <div
-                          class="relative h-8 w-8 flex justify-center items-center"
+                          class="picker-date relative h-8 w-8 flex justify-center items-center"
+                          @click="changePicker(date)"
                           :class="[
                             theme.picker.rounded,
                             possibleDate(date)
@@ -209,14 +210,13 @@
                                 : '',
                             ]"></div>
                           <div
-                            class="picker-date flex justify-center items-center z-10"
+                            class="flex justify-center items-center z-10"
                             :class="[
                               {
                                   'text-white':
                                     date.$D === localSelectedDate.$D && possibleDate(date),
                                 }
                             ]"
-                            @click="changePicker(date)"
                             :data-tailwind-datepicker="date.$d">
                             <div
                               :class="[
