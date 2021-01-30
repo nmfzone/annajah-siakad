@@ -5,6 +5,7 @@ namespace Tests;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\Remote\RemoteWebElement;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -67,6 +68,16 @@ abstract class DuskTestCase extends BaseTestCase
                     return $element;
                 }
             }
+
+            return null;
+        });
+
+        Browser::macro('takeElementScreenshot', function (RemoteWebElement $element, $name) {
+            $element->takeElementScreenshot(sprintf(
+                '%s/elements/%s.png',
+                rtrim(Browser::$storeScreenshotsAt, '/'),
+                $name
+            ));
         });
     }
 }
