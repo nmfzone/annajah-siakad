@@ -160,7 +160,7 @@ class DatePicker extends BaseComponent
         while ($yearEl == null) {
             $years = $this->getPickerYears($pickerEl, true);
 
-            if ($years == 0) {
+            if (count($years) == 0) {
                 throw new Exception('Year elements not available.');
             }
 
