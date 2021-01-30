@@ -20,11 +20,11 @@ class DatePicker extends BaseComponent
 
     protected $browser;
 
-    protected $invalidYear = 'The choosen year is not available.';
+    protected $invalidYear = "The choosen year in DatePicker [':selector:'] is not available.";
 
-    protected $invalidMonth = 'The choosen month is not available.';
+    protected $invalidMonth = "The choosen month in DatePicker [':selector:'] is not available.";
 
-    protected $invalidDate = 'The choosen date is not available.';
+    protected $invalidDate = "The choosen date in DatePicker [':selector:'] is not available.";
 
     public function __construct(string $baseSelector)
     {
@@ -40,7 +40,7 @@ class DatePicker extends BaseComponent
     {
         PHPUnit::assertTrue(
             $this->getDatePickerElement($browser)->isDisplayed(),
-            "Datepicker for ['{$this->baseSelector}'] is not visible."
+            $this->formatMessage("Datepicker for [':selector:'] is not visible.")
         );
     }
 
@@ -71,7 +71,7 @@ class DatePicker extends BaseComponent
                 $dateEl->getAttribute('class'),
                 'cursor-not-allowed'
             ),
-            $this->invalidDate
+            $this->formatMessage($this->invalidDate)
         );
 
         $dateEl->click();
@@ -113,13 +113,16 @@ class DatePicker extends BaseComponent
                 $monthEl->getAttribute('class'),
                 'cursor-not-allowed'
             ),
-            $this->invalidMonth
+            $this->formatMessage($this->invalidMonth)
         );
 
         $monthEl->click();
     }
 
-    protected function getMonthElement(RemoteWebElement $pickerEl, int $month):  ?RemoteWebElement
+    protected function getMonthElement(
+        RemoteWebElement $pickerEl,
+        int $month
+    ): ?RemoteWebElement
     {
         $elements = $pickerEl->findElements(
             WebDriverBy::cssSelector('.picker-months .picker-month')
@@ -161,7 +164,9 @@ class DatePicker extends BaseComponent
             $years = $this->getPickerYears($pickerEl, true);
 
             if (count($years) == 0) {
-                throw new Exception('Year elements not available.');
+                throw new Exception($this->formatMessage(
+                    "Year elements in DatePicker [':selector:'] not available."
+                ));
             }
 
             if (! in_array($year, $years)) {
@@ -181,7 +186,7 @@ class DatePicker extends BaseComponent
                 $yearEl->getAttribute('class'),
                 'cursor-not-allowed'
             ),
-            $this->invalidYear
+            $this->formatMessage($this->invalidYear)
         );
 
         $yearEl->click();
@@ -203,7 +208,7 @@ class DatePicker extends BaseComponent
                 $buttonEl->getAttribute('class'),
                 'cursor-not-allowed'
             ),
-            $this->invalidYear
+            $this->formatMessage($this->invalidYear)
         );
 
         $buttonEl->click();
@@ -248,5 +253,10 @@ class DatePicker extends BaseComponent
         return $parentEl->findElement(
             WebDriverBy::id('v-tailwind-picker')
         );
+    }
+
+    protected function formatMessage($message): string
+    {
+        return str_replace(':selector:', $this->baseSelector, $message);
     }
 }
