@@ -6,11 +6,13 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\RemoteWebElement;
+use Facebook\WebDriver\WebDriverBy;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
+use PHPUnit\Framework\Assert as PHPUnit;
 
 abstract class DuskTestCase extends BaseTestCase
 {
@@ -41,7 +43,7 @@ abstract class DuskTestCase extends BaseTestCase
         Storage::fake('local');
         Storage::fake('public');
 
-        $this->setupBrowserMacro();
+        $this->registerBrowserMacro();
     }
 
     protected function driver(): RemoteWebDriver
@@ -60,9 +62,16 @@ abstract class DuskTestCase extends BaseTestCase
         );
     }
 
-    public function setupBrowserMacro()
+    public static function registerBrowserMacro()
     {
-        Browser::macro('findElementByText', function ($selector, $text) {
+        /**
+         * Find element by text.
+         *
+         * @param  string  $selector
+         * @param  string  $text
+         * @return \Facebook\WebDriver\Remote\RemoteWebElement|null
+         */
+        Browser::macro('findElementByText', function (string $selector, string $text) {
             foreach ($this->resolver->all($selector) as $element) {
                 if (Str::contains($element->getText(), $text)) {
                     return $element;
@@ -72,12 +81,54 @@ abstract class DuskTestCase extends BaseTestCase
             return null;
         });
 
-        Browser::macro('takeElementScreenshot', function (RemoteWebElement $element, $name) {
+        /**
+         * Take element screenshot.
+         *
+         * @param  \Facebook\WebDriver\Remote\RemoteWebElement  $element
+         * @param  string  $name
+         * @return void
+         */
+        Browser::macro('takeElementScreenshot', function (RemoteWebElement $element, string $name) {
             $element->takeElementScreenshot(sprintf(
                 '%s/elements/%s.png',
                 rtrim(Browser::$storeScreenshotsAt, '/'),
                 $name
             ));
+        });
+
+        /**
+         * Disable browser validation.
+         *
+         * @return \Laravel\Dusk\Browser
+         */
+        Browser::macro('disableBrowserValidation', function () {
+            $this->script(
+                'for(var f=document.forms,i=f.length;i--;)f[i].setAttribute("novalidate",i)'
+            );
+
+            return $this;
+        });
+
+        /**
+         * Assert invalid feedback message.
+         *
+         * @param  string  $selector
+         * @param  string  $feedback
+         * @return \Laravel\Dusk\Browser
+         */
+        Browser::macro('assertInvalidFeedback', function (string $selector, string $feedback) {
+            $targetEl = $this->resolver->findOrFail($selector);
+            $parentEl = $targetEl->findElement(WebDriverBy::xpath('./..'));
+            $element = $parentEl->findElement(
+                WebDriverBy::cssSelector('.invalid-feedback')
+            );
+
+            PHPUnit::assertTrue(
+                $element->getText() == $feedback,
+                "Did not see invalid feedback [{$feedback}] for [{$selector}]."
+            );
+
+            return $this;
         });
     }
 }

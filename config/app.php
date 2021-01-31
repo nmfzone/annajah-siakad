@@ -188,7 +188,7 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\ObserverServiceProvider::class,
         App\Providers\ViewComposerServiceProvider::class,
-
+        App\Providers\TestingServiceProvider::class,
     ],
 
     /*
