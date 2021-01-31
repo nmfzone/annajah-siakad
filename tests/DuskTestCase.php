@@ -116,17 +116,44 @@ abstract class DuskTestCase extends BaseTestCase
          * @param  string  $feedback
          * @return \Laravel\Dusk\Browser
          */
-        Browser::macro('assertInvalidFeedback', function (string $selector, string $feedback) {
-            $targetEl = $this->resolver->findOrFail($selector);
-            $parentEl = $targetEl->findElement(WebDriverBy::xpath('./..'));
-            $element = $parentEl->findElement(
-                WebDriverBy::cssSelector('.invalid-feedback')
-            );
+        Browser::macro(
+            'assertInvalidFeedback',
+            function (string $selector, string $feedback, bool $secondParent = false) {
+                $targetEl = $this->resolver->findOrFail($selector);
 
-            PHPUnit::assertTrue(
-                $element->getText() == $feedback,
-                "Did not see invalid feedback [{$feedback}] for [{$selector}]."
-            );
+                $parentEl = $targetEl->findElement(
+                    WebDriverBy::xpath('./..' . ($secondParent ? '/..' : ''))
+                );
+                $element = $parentEl->findElement(
+                    WebDriverBy::cssSelector('.invalid-feedback')
+                );
+
+                PHPUnit::assertTrue(
+                    $element->getText() == $feedback,
+                    "Did not see invalid feedback [{$feedback}] for [{$selector}]."
+                );
+
+                return $this;
+            }
+        );
+
+        /**
+         * Remove element from page.
+         *
+         * @param  string  $selector
+         * @return \Laravel\Dusk\Browser
+         */
+        Browser::macro('removeElement', function (string $selector, int $parents = 0) {
+            $this->ensurejQueryIsAvailable();
+
+            $findParent = '';
+            if ($parents > 0) {
+                foreach (range(1, $parents) as $item) {
+                    $findParent .= '.parent()';
+                }
+            }
+
+            $this->script("jQuery(\"{$selector}\"){$findParent}.remove()");
 
             return $this;
         });
