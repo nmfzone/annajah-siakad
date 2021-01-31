@@ -78,4 +78,70 @@ class PpdbTest extends DuskTestCase
                 ->assertSee('Berhasil menambahkan PPDB.');
         });
     }
+
+    /** @test */
+    public function it_fails_to_create_ppdb_when_required_fields_is_not_filled()
+    {
+        $user = $this->createAdminFor($this->site);
+
+        $this->browse(function (Browser $browser) use ($user) {
+            $page = new CreatePpdbPage($this->site);
+
+            $browser->loginAs($user)
+                ->visit($page)
+                ->disableBrowserValidation()
+                ->assertSee('Tambah PPDB')
+                ->removeElement('#payment_provider', 2)
+                ->removeElement('#payment_type', 2)
+                ->press('Simpan')
+                ->assertHostIs($this->site->domain)
+                ->assertPathIs($page->path())
+                ->screenshot('create-ppdb')
+                ->assertInvalidFeedback(
+                    '#academic_year_id',
+                    'Kolom Tahun Akademik harus diisi.',
+                    true
+                )
+                ->assertInvalidFeedback(
+                    '#start_date',
+                    'Kolom Tanggal Mulai PPDB harus diisi.'
+                )
+                ->assertInvalidFeedback(
+                    '#start_time',
+                    'Kolom Waktu Mulai PPDB harus diisi.'
+                )
+                ->assertInvalidFeedback(
+                    '#end_date',
+                    'Kolom Tanggal Selesai PPDB harus diisi.'
+                )
+                ->assertInvalidFeedback(
+                    '#end_time',
+                    'Kolom Waktu Selesai PPDB harus diisi.'
+                )
+                ->assertInvalidFeedback(
+                    '#payment_provider',
+                    'Kolom Nama Provider harus diisi.'
+                )
+                ->assertInvalidFeedback(
+                    '#payment_type',
+                    'Kolom Jenis Pembayaran harus diisi.'
+                )
+                ->assertInvalidFeedback(
+                    '#payment_provider_number',
+                    'Kolom Nomor Provider harus diisi.'
+                )
+                ->assertInvalidFeedback(
+                    '#payment_provider_holder_name',
+                    'Kolom Nama Pemilik Provider harus diisi.'
+                )
+                ->assertInvalidFeedback(
+                    '#contact_persons_name_0',
+                    'Kolom Nama Narahubung harus diisi.'
+                )
+                ->assertInvalidFeedback(
+                    '#contact_persons_number_0',
+                    'Kolom Nomor Narahubung harus diisi.'
+                );
+        });
+    }
 }
