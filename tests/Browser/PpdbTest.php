@@ -96,7 +96,6 @@ class PpdbTest extends DuskTestCase
                 ->press('Simpan')
                 ->assertHostIs($this->site->domain)
                 ->assertPathIs($page->path())
-                ->screenshot('create-ppdb')
                 ->assertInvalidFeedback(
                     '#academic_year_id',
                     'Kolom Tahun Akademik harus diisi.',
