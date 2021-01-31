@@ -1,6 +1,14 @@
 <?php
 
 use App\Enums\Role;
+use App\Http\Controllers\AttendancesController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BackOffice\DashboardController;
+use App\Http\Controllers\BackOffice\ProfileController;
+use App\Http\Controllers\PpdbController;
+use App\Http\Controllers\ShortLinksController;
+use App\Http\Controllers\StorageController;
+use App\Http\Controllers\WebController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,19 +26,18 @@ Route::group([
     'domain' => config('app.host'),
     'as' => 'main.',
 ], function () {
-    Route::get('/', 'WebController@index')->name('web');
+    Route::get('/', [WebController::class, 'index'])->name('web');
 
-    Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
-    Route::post('login', 'Auth\LoginController@login');
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [LoginController::class, 'login']);
 
-    Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+    Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
     Route::group([
-        'namespace' => 'BackOffice',
         'as' => 'backoffice.',
         'middleware' => 'auth',
     ], function () {
-        Route::get('/dashboard', 'DashboardController@index')
+        Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard')
             ->middleware(sprintf('role:%s,%s', Role::EDITOR, Role::SUPERADMIN));
     });
@@ -39,12 +46,12 @@ Route::group([
 Route::group([
     'domain' => sprintf('%s.%s', config('assets.sub_domain'), config('app.host')),
 ], function () {
-    Route::get('/media/{type}/{conversion}/{path}', 'StorageController@privateMedia')
+    Route::get('/media/{type}/{conversion}/{path}', [StorageController::class, 'privateMedia'])
         ->middleware('auth')
         ->name('storage.private_media');
 });
 
-Route::get('/storage/{path}', 'StorageController@index')
+Route::get('/storage/{path}', [StorageController::class, 'index'])
     ->where(['path' => '.*'])
     ->name('storage.public');
 
@@ -53,45 +60,45 @@ Route::group([
     'as' => 'sub.',
     'middleware' => 'check_sub_domain',
 ], function () {
-    Route::get('/', 'WebController@index')
+    Route::get('/', [WebController::class, 'index'])
         ->name('web');
 
-    Route::get('/ppdb', 'PpdbController@index')
+    Route::get('/ppdb', [PpdbController::class, 'index'])
         ->name('ppdb.index');
-    Route::post('/ppdb', 'PpdbController@store')
+    Route::post('/ppdb', [PpdbController::class, 'store'])
         ->middleware('guest')
         ->name('ppdb.store');
 
     Route::group([
-        'namespace' => 'BackOffice',
         'as' => 'backoffice.',
         'prefix' => 'backoffice',
         'middleware' => ['auth', 'sub_permission'],
     ], function () {
-        Route::get('/dashboard', 'DashboardController@index')
+        Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
-        require_once 'partials/ppdbUser.php';
-        require_once 'partials/ppdb.php';
-        require_once 'partials/academicYear.php';
+        require_once 'partials/backoffice/ppdbUser.php';
+        require_once 'partials/backoffice/ppdb.php';
+        require_once 'partials/backoffice/academicYear.php';
     });
 
-    Route::get('/presensi', 'AttendancesController@index')->name('attendances.index');
-    Route::post('/presensi', 'AttendancesController@store')->name('attendances.store');
+    Route::get('/presensi', [AttendancesController::class, 'index'])
+        ->name('attendances.index');
+    Route::post('/presensi', [AttendancesController::class, 'store'])
+        ->name('attendances.store');
 });
 
 Route::group([
-    'namespace' => 'BackOffice',
     'as' => 'backoffice.',
     'prefix' => 'backoffice',
     'middleware' => ['auth', 'sub_permission'],
 ], function () {
-    Route::get('/profil', 'ProfileController')
+    Route::get('/profil', ProfileController::class)
         ->name('profile');
 
-    require_once 'partials/article.php';
-    require_once 'partials/category.php';
-    require_once 'partials/user.php';
+    require_once 'partials/backoffice/article.php';
+    require_once 'partials/backoffice/category.php';
+    require_once 'partials/backoffice/user.php';
 });
 
-Route::get('/go/{code}', 'ShortLinksController@show');
+Route::get('/go/{code}', [ShortLinksController::class, 'show']);

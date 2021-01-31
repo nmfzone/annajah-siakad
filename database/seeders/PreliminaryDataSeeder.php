@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Enums\PaymentType;
 use App\Enums\Role;
 use App\Imports\StudentsImport;

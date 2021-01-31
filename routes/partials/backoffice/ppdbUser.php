@@ -1,46 +1,49 @@
 <?php
 
-Route::get('/ppdb/{ppdb}/peserta', 'PpdbUserController@index')
+use App\Http\Controllers\BackOffice\ObservationController;
+use App\Http\Controllers\BackOffice\PpdbUserController;
+
+Route::get('/ppdb/{ppdb}/peserta', [PpdbUserController::class, 'index'])
     ->name('ppdb.users.index');
 
-Route::get('/ppdb/peserta/detail', 'PpdbUserController@directShow')
+Route::get('/ppdb/peserta/detail', [PpdbUserController::class, 'directShow'])
     ->name('ppdb.users.direct_show');
 
-Route::get('/ppdb/{ppdb}/peserta/{ppdb_user}', 'PpdbUserController@show')
+Route::get('/ppdb/{ppdb}/peserta/{ppdb_user}', [PpdbUserController::class, 'show'])
     ->name('ppdb.users.show');
 
 Route::get(
     '/ppdb/{ppdb}/peserta/{ppdb_user}/tagihan/{transaction}',
-    'PpdbUserController@showPayment'
+    [PpdbUserController::class, 'showPayment']
 )->name('ppdb.users.show_payment');
 
 Route::post(
     '/ppdb/{ppdb}/peserta/{ppdb_user}/tagihan/{transaction}',
-    'PpdbUserController@storePayment'
+    [PpdbUserController::class, 'storePayment']
 )->name('ppdb.users.store_payment');
 
 Route::post(
     '/ppdb/{ppdb}/peserta/{ppdb_user}/tagihan/{transaction}/accept',
-    'PpdbUserController@acceptPayment'
+    [PpdbUserController::class, 'acceptPayment']
 )->name('ppdb.users.accept_payment');
 
 Route::post(
     '/ppdb/{ppdb}/peserta/{ppdb_user}/tagihan/{transaction}/decline-or-cancel',
-    'PpdbUserController@declineOrCancelPayment'
+    [PpdbUserController::class, 'declineOrCancelPayment']
 )->name('ppdb.users.decline_or_cancel_payment');
 
 Route::post(
     '/ppdb/{ppdb}/peserta/{ppdb_user}/accept',
-    'PpdbUserController@acceptAsStudent'
+    [PpdbUserController::class, 'acceptAsStudent']
 )->name('ppdb.users.accept');
 
 Route::post(
     '/ppdb/{ppdb}/peserta/{ppdb_user}/decline-or-cancel',
-    'PpdbUserController@declineOrCancelAsStudent'
+    [PpdbUserController::class, 'declineOrCancelAsStudent']
 )->name('ppdb.users.decline_or_cancel');
 
-Route::get('/ppdb/observasi', 'ObservationController@directShow')
+Route::get('/ppdb/observasi', [ObservationController::class, 'directShow'])
     ->name('ppdb.observation.direct_show');
 
-Route::get('/ppdb/{ppdb}/peserta/{ppdb_user}/observasi', 'ObservationController@show')
+Route::get('/ppdb/{ppdb}/peserta/{ppdb_user}/observasi', [ObservationController::class, 'show'])
     ->name('ppdb.observation.show');

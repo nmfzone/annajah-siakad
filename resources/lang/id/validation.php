@@ -90,6 +90,7 @@ return [
         'string' => 'Isian kolom :attribute minimal harus :min karakter.',
         'array' => 'Isian kolom :attribute minimal harus :min item.',
     ],
+    'multiple_of' => 'Isian kolom :attribute harus merupakan kelipatan dari :value.',
     'not_in' => 'Isian kolom :attribute yang dipilih tidak valid.',
     'not_regex' => 'Isian kolom :attribute tidak sesuai format.',
     'numeric' => 'Isian kolom :attribute harus berupa angka.',

@@ -1,32 +1,27 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Garages\Utility\Unique;
 use App\Models\AcademicYear;
 use App\Models\Site;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+class AcademicYearFactory extends Factory
+{
+    protected $model = AcademicYear::class;
 
-$factory->define(AcademicYear::class, function (Faker $faker) {
-    $from = Unique::generate(AcademicYear::class, function () use ($faker) {
-        return $faker->randomElement(range(2000, 2040));
-    }, 'from');
+    public function definition(): array
+    {
+        $from = Unique::generate(AcademicYear::class, function () {
+            return $this->faker->randomElement(range(2000, 2040));
+        }, 'from');
 
-    return [
-        'name' => $from . '/' . ($from+1),
-        'from' => $from,
-        'to' => $from+1,
-        'site_id' => Site::inRandomOrder()->first()->id,
-    ];
-});
+        return [
+            'name' => $from . '/' . ($from + 1),
+            'from' => $from,
+            'to' => $from + 1,
+            'site_id' => Site::inRandomOrder()->first()->id,
+        ];
+    }
+}

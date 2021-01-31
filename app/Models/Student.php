@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Garages\Utility\Unique;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Student extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use HasFactory,
+        InteractsWithMedia;
 
     public $timestamps = false;
 

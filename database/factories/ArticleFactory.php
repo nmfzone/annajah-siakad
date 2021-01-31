@@ -1,31 +1,26 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Enums\ArticleType;
 use App\Models\Article;
 use App\Models\User;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+class ArticleFactory extends Factory
+{
+    protected $model = Article::class;
 
-$factory->define(Article::class, function (Faker $faker) {
-    return [
-        'slug' => $faker->unique()->slug,
-        'type' => ArticleType::ARTICLE,
-        'title' => $faker->sentence,
-        'content' => $faker->paragraphs(6, true),
-        'user_id' => function () {
-            return User::inRandomOrder()->first()->id;
-        }
-    ];
-});
+    public function definition(): array
+    {
+        return [
+            'slug' => $this->faker->unique()->slug,
+            'type' => ArticleType::ARTICLE,
+            'title' => $this->faker->sentence,
+            'content' => $this->faker->paragraphs(6, true),
+            'user_id' => function () {
+                return User::inRandomOrder()->first()->id;
+            }
+        ];
+    }
+}

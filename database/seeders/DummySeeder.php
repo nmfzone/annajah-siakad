@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Enums\AttendanceType;
 use App\Enums\PaymentType;
 use App\Enums\Role;
@@ -84,10 +86,10 @@ class DummySeeder extends Seeder
         ]));
 
         /** @var \App\Models\Course $course */
-        $course = $site->courses()->save(factory(Course::class)->make([
+        $course = $site->courses()->save(Course::factory()->make([
             'name' => 'Matematika'
         ]));
-        $course2 = $site->courses()->save(factory(Course::class)->make([
+        $course2 = $site->courses()->save(Course::factory()->make([
             'name' => 'Bahasa Indonesia'
         ]));
 
@@ -105,7 +107,7 @@ class DummySeeder extends Seeder
         ]));
 
         /** @var \App\Models\User $user */
-        $user = $site->users()->save(factory(User::class)->make([
+        $user = $site->users()->save(User::factory()->make([
             'name' => 'Bimo Prakoso',
             'email' => 'bimo@gmail.com',
             'password' => bcrypt('12345678'),
@@ -169,7 +171,7 @@ class DummySeeder extends Seeder
             'selection_method' => SelectionMethod::PRESTASI,
         ]);
 
-        factory(User::class, 100)
+        User::factory(100)
             ->make()
             ->each(function (User $user) use ($site) {
                 $user->role = Arr::random([Role::STUDENT, Role::TEACHER]);

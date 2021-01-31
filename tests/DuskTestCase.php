@@ -86,7 +86,7 @@ abstract class DuskTestCase extends BaseTestCase
          *
          * @param  \Facebook\WebDriver\Remote\RemoteWebElement  $element
          * @param  string  $name
-         * @return void
+         * @return \Laravel\Dusk\Browser
          */
         Browser::macro('takeElementScreenshot', function (RemoteWebElement $element, string $name) {
             $element->takeElementScreenshot(sprintf(
@@ -94,6 +94,8 @@ abstract class DuskTestCase extends BaseTestCase
                 rtrim(Browser::$storeScreenshotsAt, '/'),
                 $name
             ));
+
+            return $this;
         });
 
         /**

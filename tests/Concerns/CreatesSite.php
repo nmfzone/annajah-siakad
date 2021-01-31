@@ -9,7 +9,7 @@ trait CreatesSite
     public function createSubSite(): Site
     {
         /** @var \App\Models\Site $site */
-        $site = factory(Site::class)->create([
+        $site = Site::factory()->create([
             'domain' => 'smpit.' . config('app.host'),
         ]);
 

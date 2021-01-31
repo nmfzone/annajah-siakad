@@ -31,12 +31,12 @@ class PpdbTest extends DuskTestCase
     public function it_can_create_a_ppdb()
     {
         $user = $this->createAdminFor($this->site);
-        factory(AcademicYear::class)->create([
+        AcademicYear::factory()->create([
             'from' => 2021,
             'to' => 2022,
             'site_id' => $this->site->id,
         ]);
-        factory(AcademicYear::class)->create([
+        AcademicYear::factory()->create([
             'from' => 2020,
             'to' => 2021,
             'site_id' => $this->site->id,

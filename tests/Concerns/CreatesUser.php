@@ -10,7 +10,7 @@ trait CreatesUser
 {
     public function createAdminFor(Site $site): User
     {
-        $user = factory(User::class)->make([
+        $user = User::factory()->make([
             'password' => bcrypt('12345678'),
             'role' => Role::ADMIN,
         ]);

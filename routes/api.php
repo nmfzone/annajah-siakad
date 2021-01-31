@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\BackOffice\AcademicYearsController;
+use App\Http\Controllers\Api\BackOffice\ArticleCategoriesController;
+use App\Http\Controllers\Api\BackOffice\ArticlesController;
+use App\Http\Controllers\Api\BackOffice\CategoriesController;
+use App\Http\Controllers\Api\BackOffice\MediaController;
+use App\Http\Controllers\Api\CurrentUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,36 +19,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::namespace('Api')->group(function () {
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/user', 'CurrentUserController@show');
-    });
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [CurrentUserController::class, 'show']);
+});
 
+Route::group([
+    'domain' => sprintf('{sub_domain}.%s', config('app.host')),
+    'as' => 'sub.',
+    'middleware' => 'check_sub_domain',
+], function () {
     Route::group([
-        'domain' => sprintf('{sub_domain}.%s', config('app.host')),
-        'as' => 'sub.',
-        'middleware' => 'check_sub_domain',
-    ], function () {
-        Route::group([
-            'namespace' => 'BackOffice',
-            'middleware' => ['auth:sanctum', 'sub_permission'],
-        ], function () {
-            Route::get('/tahun-akademik', 'AcademicYearsController@index');
-        });
-    });
-
-    Route::group([
-        'namespace' => 'BackOffice',
         'middleware' => ['auth:sanctum', 'sub_permission'],
     ], function () {
-        Route::post('/artikel', 'ArticlesController@store');
-        Route::put('/artikel/{article}', 'ArticlesController@update');
-        Route::get('/artikel/{article}/kategori', 'ArticleCategoriesController')
-            ->name('articles.categoris.index');
-
-        Route::get('/kategori', 'CategoriesController@index');
-
-        Route::get('/media/wysiwyg', 'MediaController@wysiwygMedia');
-        Route::post('/media/wysiwyg', 'MediaController@storeWysiwygMedia');
+        Route::get('/tahun-akademik', [AcademicYearsController::class, 'index']);
     });
+});
+
+Route::group([
+    'middleware' => ['auth:sanctum', 'sub_permission'],
+], function () {
+    Route::post('/artikel', [ArticlesController::class, 'store']);
+    Route::put('/artikel/{article}', [ArticlesController::class, 'update']);
+    Route::get('/artikel/{article}/kategori', ArticleCategoriesController::class)
+        ->name('articles.categoris.index');
+
+    Route::get('/kategori', [CategoriesController::class, 'index']);
+
+    Route::get('/media/wysiwyg', [MediaController::class, 'wysiwygMedia']);
+    Route::post('/media/wysiwyg', [MediaController::class, 'storeWysiwygMedia']);
 });

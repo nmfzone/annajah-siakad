@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Site;
@@ -19,17 +21,17 @@ class ArticlesSeeder extends Seeder
     public function run()
     {
         foreach (range(1, 50) as $item) {
-            factory(Category::class)->create();
+            Category::factory()->create();
         }
 
-        factory(Article::class, 50)
+        Article::factory(50)
             ->create()
             ->each(function (Article $article) {
                 $this->assignCategories($article);
             });
 
         Site::all()->each(function (Site $site) {
-            factory(Article::class, 50)
+            Article::factory(50)
                 ->create([
                     'site_id' => $site->id,
                 ])->each(function (Article $article) {
