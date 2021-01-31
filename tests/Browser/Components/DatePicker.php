@@ -55,11 +55,11 @@ class DatePicker extends BaseComponent
     {
         $pickerEl = $this->getDatePickerElement($browser);
         $this->pickerSelectYear($pickerEl, $year);
-        $this->pause(100);
+        $this->pause(500);
         $this->pickerSelectMonth($pickerEl, $month);
-        $this->pause(100);
+        $this->pause(500);
         $this->pickerSelectDate($pickerEl, $day);
-        $this->pause(100);
+        $this->pause(500);
     }
 
     protected function pickerSelectDate(RemoteWebElement $pickerEl, int $date)
