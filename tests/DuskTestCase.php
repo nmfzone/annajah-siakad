@@ -161,6 +161,16 @@ abstract class DuskTestCase extends BaseTestCase
         });
 
         /**
+         * Assert text in the page.
+         *
+         * @param  string  $text
+         * @return \Laravel\Dusk\Browser
+         */
+        Browser::macro('customAssertSee', function (string $text) {
+            return $this->customAssertSeeIn('', $text);
+        });
+
+        /**
          * Assert text in the given selector.
          *
          * @param  string  $selector
