@@ -159,5 +159,38 @@ abstract class DuskTestCase extends BaseTestCase
 
             return $this;
         });
+
+        /**
+         * Assert text in the given selector.
+         *
+         * @param  string  $selector
+         * @param  string  $text
+         * @return \Laravel\Dusk\Browser
+         */
+        Browser::macro('customAssertSeeIn', function (string $selector, string $text) {
+            $fullSelector = $this->resolver->format($selector);
+            $element = $this->resolver->findOrFail($selector);
+
+            PHPUnit::assertTrue(
+                Str::contains(Str::cleanString($element->getText()), $text),
+                "Did not see expected text [{$text}] within element [{$fullSelector}]."
+            );
+
+            return $this;
+        });
+
+        /**
+         * Scroll to bottom for the given offset.
+         *
+         * @param  int  $offsetTop
+         * @return \Laravel\Dusk\Browser
+         */
+        Browser::macro('scrollFromTop', function (int $offsetTop) {
+            $this->script(
+                "jQuery(\"html, body\").animate({scrollTop: {$offsetTop}}, 0);"
+            );
+
+            return $this;
+        });
     }
 }
