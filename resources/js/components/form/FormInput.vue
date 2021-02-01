@@ -124,7 +124,7 @@
 </template>
 
 <script>
-  import { GlobalMixin } from '@mixins'
+  import { GlobalMixin, InitialValueMixin } from '@mixins'
   import { isEmpty } from '@root/utils'
   import dayjs from 'dayjs'
   import DatePicker from '@components/picker/DatePicker'
@@ -135,6 +135,7 @@
     inheritAttrs: false,
     mixins: [
       GlobalMixin,
+      InitialValueMixin
     ],
     components: {
       Editor,
@@ -143,8 +144,6 @@
     },
     props: {
       value: [Number, String],
-      initialValue: [Number, String],
-      initialType: String,
       selectFirstItem: {
         type: Boolean,
         default: false
@@ -234,16 +233,6 @@
       displayEye () {
         return this.localTypeLower === 'password' && this.withAddOn
       },
-      castInitialValue() {
-        if (this.initialType === 'int') {
-          return _.toInteger(this.initialValue)
-        } else if (this.initialValue === 'array') {
-          return _.castArray(this.initialValue)
-        }
-        return this.typeLower === 'checkbox'
-          ? []
-          : this.initialValue
-      },
       typeIsCheckboxRadioSelect() {
         return ['radio', 'checkbox', 'select'].includes(this.typeLower)
       },
@@ -328,9 +317,6 @@
       }
     },
     methods: {
-      updateValue(e) {
-        this.localValue = e.target.value
-      },
       isSelected(item) {
         if (this.typeLower === 'checkbox' && this.multiple) {
           return this.localValue.includes(item.value)
