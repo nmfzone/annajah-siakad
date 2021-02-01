@@ -31,22 +31,27 @@ class Ppdb extends Model
         return $this->hasMany(PpdbUser::class);
     }
 
-    public function paymentDetails()
+    public function paymentDetails(): array
     {
         return $this->settings()->get('payment');
     }
 
-    public function price()
+    public function contactPersons(): array
+    {
+        return $this->settings()->get('contact_persons');
+    }
+
+    public function price(): int
     {
         return $this->settings()->get('price', 0);
     }
 
-    public function priceFormatted()
+    public function priceFormatted(): string
     {
         return 'Rp ' . number_format($this->price(), 0, ',', '.');
     }
 
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->getAttribute('started_at')->lte(now()) &&
             $this->getAttribute('ended_at')->gte(now());
