@@ -7,10 +7,13 @@
       @open="onOpen"
       @close="onClose"
       @search="onSearch"
+      :multiple="false"
+      :taggable="false"
       label="name"
       :filterable="false"
+      :value="passedValue"
       v-bind="attrs"
-      v-on="$listeners">
+      v-on="listeners">
       <template #list-footer>
         <li ref="load" class="loader" v-show="hasNextPage">
           Loading..
@@ -21,12 +24,12 @@
       </template>
     </vue-select>
 
-    <input type="hidden" :name="name" :value="selectedValue">
+    <input type="hidden" :name="name" :value="_.get(selectedValue, 'id')">
   </div>
 </template>
 
 <script>
-import { GlobalMixin } from '@mixins'
+import { GlobalMixin, InitialValueMixin } from '@mixins'
 import vSelect from 'vue-select'
 import { isEmpty } from '@root/utils'
 
@@ -34,11 +37,13 @@ export default {
   inheritAttrs: false,
   mixins: [
     GlobalMixin,
+    InitialValueMixin
   ],
   components: {
     'vue-select': vSelect
   },
   props: {
+    value: {},
     name: {
       type: String,
       required: true
@@ -52,10 +57,15 @@ export default {
       lastPage: 1,
       isFetching: false,
       options: [],
-      searchQuery: null
+      searchQuery: null,
+      passedValue: null
     }
   },
   computed: {
+    listeners() {
+      const { input, ...listeners } = this.$listeners
+      return listeners
+    },
     hasNextPage() {
       return this.currentPage < this.lastPage
     },
@@ -63,7 +73,14 @@ export default {
       return 'Tahun Akademik tidak tersedia.'
     }
   },
+  watch: {
+    selectedValue (v) {
+      this.passedValue = _.get(v, 'name')
+      this.$emit('input', v)
+    }
+  },
   mounted() {
+    this.selectedValue = this.castInitialValue
     this.fetch()
   },
   methods: {
@@ -129,7 +146,7 @@ export default {
       this.options = []
     },
     setValue(v) {
-      this.selectedValue = _.get(v, 'id')
+      this.selectedValue = v
       this.$emit('input', v)
     }
   }
