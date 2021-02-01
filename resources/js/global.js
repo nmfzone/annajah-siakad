@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import lodash from 'lodash'
 import vSelect from 'vue-select'
 import dayjs from 'dayjs'
 import 'dayjs/locale/id'
@@ -7,6 +8,7 @@ import vClickOutside from 'v-click-outside'
 
 
 window.Vue = Vue
+Vue.prototype._ = lodash
 Vue.use(vClickOutside)
 
 window.dayjs = dayjs
