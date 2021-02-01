@@ -6,6 +6,7 @@ use App\Enums\PaymentProvider;
 use App\Enums\PaymentType;
 use App\Models\AcademicYear;
 use App\Models\Ppdb;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
@@ -89,25 +90,49 @@ class PpdbCreateRequest extends FormRequest
 
     public function validated(): array
     {
-        $validated = collect(parent::validated());
+        $validated = parent::validated();
 
-        $validated->put(
+        Arr::set(
+            $validated,
             'started_at',
             Carbon::createFromFormat(
                 'd-m-Y H:i',
-                $validated->get('start_date') . ' ' . $validated->get('start_time')
+                Arr::get($validated, 'start_date') .
+                ' ' .
+                Arr::get($validated, 'start_time')
             )
         );
 
-        $validated->put(
+        Arr::set(
+            $validated,
             'ended_at',
             Carbon::createFromFormat(
                 'd-m-Y H:i',
-                $validated->get('end_date') . ' ' . $validated->get('end_time')
+                Arr::get($validated, 'end_date') .
+                ' ' .
+                Arr::get($validated, 'end_time')
             )
         );
 
-        return $validated->toArray();
+        Arr::set(
+            $validated,
+            'payment.provider_holder_name',
+            app('indoNameFormatter')->format(
+                Arr::get($validated, 'payment.provider_holder_name')
+            )
+        );
+
+        foreach (Arr::get($validated, 'contact_persons') as $key => $contactPerson) {
+            Arr::set(
+                $validated,
+                sprintf('contact_persons.%s.name', $key),
+                app('indoNameFormatter')->format(
+                    $contactPerson['name']
+                )
+            );
+        }
+
+        return $validated;
     }
 
     public function attributes(): array
