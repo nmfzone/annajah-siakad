@@ -8499,13 +8499,14 @@
                         return \Illuminate\Routing\Redirector::hasMacro($name);
         }
                     /**
-         * 
+         * Redirect to the next url.
          *
+         * @param string $default
+         * @param int $status
+         * @param array $headers
+         * @param bool|null $secure
+         * @return \Illuminate\Http\RedirectResponse 
          * @see \App\Providers\MacroServiceProvider::register()
-         * @param mixed $default
-         * @param mixed $status
-         * @param mixed $headers
-         * @param mixed $secure
          * @static 
          */ 
         public static function next($default = '/', $status = 302, $headers = [], $secure = null)
@@ -10531,21 +10532,23 @@
                         return \Illuminate\Http\Request::hasValidRelativeSignature();
         }
                     /**
-         * 
+         * Remove the keys if they're null.
          *
+         * @param mixed $keys,...
+         * @return \Illuminate\Http\Request 
          * @see \App\Providers\MacroServiceProvider::register()
-         * @param mixed $keys
          * @static 
          */ 
-        public static function removeIfNull($keys)
+        public static function removeIfNull(...$keys)
         {
-                        return \Illuminate\Http\Request::removeIfNull($keys);
+                        return \Illuminate\Http\Request::removeIfNull(...$keys);
         }
                     /**
-         * 
+         * Get next url from request.
          *
+         * @param string $default
+         * @return string 
          * @see \App\Providers\MacroServiceProvider::register()
-         * @param mixed $default
          * @static 
          */ 
         public static function getNextUrl($default = '/')
@@ -14726,11 +14729,12 @@
      */ 
         class Arr {
                     /**
-         * 
+         * Implode array keys.
          *
-         * @see \App\Providers\MacroServiceProvider::register()
          * @param array $array
-         * @param mixed $glue
+         * @param string $glue
+         * @return string 
+         * @see \App\Providers\MacroServiceProvider::register()
          * @static 
          */ 
         public static function implodeKeys($array, $glue = ',')
@@ -14738,14 +14742,18 @@
                         return \Illuminate\Support\Arr::implodeKeys($array, $glue);
         }
                     /**
+         * Deep merge array.
          * 
+         * Combine (instead of replace) array with the same key (if the value is an array).
          *
+         * @param mixed $args,...
+         * @return array 
          * @see \App\Providers\MacroServiceProvider::register()
          * @static 
          */ 
-        public static function mergeDeep()
+        public static function mergeDeep(...$args)
         {
-                        return \Illuminate\Support\Arr::mergeDeep();
+                        return \Illuminate\Support\Arr::mergeDeep(...$args);
         }
          
     }
@@ -14755,17 +14763,30 @@
      */ 
         class Str {
                     /**
-         * 
+         * Generate a random string.
          *
+         * @param string $type
+         * @param int $length
+         * @param bool $lowerOnly
+         * @return string 
          * @see \App\Providers\MacroServiceProvider::register()
-         * @param mixed $type
-         * @param mixed $length
-         * @param mixed $lowerOnly
          * @static 
          */ 
         public static function randomPlus($type = 'alnum', $length = 8, $lowerOnly = false)
         {
                         return \Illuminate\Support\Str::randomPlus($type, $length, $lowerOnly);
+        }
+                    /**
+         * Clean the given string.
+         *
+         * @param string $text
+         * @return string 
+         * @see \App\Providers\MacroServiceProvider::register()
+         * @static 
+         */ 
+        public static function cleanString($text)
+        {
+                        return \Illuminate\Support\Str::cleanString($text);
         }
          
     }
@@ -14812,10 +14833,11 @@
                         return \Illuminate\Support\Collection::storeExcel($filePath, $disk, $writerType, $withHeadings);
         }
                     /**
-         * 
+         * Deep merge array to the collection.
          *
-         * @see \App\Providers\MacroServiceProvider::register()
          * @param mixed $items
+         * @return \Illuminate\Support\Collection 
+         * @see \App\Providers\MacroServiceProvider::register()
          * @static 
          */ 
         public static function mergeDeep($items)
@@ -17656,21 +17678,23 @@
                         return \Illuminate\Http\Request::hasValidRelativeSignature();
         }
                     /**
-         * 
+         * Remove the keys if they're null.
          *
+         * @param mixed $keys,...
+         * @return \Illuminate\Http\Request 
          * @see \App\Providers\MacroServiceProvider::register()
-         * @param mixed $keys
          * @static 
          */ 
-        public static function removeIfNull($keys)
+        public static function removeIfNull(...$keys)
         {
-                        return \Illuminate\Http\Request::removeIfNull($keys);
+                        return \Illuminate\Http\Request::removeIfNull(...$keys);
         }
                     /**
-         * 
+         * Get next url from request.
          *
+         * @param string $default
+         * @return string 
          * @see \App\Providers\MacroServiceProvider::register()
-         * @param mixed $default
          * @static 
          */ 
         public static function getNextUrl($default = '/')
@@ -17738,13 +17762,14 @@
      */ 
         class Redirector {
                     /**
-         * 
+         * Redirect to the next url.
          *
+         * @param string $default
+         * @param int $status
+         * @param array $headers
+         * @param bool|null $secure
+         * @return \Illuminate\Http\RedirectResponse 
          * @see \App\Providers\MacroServiceProvider::register()
-         * @param mixed $default
-         * @param mixed $status
-         * @param mixed $headers
-         * @param mixed $secure
          * @static 
          */ 
         public static function next($default = '/', $status = 302, $headers = [], $secure = null)
@@ -17759,12 +17784,14 @@
      */ 
         class UrlGenerator {
                     /**
-         * 
+         * Get the URL to the main site for a given route instance.
          *
-         * @see \App\Providers\MacroServiceProvider::register()
-         * @param mixed $name
+         * @param \Illuminate\Routing\Route $route
          * @param mixed $parameters
-         * @param mixed $absolute
+         * @param bool $absolute
+         * @return string 
+         * @throws \Illuminate\Routing\Exceptions\UrlGenerationException
+         * @see \App\Providers\MacroServiceProvider::register()
          * @static 
          */ 
         public static function mainRoute($name, $parameters = [], $absolute = true)
@@ -17772,12 +17799,14 @@
                         return \Illuminate\Routing\UrlGenerator::mainRoute($name, $parameters, $absolute);
         }
                     /**
-         * 
+         * Get the URL to the sub site for a given route instance.
          *
-         * @see \App\Providers\MacroServiceProvider::register()
-         * @param mixed $name
+         * @param \Illuminate\Routing\Route $route
          * @param mixed $parameters
-         * @param mixed $absolute
+         * @param bool $absolute
+         * @return string 
+         * @throws \Illuminate\Routing\Exceptions\UrlGenerationException
+         * @see \App\Providers\MacroServiceProvider::register()
          * @static 
          */ 
         public static function subRoute($name, $parameters = [], $absolute = true)
@@ -17796,8 +17825,9 @@
      */ 
         class Builder {
                     /**
-         * 
+         * Get DataTable attributes.
          *
+         * @return array 
          * @see \App\Providers\MacroServiceProvider::register()
          * @static 
          */ 
@@ -17877,6 +17907,43 @@
         public static function removeElement($selector, $parents = 0)
         {
                         return \Laravel\Dusk\Browser::removeElement($selector, $parents);
+        }
+                    /**
+         * Assert text in the page.
+         *
+         * @param string $text
+         * @return \Laravel\Dusk\Browser 
+         * @see \Tests\DuskTestCase::registerBrowserMacro()
+         * @static 
+         */ 
+        public static function customAssertSee($text)
+        {
+                        return \Laravel\Dusk\Browser::customAssertSee($text);
+        }
+                    /**
+         * Assert text in the given selector.
+         *
+         * @param string $selector
+         * @param string $text
+         * @return \Laravel\Dusk\Browser 
+         * @see \Tests\DuskTestCase::registerBrowserMacro()
+         * @static 
+         */ 
+        public static function customAssertSeeIn($selector, $text)
+        {
+                        return \Laravel\Dusk\Browser::customAssertSeeIn($selector, $text);
+        }
+                    /**
+         * Scroll to bottom for the given offset.
+         *
+         * @param int $offsetTop
+         * @return \Laravel\Dusk\Browser 
+         * @see \Tests\DuskTestCase::registerBrowserMacro()
+         * @static 
+         */ 
+        public static function scrollFromTop($offsetTop)
+        {
+                        return \Laravel\Dusk\Browser::scrollFromTop($offsetTop);
         }
          
     }
