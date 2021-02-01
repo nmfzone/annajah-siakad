@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Glorand\Model\Settings\Traits\HasSettingsTable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Ppdb extends Model
 {
-    use HasSettingsTable;
+    use HasFactory,
+        HasSettingsTable;
 
     protected $table = 'ppdb';
 
