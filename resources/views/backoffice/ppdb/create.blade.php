@@ -264,7 +264,7 @@
                       <span class="text-md">Narahubung @{{ data.formIndex+1 }}</span>
                       <span
                         class="btn btn-danger text-xs px-1 py-0.5 ml-2"
-                        @click="data.removeForm"
+                        @click="data.removeForm(data.formIndex)"
                         v-if="data.canRemoveForm">
                         <i class="fa fa-minus"></i>
                       </span>
