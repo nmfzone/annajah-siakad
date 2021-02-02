@@ -39,6 +39,8 @@ class UserUpdateRequest extends UserCreateRequest
             ], [
                 0 => $authUser->isStudent(),
             ]),
-        ], ['role']);
+        ], [
+            'role' => true,
+        ]);
     }
 }

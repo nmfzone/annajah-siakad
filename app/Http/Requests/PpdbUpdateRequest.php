@@ -15,8 +15,14 @@ class PpdbUpdateRequest extends PpdbCreateRequest
     {
         $rules = parent::rules();
 
+        /** @var \App\Models\Ppdb $ppdb */
+        $ppdb = $this->route('ppdb');
+        $hasRegisteredUser = $ppdb->ppdbUsers()->exists();
+
         return $this->mergeRules($rules, [
             //
+        ], [
+            'academic_year_id' => $hasRegisteredUser
         ]);
     }
 }

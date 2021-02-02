@@ -45,10 +45,9 @@ class FormRequest extends BaseFormRequest
         }
 
         $rules = array_merge($rules, $finalNewRule);
-
         $orderedRules = ['bail', 'nullable', 'required'];
-
         $startRules = [];
+
         foreach ($orderedRules as $rule) {
             if (in_array($rule, $rules, true)) {
                 unset($rules[array_search($rule, $rules)]);
@@ -65,34 +64,33 @@ class FormRequest extends BaseFormRequest
      * Merge the current rules with additional rules.
      *
      * @param  \Illuminate\Support\Collection|array  $rules
-     * @param  array  $addRules
+     * @param  array  $changedRules
      * @param  array  $excepts
      * @return array
      */
-    public function mergeRules($rules, array $addRules, $excepts = [])
+    public function mergeRules($rules, array $changedRules, $excepts = [])
     {
         if ($rules instanceof Collection) {
             $rules = $rules->toArray();
         }
 
+        // Filter 'excepts' based on it's value
+        $excepts = array_keys(Arr::where($excepts, function ($v) {
+            return $v;
+        }));
+
+        // Unset rules that excepted.
         foreach ($rules as $key => $rule) {
-            $rule = is_array($rule) ? $rule : explode('|', $rule);
-
-            if (Arr::exists($addRules, $key)) {
-                $rule = $addRules[$key];
-            }
-
-            if (in_array($key, $excepts)) {
+            if (in_array($key, $excepts, true)) {
                 unset($rules[$key]);
-            } else {
-                $rules[$key] = $rule;
             }
         }
 
-        // Then, we'll merge the new rule that didn't exists before.
-        foreach ($addRules as $key => $rule) {
-            if (! Arr::exists($rules, $key)) {
+        foreach ($changedRules as $key => $rule) {
+            if ($rule !== false) {
                 $rules[$key] = $rule;
+            } else {
+                unset($rules[$key]);
             }
         }
 

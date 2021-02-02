@@ -17,6 +17,8 @@ class ArticleUpdateRequest extends ArticleCreateRequest
 
         return $this->mergeRules($rules, [
             //
-        ], ['type']);
+        ], [
+            'type' => true,
+        ]);
     }
 }
