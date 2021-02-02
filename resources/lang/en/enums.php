@@ -14,6 +14,7 @@ return [
 
     PaymentType::class => [
         PaymentType::BANK_TRANSFER => 'Bank Transfer',
+        PaymentType::ON_THE_SPOT => 'On The Spot (School)',
     ],
 
     PaymentProvider::class => [
@@ -21,5 +22,6 @@ return [
         PaymentProvider::BNI => 'BNI',
         PaymentProvider::BRI => 'BRI',
         PaymentProvider::MANDIRI => 'Mandiri',
+        PaymentProvider::CASH => 'Cash',
     ],
 ];

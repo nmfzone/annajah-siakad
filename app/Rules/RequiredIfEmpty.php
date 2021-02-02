@@ -18,7 +18,7 @@ class RequiredIfEmpty implements Rule
 
     public function passes($attribute, $value)
     {
-        if (empty($this->request->get($this->other))) {
+        if (empty($this->request->input($this->other))) {
             return ! empty($value);
         }
 

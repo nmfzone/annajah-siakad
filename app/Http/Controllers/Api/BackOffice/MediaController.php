@@ -28,23 +28,23 @@ class MediaController extends Controller
 
         $request->validate([
             'model' => ['required', new WysiwygMediaModel],
-            'model_id' => [new WysiwygMediaModel($request->get('model'))],
+            'model_id' => [new WysiwygMediaModel($request->input('model'))],
         ]);
 
-        $model = $this->mediaService->getModelForWysiwyg($request->get('model'));
+        $model = $this->mediaService->getModelForWysiwyg($request->input('model'));
 
         $query = Media::whereHasMorph('model', $model)
             ->where('user_id', $request->user()->id)
             ->where('site_id', optional(site())->id)
             ->latest();
 
-        if (! is_null($modelId = $request->get('model_id'))) {
+        if (! is_null($modelId = $request->input('model_id'))) {
             $query->where('model_id', $modelId);
         } else {
             //
         }
 
-        if (! empty($search = $request->get('q'))) {
+        if (! empty($search = $request->input('q'))) {
             $query->where('name', 'like', $search . '%');
         }
 
@@ -57,7 +57,7 @@ class MediaController extends Controller
 
         $request->validate([
             'model' => ['required', new WysiwygMediaModel],
-            'model_id' => [new WysiwygMediaModel($request->get('model'))],
+            'model_id' => [new WysiwygMediaModel($request->input('model'))],
             'file' => 'required|file|mimes:png,gif,jpg,jpeg|max:1000',
         ]);
 
@@ -65,15 +65,15 @@ class MediaController extends Controller
         $optimizerChain = OptimizerChainFactory::create(['quality' => 60]);
         $optimizerChain->optimize($request->file('file')->path());
 
-        if (! is_null($modelId = $request->get('model_id'))) {
-            $model = $this->mediaService->getModelForWysiwyg($request->get('model'));
+        if (! is_null($modelId = $request->input('model_id'))) {
+            $model = $this->mediaService->getModelForWysiwyg($request->input('model'));
             $model = $model::find($modelId);
             $media = $model->addMedia($request->file('file'))->toMediaCollection('images');
         } else {
             [$model, $media] = DB::transaction(function () use ($request) {
                 $model = $this->mediaService->createModelForWysiwyg(
                     $request->all(),
-                    $request->get('model')
+                    $request->input('model')
                 );
 
                 $media = $model->addMedia($request->file('file'))->toMediaCollection('images');

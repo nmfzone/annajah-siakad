@@ -16,7 +16,7 @@ class FormRequest extends BaseFormRequest
      * @param  array  $excepts
      * @return array
      */
-    public function mergeRule($rule, array $newRule, array $excepts = [])
+    public function mergeRule($rule, array $newRule, array $excepts = []): array
     {
         $rule = empty($rule) ? [] : $rule;
         $rules = is_array($rule) ? $rule : explode('|', $rule);
@@ -68,7 +68,7 @@ class FormRequest extends BaseFormRequest
      * @param  array  $excepts
      * @return array
      */
-    public function mergeRules($rules, array $changedRules, $excepts = [])
+    public function mergeRules($rules, array $changedRules, $excepts = []): array
     {
         if ($rules instanceof Collection) {
             $rules = $rules->toArray();

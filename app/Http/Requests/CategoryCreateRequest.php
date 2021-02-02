@@ -33,10 +33,10 @@ class CategoryCreateRequest extends FormRequest
 
     public function validated(): array
     {
-        $validated = collect(parent::validated());
+        $validated = parent::validated();
 
-        $validated->put('site_id', optional(site())->id);
+        $validated['site_id'] = optional(site())->id;
 
-        return $validated->toArray();
+        return $validated;
     }
 }

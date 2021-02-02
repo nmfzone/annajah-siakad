@@ -5,27 +5,18 @@ namespace App\Http\Requests;
 use App\Enums\Role;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class UserCreateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
-        return Gate::allows('create', [User::class, $this->get('role')]);
+        return Gate::allows('create', [User::class, $this->input('role')]);
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'required|min:3|max:40',
@@ -41,22 +32,19 @@ class UserCreateRequest extends FormRequest
         ];
     }
 
-    public function validated()
+    public function validated(): array
     {
-        $validated = collect(parent::validated());
+        $validated = parent::validated();
 
-        $password = $validated->get('password');
-        if (empty($password)) {
-            $validated = $validated->except('password');
-        } else {
-            $validated->put('password', bcrypt($password));
+        $validated['password'] = bcrypt(Arr::get($validated, 'password'));
+
+        if (! empty($validated['birth_date'])) {
+            $validated['birth_date'] = Carbon::createFromFormat(
+                'd-m-Y',
+                $validated['birth_date']
+            );
         }
 
-        $birthDate = $validated->get('birth_date');
-        if (! empty($birthDate)) {
-            $validated->put('birth_date', Carbon::createFromFormat('d-m-Y', $birthDate));
-        }
-
-        return $validated->toArray();
+        return $validated;
     }
 }

@@ -139,7 +139,7 @@ class MacroServiceProvider extends ServiceProvider
          */
         Request::macro('removeIfNull', function (...$keys) {
             $keys = array_filter($keys, function ($key) {
-                return is_null($this->get($key));
+                return is_null($this->input($key));
             });
 
             foreach ($keys as $key) {
@@ -157,7 +157,7 @@ class MacroServiceProvider extends ServiceProvider
          */
         Request::macro('getNextUrl', function ($default = '/') {
             $intended = $this->session->pull('url.intended');
-            $next = $this->get('next');
+            $next = $this->input('next');
             $path = null;
 
             if ($intended) {

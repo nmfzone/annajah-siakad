@@ -11,4 +11,6 @@ final class PaymentProvider extends Enum
     const BRI = 'bri';
 
     const MANDIRI = 'mandiri';
+
+    const CASH = 'cash';
 }

@@ -9,7 +9,7 @@ abstract class Enum extends BaseEnum implements LocalizedEnum
 {
     public static function getValuesExcept(array $excepts): array
     {
-        return array_diff(array_values(static::getConstants()), $excepts);
+        return array_diff(static::getValues(), $excepts);
     }
 
     public static function asSelectArrayExcepts(array $excepts): array

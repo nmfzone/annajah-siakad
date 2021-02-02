@@ -28,15 +28,15 @@ class PaymentCreateRequest extends FormRequest
 
     public function validated(): array
     {
-        $validated = collect(parent::validated());
+        $validated = parent::validated();
 
-        $validated->put('payment_datetime', Carbon::createFromFormat(
+        $validated['paid_on'] = Carbon::createFromFormat(
             'd-m-Y H:i',
-            $validated->get('payment_date') . ' ' .
-            ($validated->get('payment_time') ?? '00:00')
-        ));
+            $validated['payment_date'] . ' ' .
+            value_get($validated, 'payment_time', '00:00')
+        );
 
-        return $validated->toArray();
+        return $validated;
     }
 
     public function attributes(): array

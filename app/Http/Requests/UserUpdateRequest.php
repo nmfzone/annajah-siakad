@@ -2,33 +2,23 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 
 class UserUpdateRequest extends UserCreateRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
         return Gate::allows('update', $this->route('user'));
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
+    public function rules(): array
     {
         /** @var \App\Models\User $authUser */
         $authUser = auth()->user();
         $rules = parent::rules();
 
         return $this->mergeRules($rules, [
-            'password' => $this->mergeRule($rules['password'], ['nullable'], [0 => true]),
             'birth_place' => $this->mergeRule($rules['birth_place'], [
                 'required' => $authUser->isStudent(),
             ], [
@@ -40,7 +30,21 @@ class UserUpdateRequest extends UserCreateRequest
                 0 => $authUser->isStudent(),
             ]),
         ], [
+            'password' => empty($this->input('password')),
+            // Cannot change role
+            // @TODO: Handle head master change role to teacher.
             'role' => true,
         ]);
+    }
+
+    public function validated(): array
+    {
+        $validated = parent::validated();
+
+        if (empty($this->input('password'))) {
+            $validated = Arr::except($validated, 'password');
+        }
+
+        return $validated;
     }
 }

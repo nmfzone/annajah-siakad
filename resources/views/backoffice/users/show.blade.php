@@ -19,7 +19,19 @@
           <div class="row">
             <div class="col-md-6 px-md-4">
               <div class="form-group">
-                <label for="name" class="col-form-label">Nama</label>
+                <label for="name" class="col-form-label">
+                  Nama Pengguna
+                </label>
+
+                <div class="plain-input">
+                  {{ $user->username }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="name" class="col-form-label">
+                  Nama
+                </label>
 
                 <div class="plain-input">
                   {{ $user->name }}
@@ -27,26 +39,32 @@
               </div>
 
               <div class="form-group">
-                <label for="email" class="col-form-label">Email</label>
+                <label for="email" class="col-form-label">
+                  Email
+                </label>
 
                 <div class="plain-input">
-                  {{ $user->email ?? '-' }}
+                  {{ value_get($user, 'email', '-') }}
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="phone" class="col-form-label">No Telepon</label>
+                <label for="phone" class="col-form-label">
+                  No Telepon
+                </label>
 
                 <div class="plain-input">
-                  {{ $user->phone ?? '-' }}
+                  {{ value_get($user, 'phone', '-') }}
                 </div>
               </div>
 
               <div class="form-group">
-                <label for="address" class="col-form-label">Alamat</label>
+                <label for="address" class="col-form-label">
+                  Alamat
+                </label>
 
                 <div class="plain-input">
-                  {{ $user->address ?? '-' }}
+                  {{ value_get($user, 'address', '-') }}
                 </div>
               </div>
             </div>
@@ -63,7 +81,29 @@
               </div>
 
               <div class="form-group">
-                <label for="role" class="col-form-label">Jabatan</label>
+                <label for="role" class="col-form-label">
+                  Tempat Lahir
+                </label>
+
+                <div class="plain-input">
+                  {{ value_get($user, 'birth_place', '-') }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="role" class="col-form-label">
+                  Tanggal Lahir
+                </label>
+
+                <div class="plain-input">
+                  {{ ($date = $user->birth_date) ? $date->format('d-m-Y') : '-' }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="role" class="col-form-label">
+                  Jabatan
+                </label>
 
                 <div class="plain-input">
                   {{ Role::getDescription($user->role) }}
@@ -101,36 +141,44 @@
             <div class="row">
               <div class="col-md-6 px-md-4">
                 <div class="form-group">
-                  <label for="no_kk" class="col-form-label">No KK</label>
+                  <label for="no_kk" class="col-form-label">
+                    No KK
+                  </label>
 
                   <div class="plain-input">
-                    {{ $profile->no_kk ?? '-' }}
+                    {{ value_get($profile, 'no_kk', '-') }}
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="previous_school" class="col-form-label">Asal Sekolah</label>
+                  <label for="previous_school" class="col-form-label">
+                    Asal Sekolah
+                  </label>
 
                   <div class="plain-input">
-                    {{ $profile->previous_school ?? '-' }}
+                    {{ value_get($profile, 'previous_school', '-') }}
                   </div>
                 </div>
               </div>
 
               <div class="col-md-6 px-md-4">
                 <div class="form-group">
-                  <label for="wali_name" class="col-form-label">Nama Wali</label>
+                  <label for="wali_name" class="col-form-label">
+                    Nama Wali
+                  </label>
 
                   <div class="plain-input">
-                    {{ $profile->wali_name ?? '-' }}
+                    {{ value_get($profile, 'wali_name', '-') }}
                   </div>
                 </div>
 
                 <div class="form-group">
-                  <label for="wali_phone" class="col-form-label">Nomor Telefon Wali</label>
+                  <label for="wali_phone" class="col-form-label">
+                    Nomor Telefon Wali
+                  </label>
 
                   <div class="plain-input">
-                    {{ $profile->wali_phone ?? '-' }}
+                    {{ value_get($profile, 'wali_phone', '-') }}
                   </div>
                 </div>
               </div>

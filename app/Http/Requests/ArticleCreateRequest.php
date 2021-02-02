@@ -7,6 +7,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\Media;
 use App\Rules\RequiredIfEmpty;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
@@ -37,11 +38,13 @@ class ArticleCreateRequest extends FormRequest
 
     public function validated(): array
     {
-        $validated = collect(parent::validated());
+        $validated = parent::validated();
 
-        $validated->put('user_id', $this->user()->id);
-        $validated->put('site_id', optional(site())->id);
+        $validated = array_merge($validated, [
+            'user_id' => $this->user()->id,
+            'site_id' => optional(site())->id,
+        ]);
 
-        return $validated->toArray();
+        return $validated;
     }
 }

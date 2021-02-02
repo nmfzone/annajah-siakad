@@ -209,7 +209,7 @@ if (! function_exists('value_get')) {
      */
     function value_get($value, $key, $default = null)
     {
-        $data = data_get($value, $key);
+        $data = trim(data_get($value, $key));
 
         return empty($data) ? $default : $data;
     }

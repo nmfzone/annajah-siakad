@@ -18,7 +18,7 @@ class AcademicYearsController extends Controller
             ->where('site_id', site()->id)
             ->orderByDesc('from');
 
-        if (! empty($search = $request->get('q'))) {
+        if (! empty($search = $request->input('q'))) {
             $categories->where('name', 'like', '%' . $search . '%');
         }
 

@@ -99,7 +99,7 @@ class PpdbUserController extends Controller
             $payment = $transaction->payment()->save(new Payment([
                 'provider_holder_name' => $requestData['provider_holder_name'],
                 'provider_number' => $requestData['provider_number'],
-                'paid_on' => $requestData['payment_datetime'],
+                'paid_on' => $requestData['paid_on'],
             ]));
 
             $payment->addMedia($requestData['proof_file'])

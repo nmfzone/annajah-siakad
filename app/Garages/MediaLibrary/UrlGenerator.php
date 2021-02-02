@@ -14,10 +14,12 @@ class UrlGenerator extends BaseUrlGenerator
 {
     public function getUrl(): string
     {
+        /** @var \League\Flysystem\Filesystem $driver */
         $driver = $this->getDisk()->getDriver();
         $adapter = $driver->getAdapter();
 
-        if (($adapter instanceof Local && $driver->getConfig()->get('visibility') !== 'public') ||
+        if (($adapter instanceof Local &&
+                $driver->getConfig()->get('visibility') !== 'public') ||
             $adapter instanceof GoogleDriveAdapter) {
             $type = $this->conversion ? 'c' : 'n';
             $conversion = $this->conversion ? $this->conversion->getName() : 'z';
@@ -43,14 +45,16 @@ class UrlGenerator extends BaseUrlGenerator
         return $this->getDisk()->temporaryUrl($this->getPathRelativeToRoot(), $expiration, $options);
     }
 
-    public function getBaseMediaDirectoryUrl()
+    public function getBaseMediaDirectoryUrl(): string
     {
         return $this->getDisk()->url('/');
     }
 
     public function getPath(): string
     {
-        $adapter = $this->getDisk()->getAdapter();
+        /** @var \Illuminate\Filesystem\FilesystemAdapter|\League\Flysystem\Filesystem $manager */
+        $manager = $this->getDisk();
+        $adapter = $manager->getAdapter();
 
         $cachedAdapter = '\League\Flysystem\Cached\CachedAdapter';
 

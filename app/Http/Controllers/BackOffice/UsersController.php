@@ -95,7 +95,7 @@ class UsersController extends Controller
             flash('Berhasil memperbarui identitas pengguna.')->success();
         }
 
-        if ($request->get('to_previous')) {
+        if ($request->input('to_previous')) {
             return redirect()->back();
         }
 
@@ -138,7 +138,7 @@ class UsersController extends Controller
             flash('Berhasil memperbarui data.')->success();
         }
 
-        if ($request->get('to_previous')) {
+        if ($request->input('to_previous')) {
             return redirect()
                 ->back()
                 ->with('bottom-message', true);

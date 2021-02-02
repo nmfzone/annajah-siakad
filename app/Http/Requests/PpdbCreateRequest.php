@@ -57,14 +57,20 @@ class PpdbCreateRequest extends FormRequest
             ],
             'payment.payment_type' => [
                 'required',
-                Rule::in(PaymentType::getValues()),
+                Rule::in(
+                    $this->isCashProvider()
+                        ? [PaymentType::ON_THE_SPOT]
+                        : PaymentType::getValuesExcept([PaymentType::ON_THE_SPOT])
+                ),
             ],
             'payment.provider_number' => [
-                'required',
+                'nullable',
+                Rule::requiredIf(! $this->isCashProvider()),
                 'numeric',
             ],
             'payment.provider_holder_name' => [
-                'required',
+                'nullable',
+                Rule::requiredIf(! $this->isCashProvider()),
                 'string',
                 'min:3',
                 'max:50',
@@ -78,11 +84,13 @@ class PpdbCreateRequest extends FormRequest
             'contact_persons.*.name' => [
                 'required',
                 'string',
+                'distinct',
                 'min:3',
                 'max:50',
             ],
             'contact_persons.*.number' => [
                 'required',
+                'distinct',
                 'numeric',
             ],
         ];
@@ -92,27 +100,16 @@ class PpdbCreateRequest extends FormRequest
     {
         $validated = parent::validated();
 
-        Arr::set(
-            $validated,
-            'started_at',
-            Carbon::createFromFormat(
+        $validated = array_merge($validated, [
+            'started_at' => Carbon::createFromFormat(
                 'd-m-Y H:i',
-                Arr::get($validated, 'start_date') .
-                ' ' .
-                Arr::get($validated, 'start_time')
-            )
-        );
-
-        Arr::set(
-            $validated,
-            'ended_at',
-            Carbon::createFromFormat(
+                $validated['start_date'] . ' ' . $validated['start_time']
+            ),
+            'ended_at' => Carbon::createFromFormat(
                 'd-m-Y H:i',
-                Arr::get($validated, 'end_date') .
-                ' ' .
-                Arr::get($validated, 'end_time')
-            )
-        );
+                $validated['end_date'] . ' ' . $validated['end_time']
+            ),
+        ]);
 
         Arr::set(
             $validated,
@@ -153,5 +150,10 @@ class PpdbCreateRequest extends FormRequest
             'contact_persons.*.name' => 'Nama Narahubung',
             'contact_persons.*.number' => 'Nomor Narahubung',
         ];
+    }
+
+    protected function isCashProvider(): bool
+    {
+        return $this->input('payment.provider') === PaymentProvider::CASH;
     }
 }

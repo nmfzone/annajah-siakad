@@ -140,9 +140,9 @@ class ArticlesDataTable extends DataTable
         }
 
         if ($authUser->can('restore', Article::class)) {
-            if ($this->request()->get('withTrashed')) {
+            if ($this->request()->input('withTrashed')) {
                 $query->withTrashed();
-            } elseif ($this->request()->get('onlyTrashed')) {
+            } elseif ($this->request()->input('onlyTrashed')) {
                 $query->onlyTrashed();
             }
         }

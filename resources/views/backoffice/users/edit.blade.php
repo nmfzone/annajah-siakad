@@ -36,6 +36,16 @@
               <div class="col-md-6 px-md-4">
                 <div class="form-group">
                   <label for="name" class="col-form-label">
+                    Nama Pengguna
+                  </label>
+
+                  <div class="plain-input">
+                    {{ $user->username }}
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="name" class="col-form-label">
                     Nama <span class="required">*</span>
                   </label>
 
@@ -122,7 +132,9 @@
                     </span>
                   @enderror
                 </div>
+              </div>
 
+              <div class="col-md-6 px-md-4">
                 <div class="form-group">
                   <label for="phone" class="col-form-label">
                     Jenis Kelamin <span class="required">*</span>
@@ -161,9 +173,7 @@
                     @enderror
                   </div>
                 </div>
-              </div>
 
-              <div class="col-md-6 px-md-4">
                 <div class="form-group">
                   <label for="birth_place" class="col-form-label">
                     Tempat Lahir

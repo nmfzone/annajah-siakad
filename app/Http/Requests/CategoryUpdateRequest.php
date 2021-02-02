@@ -32,10 +32,12 @@ class CategoryUpdateRequest extends CategoryCreateRequest
     {
         /** @var \App\Models\Category $category */
         $category = $this->route('category');
-        $validated = collect(parent::validated());
+        $validated = parent::validated();
 
-        $validated->put('slug', Str::slug(value_get($validated, 'slug', $category->slug)));
+        $validated['slug'] = Str::slug(
+            value_get($validated, 'slug', $category->slug)
+        );
 
-        return $validated->toArray();
+        return $validated;
     }
 }

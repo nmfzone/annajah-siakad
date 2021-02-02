@@ -35,6 +35,12 @@
  */
 
 /*!
+ * Vue.js v2.6.12
+ * (c) 2014-2020 Evan You
+ * Released under the MIT License.
+ */
+
+/*!
  * bsCustomFileInput v1.3.4 (https://github.com/Johann-S/bs-custom-file-input)
  * Copyright 2018 - 2020 Johann-S <johann.servoire@gmail.com>
  * Licensed under MIT (https://github.com/Johann-S/bs-custom-file-input/blob/master/LICENSE)
