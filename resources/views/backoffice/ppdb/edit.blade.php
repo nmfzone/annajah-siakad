@@ -31,18 +31,28 @@
                     Tahun Akademik <span class="required">*</span>
                   </label>
 
-                  <academic-year-picker
-                    id="academic_year_id"
-                    name="academic_year_id"
-                    :initial-value='@json($ppdb->academicYear->only('id', 'name'))'
-                    class="from-control @error('academic_year_id') is-invalid @enderror"
-                    required></academic-year-picker>
+                  @if(!$hasRegisteredUser)
+                    <academic-year-picker
+                      id="academic_year_id"
+                      name="academic_year_id"
+                      :initial-value='@json($ppdb->academicYear->only('id', 'name'))'
+                      class="from-control @error('academic_year_id') is-invalid @enderror"
+                      required></academic-year-picker>
 
-                  @error('academic_year_id')
-                    <span class="invalid-feedback" role="alert">
-                      <b>{{ $message }}</b>
-                    </span>
-                  @enderror
+                    @error('academic_year_id')
+                      <span class="invalid-feedback" role="alert">
+                        <b>{{ $message }}</b>
+                      </span>
+                    @enderror
+                  @else
+                    <div class="plain-input">
+                      {{ $ppdb->academicYear->name }}
+                    </div>
+                  @endif
+
+                  <span class="text-gray-600 text-xs">
+                    Tahun akademik tidak dapat diubah ketika sudah terdapat pendaftar.
+                  </span>
                 </div>
 
                 <div class="row">

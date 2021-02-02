@@ -71,7 +71,12 @@ class PpdbController extends Controller
         $this->ppdbShouldBelongsToCurrentSite($ppdb);
         $this->authorize('update', $ppdb);
 
-        return view('backoffice.ppdb.edit', compact('ppdb'));
+        $hasRegisteredUser = $ppdb->ppdbUsers()->exists();
+
+        return view(
+            'backoffice.ppdb.edit',
+            compact('ppdb', 'hasRegisteredUser')
+        );
     }
 
     public function update(PpdbUpdateRequest $request, $subDomain, Ppdb $ppdb)
@@ -105,7 +110,7 @@ class PpdbController extends Controller
         $this->authorize('delete', $ppdb);
 
         try {
-            if ($ppdb->ppdbUsers()->count() > 0) {
+            if ($ppdb->ppdbUsers()->exists()) {
                 throw new Exception(
                     "PPDB cannot be deleted since it's referenced in another table."
                 );
@@ -115,9 +120,7 @@ class PpdbController extends Controller
             flash('Berhasil menghapus PPDB.')->success();
         } catch (Exception $e) {
             flash(
-                'Tidak dapat menghapus PPDB.<br>' .
-                'Pastikan Anda telah menghapus semua hal yang berhubungan dengan ' .
-                "PPDB {$ppdb->academicYear->name} terlebih dahulu."
+                'Tidak dapat menghapus PPDB ketika sudah terdapat pendaftar.'
             )->error();
         }
 
