@@ -24,11 +24,6 @@ use Illuminate\Support\Arr;
 
 class DummySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         /** @var \App\Models\Site $site */

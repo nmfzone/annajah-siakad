@@ -14,11 +14,6 @@ use Illuminate\Database\Seeder;
 
 class PreliminaryDataSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         /** @var \App\Models\Site $site */
