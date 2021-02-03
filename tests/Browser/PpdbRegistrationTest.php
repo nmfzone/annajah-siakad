@@ -11,7 +11,7 @@ use Tests\Concerns\CreatesPpdb;
 use Tests\Concerns\CreatesSite;
 use Tests\DuskTestCase;
 
-class PpdbRegistration extends DuskTestCase
+class PpdbRegistrationTest extends DuskTestCase
 {
     use CreatesPpdb,
         CreatesSite,
