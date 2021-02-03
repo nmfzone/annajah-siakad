@@ -1,0 +1,9 @@
+#!/bin/sh
+
+IN_REVERT=$(git rev-parse -q --verify REVERT_HEAD)
+IN_REBASE=$(git rev-parse -q --verify REBASE_HEAD)
+if [ "$IN_REBASE" == "" ] && [ "$IN_REVERT" == "" ]; then
+    php artisan qa:check
+
+    exit $?
+fi
