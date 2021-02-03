@@ -155,7 +155,7 @@ class MacroServiceProvider extends ServiceProvider
          * @param  string  $default
          * @return string
          */
-        Request::macro('getNextUrl', function ($default = '/') {
+        Request::macro('getNextUrl', function (string $default = '/') {
             $intended = $this->session->pull('url.intended');
             $next = $this->input('next');
             $path = null;
@@ -190,9 +190,9 @@ class MacroServiceProvider extends ServiceProvider
          * @return \Illuminate\Http\RedirectResponse
          */
         Redirector::macro('next', function (
-            $default = '/',
-            $status = 302,
-            $headers = [],
+            string $default = '/',
+            int $status = 302,
+            array $headers = [],
             $secure = null
         ) {
             $path = $this->generator->getRequest()->getNextUrl($default);
@@ -203,60 +203,66 @@ class MacroServiceProvider extends ServiceProvider
         /**
          * Get the URL to the main site for a given route instance.
          *
-         * @param  \Illuminate\Routing\Route  $route
+         * @param  string  $name
          * @param  mixed  $parameters
          * @param  bool  $absolute
          * @return string
          *
          * @throws \Illuminate\Routing\Exceptions\UrlGenerationException
          */
-        UrlGenerator::macro('mainRoute', function ($name, $parameters = [], $absolute = true) {
-            $name = 'main.' . $name;
+        UrlGenerator::macro(
+            'mainRoute',
+            function (string $name, $parameters = [], bool $absolute = true) {
+                $name = 'main.' . $name;
 
-            if (! is_null($route = $this->routes->getByName($name))) {
-                return $this->toRoute($route, $parameters, $absolute);
+                if (! is_null($route = $this->routes->getByName($name))) {
+                    return $this->toRoute($route, $parameters, $absolute);
+                }
+
+                throw new RouteNotFoundException("Route [{$name}] not defined.");
             }
-
-            throw new RouteNotFoundException("Route [{$name}] not defined.");
-        });
+        );
 
         /**
          * Get the URL to the sub site for a given route instance.
          *
-         * @param  \Illuminate\Routing\Route  $route
+         * @param  string  $name
          * @param  mixed  $parameters
          * @param  bool  $absolute
          * @return string
          *
          * @throws \Illuminate\Routing\Exceptions\UrlGenerationException
          */
-        UrlGenerator::macro('subRoute', function ($name, $parameters = [], $absolute = true) {
-            $name = 'sub.' . $name;
+        UrlGenerator::macro(
+            'subRoute',
+            function (string $name, $parameters = [], bool $absolute = true) {
+                $name = 'sub.' . $name;
 
-            if (is_main_app()) {
-                throw new DomainException(
-                    'Sub Route can only be used in Subdomain, not in main domain.'
+                if (is_main_app()) {
+                    throw new DomainException(
+                        'Sub Route can only be used in Subdomain, not in main domain.'
+                    );
+                }
+
+                $subDomain = Str::lower(
+                    str_replace(
+                        '.' . config('app.host'),
+                        '',
+                        request()->getHttpHost()
+                    )
                 );
+
+                $parameters = array_merge([
+                    'sub_domain' => $subDomain,
+                ], Arr::wrap($parameters));
+
+                if (! is_null($route = $this->routes->getByName($name))) {
+                    return $this->toRoute($route, $parameters, $absolute);
+                }
+
+                throw new RouteNotFoundException("Route [{$name}] not defined.");
             }
-
-            $subDomain = Str::lower(
-                str_replace(
-                    '.' . config('app.host'),
-                    '',
-                    request()->getHttpHost()
-                )
-            );
-
-            $parameters = array_merge([
-                'sub_domain' => $subDomain,
-            ], Arr::wrap($parameters));
-
-            if (! is_null($route = $this->routes->getByName($name))) {
-                return $this->toRoute($route, $parameters, $absolute);
-            }
-
-            throw new RouteNotFoundException("Route [{$name}] not defined.");
-        });
+        );
 
         /**
          * Display next field.
