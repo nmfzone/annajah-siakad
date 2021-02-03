@@ -17786,7 +17786,7 @@
                     /**
          * Get the URL to the main site for a given route instance.
          *
-         * @param \Illuminate\Routing\Route $route
+         * @param string $name
          * @param mixed $parameters
          * @param bool $absolute
          * @return string 
@@ -17801,7 +17801,7 @@
                     /**
          * Get the URL to the sub site for a given route instance.
          *
-         * @param \Illuminate\Routing\Route $route
+         * @param string $name
          * @param mixed $parameters
          * @param bool $absolute
          * @return string 
