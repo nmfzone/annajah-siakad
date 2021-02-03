@@ -81,7 +81,9 @@
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
-            "@php artisan key:generate --ansi"
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('.git/hooks/pre-commit') || copy('git-hooks/pre-commit', '.git/hooks/pre-commit');\""
         ]
     }
 }
+ 
