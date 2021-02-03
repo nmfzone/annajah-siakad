@@ -9,6 +9,7 @@
 !.env.dusk.example
 .env.backup
 phpunit.dusk.xml
+phpunit.xml
 .phpunit.result.cache
 phplint.cache
 Homestead.json
