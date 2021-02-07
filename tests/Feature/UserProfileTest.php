@@ -79,6 +79,7 @@ class UserProfileTest extends TestCase
             ])
             ->assertSessionHasNoErrors();
 
+        $user = $user->fresh();
         $this->assertTrue(password_verify('secret', $user->password));
     }
 }
