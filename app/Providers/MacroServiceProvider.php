@@ -170,9 +170,13 @@ class MacroServiceProvider extends ServiceProvider
                     $url = $url->withHost($this->getHttpHost());
                 }
 
-                if ($url->getHost() == config('app.host') ||
-                    Str::endsWith($url->getHost(), '.' . config('app.host')) ||
-                    app()->isLocal()) {
+                $host = in_array($url->getPort(), [80, 443])
+                    ? $url->getHost()
+                    : $url->getHost() . ':' . $url->getPort();
+
+                if (in_array($host, config('app.sub_domain_hosts')) ||
+                    Str::endsWith($host, '.' . config('app.host'))
+                ) {
                     $path = (string) $url;
                 }
             }
@@ -244,16 +248,28 @@ class MacroServiceProvider extends ServiceProvider
                     );
                 }
 
+                $host = request()->getHttpHost();
+                $subDomainHostRegex = implode('|', array_map(function ($host) {
+                    return preg_quote($host);
+                }, config('app.sub_domain_hosts')));
+
                 $subDomain = Str::lower(
-                    str_replace(
-                        '.' . config('app.host'),
+                    preg_replace(
+                        '/.?(' . $subDomainHostRegex . ')/i',
                         '',
-                        request()->getHttpHost()
+                        $host
                     )
                 );
 
+                if (! empty($subDomain)) {
+                    $host = Str::replaceFirst($subDomain . '.', '', $host);
+                }
+
                 $parameters = array_merge([
-                    'sub_domain' => $subDomain,
+                    'sub_domain' => $subDomain == ''
+                        ? $subDomain
+                        : $subDomain . '.',
+                    'sub_domain_host' => $host,
                 ], Arr::wrap($parameters));
 
                 if (! is_null($route = $this->routes->getByName($name))) {

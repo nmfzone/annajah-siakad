@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Garages\GoogleDrive\GoogleDriveAdapter;
+use App\Garages\Illuminate\Routing\Matching\HostValidator;
 use App\Garages\Illuminate\Routing\UrlGenerator;
 use App\Garages\Utility\IndonesianNameFormatter;
 use App\Models\PpdbUser;
@@ -11,6 +12,10 @@ use App\Models\Teacher;
 use Google_Client;
 use Google_Service_Drive;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Routing\Matching\MethodValidator;
+use Illuminate\Routing\Matching\SchemeValidator;
+use Illuminate\Routing\Matching\UriValidator;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
@@ -68,6 +73,13 @@ class AppServiceProvider extends ServiceProvider
                 $app['config']['app.asset_url']
             );
         });
+
+        Route::$validators = [
+            new UriValidator,
+            new MethodValidator,
+            new SchemeValidator,
+            new HostValidator
+        ];
     }
 
     /**

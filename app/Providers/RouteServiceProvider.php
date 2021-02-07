@@ -35,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->configureRoutePatterns();
         $this->configureRateLimiting();
 
         $this->routes(function () {
@@ -47,6 +48,31 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
+    }
+
+    /**
+     * Configure the rate limiters for the application.
+     *
+     * @return void
+     */
+    protected function configureRoutePatterns()
+    {
+        // @TODO: Don't know how to achieve better than this.
+        // We may need to check if APP_HOST is localhost or IP Address.
+        // If so, we make the sub_domain optional.
+        Route::pattern(
+            'sub_domain',
+            $this->app->runningUnitTests() || $this->app->isLocal()
+                ? '([a-z0-9]+)?.?'
+                : '([a-z0-9]+).'
+        );
+
+        Route::pattern(
+            'sub_domain_host',
+            implode('|', array_map(function ($host) {
+                return preg_quote($host);
+            }, config('app.sub_domain_hosts')))
+        );
     }
 
     /**

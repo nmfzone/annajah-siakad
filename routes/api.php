@@ -24,7 +24,8 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::group([
-    'domain' => sprintf('{sub_domain}.%s', config('app.host')),
+    'domain' => '{sub_domain}{sub_domain_host}',
+    'wildcard_port' => false,
     'as' => 'sub.',
     'middleware' => 'check_sub_domain',
 ], function () {

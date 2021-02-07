@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'domain' => config('app.host'),
+    'wildcard_port' => false,
     'as' => 'main.',
 ], function () {
     Route::get('/', [WebController::class, 'index'])->name('web');
@@ -44,7 +45,12 @@ Route::group([
 });
 
 Route::group([
-    'domain' => sprintf('%s.%s', config('assets.sub_domain'), config('app.host')),
+    'domain' => env('ASSETS_HOST', sprintf(
+        '%s.%s',
+        config('assets.sub_domain'),
+        config('app.host')
+    )),
+    'wildcard_port' => false,
 ], function () {
     Route::get('/media/{type}/{conversion}/{path}', [StorageController::class, 'privateMedia'])
         ->middleware('auth')
@@ -56,7 +62,8 @@ Route::get('/storage/{path}', [StorageController::class, 'index'])
     ->name('storage.public');
 
 Route::group([
-    'domain' => sprintf('{sub_domain}.%s', config('app.host')),
+    'domain' => '{sub_domain}{sub_domain_host}',
+    'wildcard_port' => false,
     'as' => 'sub.',
     'middleware' => 'check_sub_domain',
 ], function () {
@@ -77,9 +84,9 @@ Route::group([
         Route::get('/dashboard', [DashboardController::class, 'index'])
             ->name('dashboard');
 
-        require_once 'partials/backoffice/ppdbUser.php';
-        require_once 'partials/backoffice/ppdb.php';
-        require_once 'partials/backoffice/academicYear.php';
+        require 'partials/backoffice/ppdbUser.php';
+        require 'partials/backoffice/ppdb.php';
+        require 'partials/backoffice/academicYear.php';
     });
 
     Route::get('/presensi', [AttendancesController::class, 'index'])
@@ -96,9 +103,9 @@ Route::group([
     Route::get('/profil', ProfileController::class)
         ->name('profile');
 
-    require_once 'partials/backoffice/article.php';
-    require_once 'partials/backoffice/category.php';
-    require_once 'partials/backoffice/user.php';
+    require 'partials/backoffice/article.php';
+    require 'partials/backoffice/category.php';
+    require 'partials/backoffice/user.php';
 });
 
 Route::get('/go/{code}', [ShortLinksController::class, 'show']);
