@@ -58,6 +58,11 @@ return [
 
     'host' => env('APP_HOST', 'localhost'),
 
+    'sub_domain_hosts' => explode(',', env(
+        'APP_SUB_DOMAIN_HOSTS',
+        env('APP_HOST', 'localhost')
+    )),
+
     'url' => env('APP_URL', env('APP_PROTOCOL', 'http') . '://' . env('APP_HOST', 'localhost')),
 
     'asset_url' => env('ASSET_URL', null),
