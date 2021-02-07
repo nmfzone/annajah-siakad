@@ -56,7 +56,7 @@ class PpdbTest extends DuskTestCase
                 ->click('#start_date')
                 ->pause(200)
                 ->within(new DatePicker('#start_date'), function (Browser $browser) {
-                    $browser->selectDate(1921, 2, 20);
+                    $browser->selectDate(2019, 2, 20);
                 })
                 ->type('#start_time', '20:30')
                 ->click('#end_date')
