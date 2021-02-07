@@ -28,7 +28,7 @@ class PpdbController extends Controller
         $this->ppdbService = $ppdbService;
     }
 
-    public function index(Request $request, $subDomain)
+    public function index(Request $request)
     {
         if (! $request->session()->has('registered')) {
             $this->middleware('guest');
@@ -60,7 +60,7 @@ class PpdbController extends Controller
         return view($viewName, compact('slides', 'ppdb'));
     }
 
-    public function store(Request $request, $subDomain)
+    public function store(Request $request)
     {
         $site = site();
         $ppdb = $this->ppdbService->currentPpdb();

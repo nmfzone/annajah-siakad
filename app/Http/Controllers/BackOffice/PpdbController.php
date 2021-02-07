@@ -58,7 +58,7 @@ class PpdbController extends Controller
         return redirect()->to(sub_route('backoffice.ppdb.index'));
     }
 
-    public function show($subDomain, Ppdb $ppdb)
+    public function show($subDomain, $domain, Ppdb $ppdb)
     {
         $this->ppdbShouldBelongsToCurrentSite($ppdb);
         $this->authorize('view', $ppdb);
@@ -66,7 +66,7 @@ class PpdbController extends Controller
         return view('backoffice.ppdb.show', compact('ppdb'));
     }
 
-    public function edit($subDomain, Ppdb $ppdb)
+    public function edit($subDomain, $domain, Ppdb $ppdb)
     {
         $this->ppdbShouldBelongsToCurrentSite($ppdb);
         $this->authorize('update', $ppdb);
@@ -79,7 +79,7 @@ class PpdbController extends Controller
         );
     }
 
-    public function update(PpdbUpdateRequest $request, $subDomain, Ppdb $ppdb)
+    public function update(PpdbUpdateRequest $request, $subDomain, $domain, Ppdb $ppdb)
     {
         $this->ppdbShouldBelongsToCurrentSite($ppdb);
 
@@ -104,7 +104,7 @@ class PpdbController extends Controller
         return redirect()->to(sub_route('backoffice.ppdb.index'));
     }
 
-    public function destroy($subDomain, Ppdb $ppdb)
+    public function destroy($subDomain, $domain, Ppdb $ppdb)
     {
         $this->ppdbShouldBelongsToCurrentSite($ppdb);
         $this->authorize('delete', $ppdb);

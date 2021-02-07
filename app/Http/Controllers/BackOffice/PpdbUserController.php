@@ -28,7 +28,7 @@ class PpdbUserController extends Controller
         $this->ppdbService = $ppdbService;
     }
 
-    public function index(Request $request, $subDomain, Ppdb $ppdb)
+    public function index($subDomain, $domain, Ppdb $ppdb)
     {
         $this->authorize('viewAny', PpdbUser::class);
 
@@ -37,7 +37,7 @@ class PpdbUserController extends Controller
         return $datatable->render('backoffice.ppdb.users.index');
     }
 
-    public function show($subDomain, Ppdb $ppdb, PpdbUser $ppdbUser)
+    public function show($subDomain, $domain, Ppdb $ppdb, PpdbUser $ppdbUser)
     {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
         $this->authorize('view', $ppdbUser);
@@ -47,7 +47,7 @@ class PpdbUserController extends Controller
         return view('backoffice.ppdb.users.show', compact('ppdbUser', 'transactionItem'));
     }
 
-    public function directShow(Request $request, $subDomain)
+    public function directShow(Request $request)
     {
         /** @var \App\Models\User $authUser */
         $authUser = $request->user();
@@ -63,8 +63,13 @@ class PpdbUserController extends Controller
         return view('backoffice.ppdb.users.show', compact('ppdbUser', 'transactionItem'));
     }
 
-    public function showPayment($subDomain, Ppdb $ppdb, PpdbUser $ppdbUser, Transaction $transaction)
-    {
+    public function showPayment(
+        $subDomain,
+        $domain,
+        Ppdb $ppdb,
+        PpdbUser $ppdbUser,
+        Transaction $transaction
+    ) {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
         $this->userShouldOwnTransaction($ppdbUser, $transaction);
         $this->authorize('viewPayment', $ppdbUser);
@@ -81,6 +86,7 @@ class PpdbUserController extends Controller
     public function storePayment(
         PaymentCreateRequest $request,
         $subDomain,
+        $domain,
         Ppdb $ppdb,
         PpdbUser $ppdbUser,
         Transaction $transaction
@@ -114,8 +120,13 @@ class PpdbUserController extends Controller
         return redirect()->to(sub_route('backoffice.ppdb.users.show', [$ppdb, $ppdbUser]));
     }
 
-    public function acceptPayment($subDomain, Ppdb $ppdb, PpdbUser $ppdbUser, Transaction $transaction)
-    {
+    public function acceptPayment(
+        $subDomain,
+        $domain,
+        Ppdb $ppdb,
+        PpdbUser $ppdbUser,
+        Transaction $transaction
+    ) {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
         $this->userShouldOwnTransaction($ppdbUser, $transaction);
         $this->authorize('acceptPayment', $ppdbUser);
@@ -139,6 +150,7 @@ class PpdbUserController extends Controller
 
     public function declineOrCancelPayment(
         $subDomain,
+        $domain,
         Ppdb $ppdb,
         PpdbUser $ppdbUser,
         Transaction $transaction
@@ -169,7 +181,7 @@ class PpdbUserController extends Controller
         return redirect()->back();
     }
 
-    public function acceptAsStudent($subDomain, Ppdb $ppdb, PpdbUser $ppdbUser)
+    public function acceptAsStudent($subDomain, $domain, Ppdb $ppdb, PpdbUser $ppdbUser)
     {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
         $this->authorize('acceptAsStudent', $ppdbUser);
@@ -200,7 +212,7 @@ class PpdbUserController extends Controller
         return redirect()->back();
     }
 
-    public function declineOrCancelAsStudent($subDomain, Ppdb $ppdb, PpdbUser $ppdbUser)
+    public function declineOrCancelAsStudent($subDomain, $domain, Ppdb $ppdb, PpdbUser $ppdbUser)
     {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
         $this->authorize('declineOrCancelAsStudent', $ppdbUser);

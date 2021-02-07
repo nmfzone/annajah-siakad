@@ -20,14 +20,14 @@ class ObservationController extends Controller
         $this->ppdbService = $ppdbService;
     }
 
-    public function show(Request $request, $subDomain, Ppdb $ppdb, PpdbUser $ppdbUser)
+    public function show($subDomain, $domain, Ppdb $ppdb, PpdbUser $ppdbUser)
     {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
 
         return view('backoffice.ppdb.users.observation.show', compact('ppdbUser'));
     }
 
-    public function directShow(Request $request, $subDomain)
+    public function directShow(Request $request)
     {
         /** @var \App\Models\User $authUser */
         $authUser = $request->user();
