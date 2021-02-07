@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Garages\Utility\Unique;
+use Database\Factories\StudentProfileFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
@@ -115,5 +116,10 @@ class Student extends Model implements HasMedia
         };
 
         return Unique::generate(Student::class, $generate, 'nis');
+    }
+
+    protected static function newFactory(): StudentProfileFactory
+    {
+        return StudentProfileFactory::new();
     }
 }
