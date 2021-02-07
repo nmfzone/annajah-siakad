@@ -170,11 +170,13 @@ class MacroServiceProvider extends ServiceProvider
                     $url = $url->withHost($this->getHttpHost());
                 }
 
-                $host = in_array($url->getPort(), [80, 443])
+                $port = $url->getPort();
+                $host = is_null($port) || in_array($port, [80, 443])
                     ? $url->getHost()
-                    : $url->getHost() . ':' . $url->getPort();
+                    : $url->getHost() . ':' . $port;
 
-                if (in_array($host, config('app.sub_domain_hosts')) ||
+                if ($host == config('app.host') ||
+                    in_array($host, config('app.sub_domain_hosts')) ||
                     Str::endsWith($host, '.' . config('app.host'))
                 ) {
                     $path = (string) $url;
