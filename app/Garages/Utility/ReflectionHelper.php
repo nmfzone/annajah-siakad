@@ -97,13 +97,15 @@ class ReflectionHelper
      *
      * @throws \Exception
      */
-    public static function setRestrictedProperty(&$class, string $property, $value)
+    public static function setRestrictedProperty($class, string $property, $value)
     {
-        if (! is_object($class)) {
-            throw new Exception('Parameter 1 should be an instance of that class.');
+        if (is_string($class)) {
+            $class = new ReflectionClass($class);
+            $reflectionClass = $class;
+        } else {
+            $reflectionClass = new ReflectionClass($class);
         }
 
-        $reflectionClass = new ReflectionClass($class);
         $classProperty = $reflectionClass->getProperty($property);
         $classProperty->setAccessible(true);
 
