@@ -6,7 +6,8 @@ use App\Http\Controllers\Concerns\HasSiteContext;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\MediaCollections\Filesystem;
+use App\Models\Media;
 
 class WebController extends Controller
 {
@@ -16,7 +17,7 @@ class WebController extends Controller
     {
 //        dd(Storage::disk('ppdb_gdrive')->getAdapter()->getCreatedFolders());
 //        dd(Storage::disk('ppdb_gdrive')->allDirectories());
-//        dd(Storage::disk('ppdb_gdrive')->deleteDirectory('./1F8brAksYwOCoUpNSNraTSm1hElUaYDrl'));
+//        dd(Storage::disk('ppdb_gdrive')->deleteDirectory('./1gJEKzduW1FtCIBgq0EKFd6OZuCH6-ou8'));
 //        dd(Storage::disk('ppdb_gdrive')->createDir(
 //            'PPDB 2020-2021',
 //            [
@@ -27,21 +28,34 @@ class WebController extends Controller
 //                ]
 //            ]
 //        ), Storage::disk('ppdb_gdrive')->getAdapter()->getCreatedFolders());
-
-//        /** @var \App\Models\User $user */
-//        $user = User::find(1);
 //
-//        dd(Media::find(2)->getUrl());
+//        /** @var \App\Models\User $user */
+//        $user = User::findOrFail(4);
+//        $student = $user->studentProfileFor(site());
+//
+//        /** @var \App\Models\Media $media */
+//        $media = Media::findOrFail(12);
+//        $media->delete();
+//        dd('hai');
+//        dd($media->getUrl());
 //
 //        $adapter = Storage::disk('ppdb_gdrive')
 //            ->getDriver()->getAdapter();
-//        $folderId = '1aBBjaQXcOt0qquj--8VhAsj5_1zlUcE4';
+//        $folderId = '1gJEKzduW1FtCIBgq0EKFd6OZuCH6-ou8';
 //        $adapter->setPathPrefix($folderId);
 //        $adapter->root = $folderId;
+
+//        $media->copy($student, 'akta_kelahiran');
+//        $media->copy($user, 'profile_pict');
 //
 //        $user->addMedia(public_path('images/coba.jpg'))
 //            ->preservingOriginal()
-//            ->toMediaCollection('profile_pict');
+//            ->toMediaCollection('profile_pict', 'ppdb_gdrive');
+//
+//        $filesystem = app(Filesystem::class);
+//        $filesystem->removeAllFiles($media);
+//
+//        dd('Success');
 
         if (! is_main_app()) {
             $slides = [
