@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         Storage::extend('google_drive', function ($app, $config) {
             $client = new Google_Client();
             $client->setAuthConfig(storage_path('app/' . $config['authConfigPath']));
-            $client->addScope('https://www.googleapis.com/auth/drive.file');
+            $client->addScope('https://www.googleapis.com/auth/drive');
             $service = new Google_Service_Drive($client);
 
             $options = [];
