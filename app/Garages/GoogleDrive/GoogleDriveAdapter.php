@@ -686,7 +686,7 @@ class GoogleDriveAdapter extends AbstractAdapter
      * Do cache cacheHasDirs
      *
      * @param  array  $targets
-     * @param  array  $objects
+     * @param  array  $object
      * @return array
      */
     protected function setHasDir($targets, $object)
