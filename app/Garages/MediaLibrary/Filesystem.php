@@ -2,6 +2,7 @@
 
 namespace App\Garages\MediaLibrary;
 
+use App\Garages\GoogleDrive\GoogleDriveAdapter;
 use App\Garages\Utility\ReflectionHelper;
 use Illuminate\Http\File;
 use Illuminate\Http\UploadedFile;
@@ -14,9 +15,19 @@ use Psr\Http\Message\StreamInterface;
 use Spatie\MediaLibrary\MediaCollections\Filesystem as BaseFilesystem;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\PathGenerator\PathGeneratorFactory;
+use Spatie\MediaLibrary\Support\RemoteFile;
 
 class Filesystem extends BaseFilesystem
 {
+    public function getStream(Media $media)
+    {
+        $sourcePath = $media->getCustomProperty('full_path');
+
+        return $this->filesystem
+            ->disk($media->disk)
+            ->readStream($sourcePath);
+    }
+
     public function getMediaDirectory(Media $media, ?string $type = null): string
     {
         $pathGenerator = PathGeneratorFactory::create();
@@ -42,13 +53,65 @@ class Filesystem extends BaseFilesystem
             ? $media->conversions_disk
             : $media->disk;
 
-        if (! in_array($diskDriverName, ['s3', 'google_drive'], true)) {
-            $this->filesystem
-                ->disk($diskName)
-                ->makeDirectory($directory);
+        $storage = $this->filesystem
+                ->disk($diskName);
+
+        if (! in_array($diskDriverName, ['s3'], true) &&
+            ! $storage->getDriver()->getAdapter() instanceof GoogleDriveAdapter) {
+            $storage->makeDirectory($directory);
         }
 
         return $directory;
+    }
+
+    public function copyToMediaLibraryFromRemote(
+        RemoteFile $file,
+        Media $media,
+        ?string $type = null,
+        ?string $targetFileName = null
+    ): void {
+        $destinationFileName = $targetFileName ?: $file->getFilename();
+
+        $destination = $this->getMediaDirectory($media, $type) . $destinationFileName;
+
+        if ($file->getDisk() === $media->disk) {
+            $this->copyFileOnDisk($file->getKey(), $destination, $media->disk);
+
+            return;
+        }
+
+        $sourceDisk = $this->filesystem
+            ->disk($file->getDisk());
+
+        $diskName = (in_array($type, ['conversions', 'responsiveImages']))
+            ? $media->conversions_disk
+            : $media->disk;
+
+        $diskDriverName = (in_array($type, ['conversions', 'responsiveImages']))
+            ? $media->getConversionsDiskDriverName()
+            : $media->getDiskDriverName();
+
+        $headers = $diskDriverName === 'local'
+            ? []
+            : $this->getRemoteHeadersForFile(
+                $file->getKey(),
+                $media->getCustomHeaders(),
+                $sourceDisk->mimeType($file->getKey())
+            );
+
+        $destinationDisk = $this->filesystem
+            ->disk($diskName);
+
+        $result = $this->driverWriteStream(
+            $destinationDisk->getDriver(),
+            $destination,
+            $sourceDisk->getDriver()->readStream($file->getKey()),
+            $headers
+        );
+
+        $propertyName = $type ? "last_{$type}_path" : 'last_full_path';
+
+        $media->setCustomProperty($propertyName, $result['path']);
     }
 
     public function copyToMediaLibrary(
@@ -59,7 +122,7 @@ class Filesystem extends BaseFilesystem
     ) {
         $destinationFileName = $targetFileName ?: pathinfo($pathToFile, PATHINFO_BASENAME);
 
-        $destination = $this->getMediaDirectory($media, $type).$destinationFileName;
+        $destination = $this->getMediaDirectory($media, $type) . $destinationFileName;
 
         $file = fopen($pathToFile, 'r');
 
@@ -71,25 +134,21 @@ class Filesystem extends BaseFilesystem
             ? $media->getConversionsDiskDriverName()
             : $media->getDiskDriverName();
 
-        if ($diskDriverName === 'local') {
-            $this->filesystem
-                ->disk($diskName)
-                ->put($destination, $file);
+        $destinationDisk = $this->filesystem
+            ->disk($diskName);
 
-            fclose($file);
-
-            return;
-        }
-
-        $driver = $this->filesystem
-            ->disk($diskName)
-            ->getDriver();
+        $headers = $diskDriverName === 'local'
+            ? []
+            : $options = $this->getRemoteHeadersForFile(
+                $pathToFile,
+                $media->getCustomHeaders()
+            );
 
         $result = $this->writeFile(
-            $driver,
+            $destinationDisk->getDriver(),
             $destination,
             $file,
-            $this->getRemoteHeadersForFile($pathToFile, $media->getCustomHeaders())
+            $headers
         );
 
         if (is_resource($file)) {
@@ -101,7 +160,7 @@ class Filesystem extends BaseFilesystem
         $media->setCustomProperty($propertyName, $result['path']);
     }
 
-    protected function writeFile(FilesystemInterface $driver, $path, $contents, $options)
+    protected function writeFile(FilesystemInterface $driver, $path, $contents, $options = [])
     {
         $options = is_string($options)
             ? ['visibility' => $options]
@@ -121,8 +180,12 @@ class Filesystem extends BaseFilesystem
             : $this->driverPut($driver, $path, $contents, $options);
     }
 
-    protected function driverPutStream(FilesystemInterface $driver, $path, $resource, array $config = [])
-    {
+    protected function driverPutStream(
+        FilesystemInterface $driver,
+        $path,
+        $resource,
+        array $config = []
+    ) {
         if (! is_resource($resource) || get_resource_type($resource) !== 'stream') {
             throw new InvalidArgumentException(
                 __METHOD__ . ' expects argument #2 to be a valid resource.'
@@ -137,6 +200,27 @@ class Filesystem extends BaseFilesystem
             $this->has($driver->getAdapter(), $path)) {
             return $driver->getAdapter()->updateStream($path, $resource, $config);
         }
+
+        return $driver->getAdapter()->writeStream($path, $resource, $config);
+    }
+
+    public function driverWriteStream(
+        FilesystemInterface $driver,
+        $path,
+        $resource,
+        array $config = []
+    ) {
+        if (! is_resource($resource) || get_resource_type($resource) !== 'stream') {
+            throw new InvalidArgumentException(
+                __METHOD__ . ' expects argument #2 to be a valid resource.'
+            );
+        }
+
+        $path = Util::normalizePath($path);
+        $driver->assertAbsent($path);
+        $config = $this->prepareConfig($driver, $config);
+
+        Util::rewindStream($resource);
 
         return $driver->getAdapter()->writeStream($path, $resource, $config);
     }
@@ -158,15 +242,15 @@ class Filesystem extends BaseFilesystem
     {
         $file = is_string($file) ? new File($file) : $file;
 
-        return $this->putFileAs($driver->getAdapter(), $path, $file, $file->hashName(), $options);
+        return $this->putFileAs($driver, $path, $file, $file->hashName(), $options);
     }
 
     protected function putFileAs(FilesystemInterface $driver, $path, $file, $name, $options = [])
     {
         $stream = fopen(is_string($file) ? $file : $file->getRealPath(), 'r');
 
-        $result = $this->driverPut(
-            $driver->getAdapter(),
+        $result = $this->writeFile(
+            $driver,
             $path = trim($path.'/'.$name, '/'),
             $stream,
             $options
