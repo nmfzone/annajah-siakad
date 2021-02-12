@@ -16,10 +16,7 @@ class Site extends Model implements HasMedia
 
     public $timestamps = false;
 
-    protected $fillable = [
-        'title', 'domain', 'address', 'phone', 'email', 'welcome_message',
-        'facebook', 'twitter', 'instagram',
-    ];
+    protected $guarded = [];
 
     protected $appends = [
         'logo'
@@ -54,7 +51,7 @@ class Site extends Model implements HasMedia
         return $this->hasMany(Category::class);
     }
 
-    public function getLogoAttribute()
+    public function getLogoAttribute(): string
     {
         $logo = $this->getFirstMediaUrl('logo');
 

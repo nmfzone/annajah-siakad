@@ -26,13 +26,13 @@ class User extends Authenticatable implements HasMedia
         SoftDeletes,
         InteractsWithMedia;
 
-    protected $fillable = [
-        'name', 'email', 'password', 'phone', 'address', 'gender',
-        'nickname', 'birth_place', 'birth_date',
-    ];
+    // We may not need $fillable, we can just allowed all columns ($guarded = []).
+    // We just need to make sure we don't pass "guarded columns" on create / update!
+    protected $guarded = [];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     protected $casts = [
@@ -87,6 +87,11 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['name'] = app('indoNameFormatter')->format($value);
     }
 
+    public function setNicknameAttribute($value)
+    {
+        $this->attributes['nickname'] = app('indoNameFormatter')->format($value);
+    }
+
     public function setPhoneAttribute($value)
     {
         if (! is_null($value)) {
@@ -96,7 +101,7 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['phone'] = $value;
     }
 
-    public function getPhotoUrlAttribute()
+    public function getPhotoUrlAttribute(): string
     {
         $profileUrl = $this->getFirstMediaUrl('profile_pict');
 
@@ -107,7 +112,7 @@ class User extends Authenticatable implements HasMedia
         return $profileUrl;
     }
 
-    public function getAvatarAttribute()
+    public function getAvatarAttribute(): string
     {
         $avatar = $this->getFirstMediaUrl('profile_pict', 'thumb');
 
@@ -118,7 +123,7 @@ class User extends Authenticatable implements HasMedia
         return $avatar;
     }
 
-    public function adminlteImage()
+    public function adminlteImage(): string
     {
         return $this->getAvatarAttribute();
     }
@@ -136,7 +141,7 @@ class User extends Authenticatable implements HasMedia
             });
     }
 
-    public static function generateUsername($role, $year = null)
+    public static function generateUsername($role, $year = null): string
     {
         if ($role == Role::STUDENT) {
             $prefix = 'annajah-' . ($year
