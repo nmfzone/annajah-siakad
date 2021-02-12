@@ -23,22 +23,22 @@ class Payment extends Model implements HasMedia
         return $this->belongsTo(Transaction::class);
     }
 
-    public function isVerified()
+    public function isVerified(): bool
     {
         return ! is_null($this->getAttribute('verified_at'));
     }
 
-    public function isVerifiedOriginal()
+    public function isVerifiedOriginal(): bool
     {
         return ! is_null($this->getOriginal('verified_at'));
     }
 
-    public function isFraud()
+    public function isFraud(): bool
     {
         return $this->getAttribute('fraud_status') == PaymentFraudStatus::FRAUD;
     }
 
-    public function isFraudOriginal()
+    public function isFraudOriginal(): bool
     {
         return $this->getOriginal('fraud_status') == PaymentFraudStatus::FRAUD;
     }

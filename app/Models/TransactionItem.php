@@ -23,32 +23,32 @@ class TransactionItem extends Model
         return $this->morphTo();
     }
 
-    public function isPending()
+    public function isPending(): bool
     {
         return $this->transaction->isPending();
     }
 
-    public function isPaid()
+    public function isPaid(): bool
     {
         return $this->transaction->isPaid();
     }
 
-    public function isDeclined()
+    public function isDeclined(): bool
     {
         return $this->transaction->isDeclined();
     }
 
-    public function priceTotal()
+    public function priceTotal(): int
     {
         return $this->getAttribute('price') * $this->getAttribute('quantity');
     }
 
-    public function priceFormatted()
+    public function priceFormatted(): string
     {
         return 'Rp ' . number_format($this->getAttribute('price'), 2, ',', '.');
     }
 
-    public function priceTotalFormatted()
+    public function priceTotalFormatted(): string
     {
         return 'Rp ' . number_format($this->priceTotal(), 2, ',', '.');
     }

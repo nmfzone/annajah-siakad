@@ -3,25 +3,17 @@
 namespace App\Models\Concerns;
 
 use App\Models\TransactionItem;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 trait Transactionable
 {
-    /**
-     * Get the model's transaction item.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
-     */
-    public function transactionItem()
+    public function transactionItem(): MorphOne
     {
         return $this->morphOne(TransactionItem::class, 'itemable');
     }
 
-    /**
-     * Get all of the model's transaction items.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function transactionItems()
+    public function transactionItems(): MorphMany
     {
         return $this->morphMany(TransactionItem::class, 'itemable');
     }

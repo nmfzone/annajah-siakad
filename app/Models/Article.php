@@ -40,14 +40,14 @@ class Article extends Model implements HasMedia
         return $this->belongsTo(Media::class, 'thumbnail_id');
     }
 
-    public function title()
+    public function title(): string
     {
         $title = $this->getAttribute('title');
 
         return empty($title) ? '(tidak ada judul)' : $title;
     }
 
-    public function isPublished()
+    public function isPublished(): bool
     {
         return ! is_null($this->getAttribute('published_at'));
     }

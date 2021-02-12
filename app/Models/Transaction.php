@@ -29,22 +29,22 @@ class Transaction extends Model
         return $this->hasMany(TransactionItem::class);
     }
 
-    public function isPending()
+    public function isPending(): bool
     {
         return ! ($this->isPaid() || $this->isDeclined());
     }
 
-    public function isPaid()
+    public function isPaid(): bool
     {
         return $this->getAttribute('status') === PaymentStatus::PAID;
     }
 
-    public function isDeclined()
+    public function isDeclined(): bool
     {
         return $this->getAttribute('status') === PaymentStatus::DECLINED;
     }
 
-    public function amountFormatted()
+    public function amountFormatted(): string
     {
         return 'Rp ' . number_format($this->getAttribute('amount'), 2, ',', '.');
     }

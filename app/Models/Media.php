@@ -24,7 +24,8 @@ class Media extends Model
     {
         $temporaryDirectory = TemporaryDirectory::create();
 
-        $temporaryFile = $temporaryDirectory->path('/').DIRECTORY_SEPARATOR.$this->file_name;
+        $temporaryFile = $temporaryDirectory->path('/') .
+            DIRECTORY_SEPARATOR . $this->file_name;
 
         /** @var \Spatie\MediaLibrary\MediaCollections\Filesystem $filesystem */
         $filesystem = app(Filesystem::class);
