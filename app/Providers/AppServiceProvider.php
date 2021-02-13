@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Garages\GoogleDrive\GoogleDriveAdapter;
 use App\Garages\Illuminate\Routing\Matching\HostValidator;
+use App\Garages\Illuminate\Routing\Router;
 use App\Garages\Illuminate\Routing\UrlGenerator;
 use App\Garages\Utility\IndonesianNameFormatter;
 use App\Models\PpdbUser;
@@ -55,6 +56,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->extend(\Spatie\MediaLibrary\MediaCollections\Filesystem::class, function () {
             return $this->app->make(\App\Garages\MediaLibrary\Filesystem::class);
+        });
+
+        $this->app->extend('router', function () {
+            return new Router($this->app['events'], $this->app);
         });
 
         $this->app->singleton('url', function ($app) {
