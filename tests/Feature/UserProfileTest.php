@@ -43,6 +43,7 @@ class UserProfileTest extends TestCase
                 'birth_place' => 'Yogyakarta',
                 'birth_date' => $birthDate,
             ])
+            ->assertRedirect()
             ->assertSessionHasNoErrors();
 
         $this->assertDatabaseHas($user->getTable(), [
@@ -77,6 +78,7 @@ class UserProfileTest extends TestCase
                 'birth_place' => 'Yogyakarta',
                 'birth_date' => now()->format('d-m-Y'),
             ])
+            ->assertRedirect()
             ->assertSessionHasNoErrors();
 
         $user = $user->fresh();
