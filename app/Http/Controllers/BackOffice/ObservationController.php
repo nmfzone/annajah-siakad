@@ -20,7 +20,7 @@ class ObservationController extends Controller
         $this->ppdbService = $ppdbService;
     }
 
-    public function show($subDomain, $domain, Ppdb $ppdb, PpdbUser $ppdbUser)
+    public function show($subDomain, $subDomainHost, Ppdb $ppdb, PpdbUser $ppdbUser)
     {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
 

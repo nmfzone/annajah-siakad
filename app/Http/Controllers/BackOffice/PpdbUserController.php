@@ -28,7 +28,7 @@ class PpdbUserController extends Controller
         $this->ppdbService = $ppdbService;
     }
 
-    public function index($subDomain, $domain, Ppdb $ppdb)
+    public function index($subDomain, $subDomainHost, Ppdb $ppdb)
     {
         $this->authorize('viewAny', PpdbUser::class);
 
@@ -37,7 +37,7 @@ class PpdbUserController extends Controller
         return $datatable->render('backoffice.ppdb.users.index');
     }
 
-    public function show($subDomain, $domain, Ppdb $ppdb, PpdbUser $ppdbUser)
+    public function show($subDomain, $subDomainHost, Ppdb $ppdb, PpdbUser $ppdbUser)
     {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
         $this->authorize('view', $ppdbUser);
@@ -65,7 +65,7 @@ class PpdbUserController extends Controller
 
     public function showPayment(
         $subDomain,
-        $domain,
+        $subDomainHost,
         Ppdb $ppdb,
         PpdbUser $ppdbUser,
         Transaction $transaction
@@ -86,7 +86,7 @@ class PpdbUserController extends Controller
     public function storePayment(
         PaymentCreateRequest $request,
         $subDomain,
-        $domain,
+        $subDomainHost,
         Ppdb $ppdb,
         PpdbUser $ppdbUser,
         Transaction $transaction
@@ -122,7 +122,7 @@ class PpdbUserController extends Controller
 
     public function acceptPayment(
         $subDomain,
-        $domain,
+        $subDomainHost,
         Ppdb $ppdb,
         PpdbUser $ppdbUser,
         Transaction $transaction
@@ -150,7 +150,7 @@ class PpdbUserController extends Controller
 
     public function declineOrCancelPayment(
         $subDomain,
-        $domain,
+        $subDomainHost,
         Ppdb $ppdb,
         PpdbUser $ppdbUser,
         Transaction $transaction
@@ -181,7 +181,7 @@ class PpdbUserController extends Controller
         return redirect()->back();
     }
 
-    public function acceptAsStudent($subDomain, $domain, Ppdb $ppdb, PpdbUser $ppdbUser)
+    public function acceptAsStudent($subDomain, $subDomainHost, Ppdb $ppdb, PpdbUser $ppdbUser)
     {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
         $this->authorize('acceptAsStudent', $ppdbUser);
@@ -212,8 +212,12 @@ class PpdbUserController extends Controller
         return redirect()->back();
     }
 
-    public function declineOrCancelAsStudent($subDomain, $domain, Ppdb $ppdb, PpdbUser $ppdbUser)
-    {
+    public function declineOrCancelAsStudent(
+        $subDomain,
+        $subDomainHost,
+        Ppdb $ppdb,
+        PpdbUser $ppdbUser
+    ) {
         $this->userShouldBelongsToPpdb($ppdb, $ppdbUser);
         $this->authorize('declineOrCancelAsStudent', $ppdbUser);
 

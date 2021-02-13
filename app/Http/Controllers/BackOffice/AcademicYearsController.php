@@ -39,7 +39,7 @@ class AcademicYearsController extends Controller
         return redirect()->to(sub_route('backoffice.academic_years.index'));
     }
 
-    public function show($subDomain, $domain, AcademicYear $academicYear)
+    public function show($subDomain, $subDomainHost, AcademicYear $academicYear)
     {
         $this->academicYearShouldBelongsToCurrentSite($academicYear);
         $this->authorize('view', $academicYear);
@@ -47,7 +47,7 @@ class AcademicYearsController extends Controller
         return view('backoffice.academic_years.show', compact('academicYear'));
     }
 
-    public function destroy($subDomain, $domain, AcademicYear $academicYear)
+    public function destroy($subDomain, $subDomainHost, AcademicYear $academicYear)
     {
         $this->academicYearShouldBelongsToCurrentSite($academicYear);
         $this->authorize('delete', $academicYear);
