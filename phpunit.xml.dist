@@ -27,5 +27,8 @@
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
+        <server name="APP_HOST" value="app.test"/>
+        <server name="SESSION_DOMAIN" value=".app.test"/>
+        <server name="APP_SUB_DOMAIN_HOSTS" value="app.test"/>
     </php>
 </phpunit>
