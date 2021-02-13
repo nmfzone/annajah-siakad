@@ -36,10 +36,19 @@ trait HasProfiles
             ->first();
     }
 
+    public function scopeStudents(Builder $query, Site $site = null): Builder
+    {
+        return $query->whereHas('studentProfiles', function (Builder $query) use ($site) {
+            if ($site) {
+                $query->where('userables.site_id', $site->id);
+            }
+        });
+    }
+
     public function scopeAcceptedStudents(Builder $query, Site $site): Builder
     {
         return $query->whereHas('studentProfiles', function (Builder $query) use ($site) {
-            return $query->where('userables.site_id', $site->id)
+            $query->where('userables.site_id', $site->id)
                 ->whereNotNull('accepted_at');
         });
     }
