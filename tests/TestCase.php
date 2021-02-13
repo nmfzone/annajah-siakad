@@ -9,7 +9,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    protected function getFullSubUrl(Site $site, $uri): string
+    protected function getFullSubUrl(Site $site, $uri = null): string
     {
         $host = config('app.protocol') . '://' . $site->domain;
 
