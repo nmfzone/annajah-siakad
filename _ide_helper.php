@@ -10828,8 +10828,8 @@
          * @static 
          */ 
         public static function get($uri, $action = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->get($uri, $action);
         }
                     /**
@@ -10841,8 +10841,8 @@
          * @static 
          */ 
         public static function post($uri, $action = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->post($uri, $action);
         }
                     /**
@@ -10854,8 +10854,8 @@
          * @static 
          */ 
         public static function put($uri, $action = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->put($uri, $action);
         }
                     /**
@@ -10867,8 +10867,8 @@
          * @static 
          */ 
         public static function patch($uri, $action = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->patch($uri, $action);
         }
                     /**
@@ -10880,8 +10880,8 @@
          * @static 
          */ 
         public static function delete($uri, $action = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->delete($uri, $action);
         }
                     /**
@@ -10893,8 +10893,8 @@
          * @static 
          */ 
         public static function options($uri, $action = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->options($uri, $action);
         }
                     /**
@@ -10906,8 +10906,8 @@
          * @static 
          */ 
         public static function any($uri, $action = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->any($uri, $action);
         }
                     /**
@@ -10918,8 +10918,8 @@
          * @static 
          */ 
         public static function fallback($action)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->fallback($action);
         }
                     /**
@@ -10932,8 +10932,8 @@
          * @static 
          */ 
         public static function redirect($uri, $destination, $status = 302)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->redirect($uri, $destination, $status);
         }
                     /**
@@ -10945,8 +10945,8 @@
          * @static 
          */ 
         public static function permanentRedirect($uri, $destination)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->permanentRedirect($uri, $destination);
         }
                     /**
@@ -10961,8 +10961,8 @@
          * @static 
          */ 
         public static function view($uri, $view, $data = [], $status = 200, $headers = [])
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->view($uri, $view, $data, $status, $headers);
         }
                     /**
@@ -10975,8 +10975,8 @@
          * @static 
          */ 
         public static function match($methods, $uri, $action = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->match($methods, $uri, $action);
         }
                     /**
@@ -10988,8 +10988,8 @@
          * @static 
          */ 
         public static function resources($resources, $options = [])
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->resources($resources, $options);
         }
                     /**
@@ -11002,8 +11002,8 @@
          * @static 
          */ 
         public static function resource($name, $controller, $options = [])
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->resource($name, $controller, $options);
         }
                     /**
@@ -11015,8 +11015,8 @@
          * @static 
          */ 
         public static function apiResources($resources, $options = [])
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->apiResources($resources, $options);
         }
                     /**
@@ -11029,8 +11029,8 @@
          * @static 
          */ 
         public static function apiResource($name, $controller, $options = [])
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->apiResource($name, $controller, $options);
         }
                     /**
@@ -11042,8 +11042,8 @@
          * @static 
          */ 
         public static function group($attributes, $routes)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->group($attributes, $routes);
         }
                     /**
@@ -11055,8 +11055,8 @@
          * @static 
          */ 
         public static function mergeWithLastGroup($new, $prependExistingPrefix = true)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->mergeWithLastGroup($new, $prependExistingPrefix);
         }
                     /**
@@ -11066,8 +11066,8 @@
          * @static 
          */ 
         public static function getLastGroupPrefix()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->getLastGroupPrefix();
         }
                     /**
@@ -11080,8 +11080,8 @@
          * @static 
          */ 
         public static function addRoute($methods, $uri, $action)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->addRoute($methods, $uri, $action);
         }
                     /**
@@ -11094,8 +11094,8 @@
          * @static 
          */ 
         public static function newRoute($methods, $uri, $action)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->newRoute($methods, $uri, $action);
         }
                     /**
@@ -11106,8 +11106,8 @@
          * @static 
          */ 
         public static function respondWithRoute($name)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->respondWithRoute($name);
         }
                     /**
@@ -11118,8 +11118,8 @@
          * @static 
          */ 
         public static function dispatch($request)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->dispatch($request);
         }
                     /**
@@ -11130,8 +11130,8 @@
          * @static 
          */ 
         public static function dispatchToRoute($request)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->dispatchToRoute($request);
         }
                     /**
@@ -11142,8 +11142,8 @@
          * @static 
          */ 
         public static function gatherRouteMiddleware($route)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->gatherRouteMiddleware($route);
         }
                     /**
@@ -11155,8 +11155,8 @@
          * @static 
          */ 
         public static function prepareResponse($request, $response)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->prepareResponse($request, $response);
         }
                     /**
@@ -11168,8 +11168,8 @@
          * @static 
          */ 
         public static function toResponse($request, $response)
-        {
-                        return \Illuminate\Routing\Router::toResponse($request, $response);
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        return \App\Garages\Illuminate\Routing\Router::toResponse($request, $response);
         }
                     /**
          * Substitute the route bindings onto the route.
@@ -11180,8 +11180,8 @@
          * @static 
          */ 
         public static function substituteBindings($route)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->substituteBindings($route);
         }
                     /**
@@ -11193,8 +11193,8 @@
          * @static 
          */ 
         public static function substituteImplicitBindings($route)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->substituteImplicitBindings($route);
         }
                     /**
@@ -11205,8 +11205,8 @@
          * @static 
          */ 
         public static function matched($callback)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->matched($callback);
         }
                     /**
@@ -11216,8 +11216,8 @@
          * @static 
          */ 
         public static function getMiddleware()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->getMiddleware();
         }
                     /**
@@ -11225,12 +11225,12 @@
          *
          * @param string $name
          * @param string $class
-         * @return \Illuminate\Routing\Router 
+         * @return \App\Garages\Illuminate\Routing\Router 
          * @static 
          */ 
         public static function aliasMiddleware($name, $class)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->aliasMiddleware($name, $class);
         }
                     /**
@@ -11241,8 +11241,8 @@
          * @static 
          */ 
         public static function hasMiddlewareGroup($name)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->hasMiddlewareGroup($name);
         }
                     /**
@@ -11252,8 +11252,8 @@
          * @static 
          */ 
         public static function getMiddlewareGroups()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->getMiddlewareGroups();
         }
                     /**
@@ -11261,12 +11261,12 @@
          *
          * @param string $name
          * @param array $middleware
-         * @return \Illuminate\Routing\Router 
+         * @return \App\Garages\Illuminate\Routing\Router 
          * @static 
          */ 
         public static function middlewareGroup($name, $middleware)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->middlewareGroup($name, $middleware);
         }
                     /**
@@ -11276,12 +11276,12 @@
          *
          * @param string $group
          * @param string $middleware
-         * @return \Illuminate\Routing\Router 
+         * @return \App\Garages\Illuminate\Routing\Router 
          * @static 
          */ 
         public static function prependMiddlewareToGroup($group, $middleware)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->prependMiddlewareToGroup($group, $middleware);
         }
                     /**
@@ -11291,12 +11291,12 @@
          *
          * @param string $group
          * @param string $middleware
-         * @return \Illuminate\Routing\Router 
+         * @return \App\Garages\Illuminate\Routing\Router 
          * @static 
          */ 
         public static function pushMiddlewareToGroup($group, $middleware)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->pushMiddlewareToGroup($group, $middleware);
         }
                     /**
@@ -11308,8 +11308,8 @@
          * @static 
          */ 
         public static function bind($key, $binder)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->bind($key, $binder);
         }
                     /**
@@ -11322,8 +11322,8 @@
          * @static 
          */ 
         public static function model($key, $class, $callback = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->model($key, $class, $callback);
         }
                     /**
@@ -11334,8 +11334,8 @@
          * @static 
          */ 
         public static function getBindingCallback($key)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->getBindingCallback($key);
         }
                     /**
@@ -11345,8 +11345,8 @@
          * @static 
          */ 
         public static function getPatterns()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->getPatterns();
         }
                     /**
@@ -11358,8 +11358,8 @@
          * @static 
          */ 
         public static function pattern($key, $pattern)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->pattern($key, $pattern);
         }
                     /**
@@ -11370,8 +11370,8 @@
          * @static 
          */ 
         public static function patterns($patterns)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->patterns($patterns);
         }
                     /**
@@ -11381,8 +11381,8 @@
          * @static 
          */ 
         public static function hasGroupStack()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->hasGroupStack();
         }
                     /**
@@ -11392,8 +11392,8 @@
          * @static 
          */ 
         public static function getGroupStack()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->getGroupStack();
         }
                     /**
@@ -11405,8 +11405,8 @@
          * @static 
          */ 
         public static function input($key, $default = null)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->input($key, $default);
         }
                     /**
@@ -11416,8 +11416,8 @@
          * @static 
          */ 
         public static function getCurrentRequest()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->getCurrentRequest();
         }
                     /**
@@ -11427,8 +11427,8 @@
          * @static 
          */ 
         public static function getCurrentRoute()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->getCurrentRoute();
         }
                     /**
@@ -11438,8 +11438,8 @@
          * @static 
          */ 
         public static function current()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->current();
         }
                     /**
@@ -11450,8 +11450,8 @@
          * @static 
          */ 
         public static function has($name)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->has($name);
         }
                     /**
@@ -11461,8 +11461,8 @@
          * @static 
          */ 
         public static function currentRouteName()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->currentRouteName();
         }
                     /**
@@ -11473,8 +11473,8 @@
          * @static 
          */ 
         public static function is(...$patterns)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->is(...$patterns);
         }
                     /**
@@ -11485,8 +11485,8 @@
          * @static 
          */ 
         public static function currentRouteNamed(...$patterns)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->currentRouteNamed(...$patterns);
         }
                     /**
@@ -11496,8 +11496,8 @@
          * @static 
          */ 
         public static function currentRouteAction()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->currentRouteAction();
         }
                     /**
@@ -11508,8 +11508,8 @@
          * @static 
          */ 
         public static function uses(...$patterns)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->uses(...$patterns);
         }
                     /**
@@ -11520,8 +11520,8 @@
          * @static 
          */ 
         public static function currentRouteUses($action)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->currentRouteUses($action);
         }
                     /**
@@ -11532,8 +11532,8 @@
          * @static 
          */ 
         public static function singularResourceParameters($singular = true)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->singularResourceParameters($singular);
         }
                     /**
@@ -11544,8 +11544,8 @@
          * @static 
          */ 
         public static function resourceParameters($parameters = [])
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->resourceParameters($parameters);
         }
                     /**
@@ -11556,8 +11556,8 @@
          * @static 
          */ 
         public static function resourceVerbs($verbs = [])
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->resourceVerbs($verbs);
         }
                     /**
@@ -11567,8 +11567,8 @@
          * @static 
          */ 
         public static function getRoutes()
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->getRoutes();
         }
                     /**
@@ -11579,8 +11579,8 @@
          * @static 
          */ 
         public static function setRoutes($routes)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->setRoutes($routes);
         }
                     /**
@@ -11591,8 +11591,8 @@
          * @static 
          */ 
         public static function setCompiledRoutes($routes)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         $instance->setCompiledRoutes($routes);
         }
                     /**
@@ -11603,8 +11603,8 @@
          * @static 
          */ 
         public static function uniqueMiddleware($middleware)
-        {
-                        return \Illuminate\Routing\Router::uniqueMiddleware($middleware);
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        return \App\Garages\Illuminate\Routing\Router::uniqueMiddleware($middleware);
         }
                     /**
          * Register a custom macro.
@@ -11615,8 +11615,8 @@
          * @static 
          */ 
         public static function macro($name, $macro)
-        {
-                        \Illuminate\Routing\Router::macro($name, $macro);
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        \App\Garages\Illuminate\Routing\Router::macro($name, $macro);
         }
                     /**
          * Mix another object into the class.
@@ -11628,8 +11628,8 @@
          * @static 
          */ 
         public static function mixin($mixin, $replace = true)
-        {
-                        \Illuminate\Routing\Router::mixin($mixin, $replace);
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        \App\Garages\Illuminate\Routing\Router::mixin($mixin, $replace);
         }
                     /**
          * Checks if macro is registered.
@@ -11639,8 +11639,8 @@
          * @static 
          */ 
         public static function hasMacro($name)
-        {
-                        return \Illuminate\Routing\Router::hasMacro($name);
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        return \App\Garages\Illuminate\Routing\Router::hasMacro($name);
         }
                     /**
          * Dynamically handle calls to the class.
@@ -11652,50 +11652,9 @@
          * @static 
          */ 
         public static function macroCall($method, $parameters)
-        {
-                        /** @var \Illuminate\Routing\Router $instance */
+        {            //Method inherited from \Illuminate\Routing\Router         
+                        /** @var \App\Garages\Illuminate\Routing\Router $instance */
                         return $instance->macroCall($method, $parameters);
-        }
-                    /**
-         * 
-         *
-         * @see \Laravel\Ui\AuthRouteMethods::auth()
-         * @param mixed $options
-         * @static 
-         */ 
-        public static function auth($options = [])
-        {
-                        return \Illuminate\Routing\Router::auth($options);
-        }
-                    /**
-         * 
-         *
-         * @see \Laravel\Ui\AuthRouteMethods::resetPassword()
-         * @static 
-         */ 
-        public static function resetPassword()
-        {
-                        return \Illuminate\Routing\Router::resetPassword();
-        }
-                    /**
-         * 
-         *
-         * @see \Laravel\Ui\AuthRouteMethods::confirmPassword()
-         * @static 
-         */ 
-        public static function confirmPassword()
-        {
-                        return \Illuminate\Routing\Router::confirmPassword();
-        }
-                    /**
-         * 
-         *
-         * @see \Laravel\Ui\AuthRouteMethods::emailVerification()
-         * @static 
-         */ 
-        public static function emailVerification()
-        {
-                        return \Illuminate\Routing\Router::emailVerification();
         }
          
     }
