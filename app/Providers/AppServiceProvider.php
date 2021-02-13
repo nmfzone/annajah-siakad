@@ -17,6 +17,7 @@ use Illuminate\Routing\Matching\MethodValidator;
 use Illuminate\Routing\Matching\SchemeValidator;
 use Illuminate\Routing\Matching\UriValidator;
 use Illuminate\Routing\Route;
+use Illuminate\Routing\Router as BaseRouter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
@@ -58,8 +59,14 @@ class AppServiceProvider extends ServiceProvider
             return $this->app->make(\App\Garages\MediaLibrary\Filesystem::class);
         });
 
-        $this->app->extend('router', function () {
-            return new Router($this->app['events'], $this->app);
+        $this->app->extend('router', function (BaseRouter $router) {
+            $newRouter = new Router($this->app['events'], $this->app);
+            $newRouter->setRoutes($router->getRoutes());
+            $newRouter->setMiddleware($router->getMiddleware());
+            $newRouter->setMiddlewareGroups($router->getMiddlewareGroups());
+            $newRouter->middlewarePriority = $router->middlewarePriority;
+
+            return $newRouter;
         });
 
         $this->app->singleton('url', function ($app) {

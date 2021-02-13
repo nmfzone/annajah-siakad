@@ -20,4 +20,26 @@ class Router extends BaseRouter
 
         return parent::runRoute($request, $route);
     }
+
+    /**
+     * Set the middleware.
+     *
+     * @param  array  $middleware
+     * @return void
+     */
+    public function setMiddleware(array $middleware)
+    {
+        $this->middleware = $middleware;
+    }
+
+    /**
+     * Set the middleware groups.
+     *
+     * @param  array  $middlewareGroups
+     * @return void
+     */
+    public function setMiddlewareGroups(array $middlewareGroups)
+    {
+        $this->middlewareGroups = $middlewareGroups;
+    }
 }
