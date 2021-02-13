@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Ppdb;
 use App\Models\PpdbUser;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class PpdbService extends BaseService
 {
@@ -31,27 +32,31 @@ class PpdbService extends BaseService
         $this->transactionItemService = $transactionItemService;
     }
 
-    public function addNewRegistrar(Ppdb $ppdb, User $user, array $data)
+    public function addNewRegistrar(Ppdb $ppdb, User $user, array $data): PpdbUser
     {
-        $ppdbUser = $ppdb->ppdbUsers()->save(new PpdbUser([
-            'user_id' => $user->id,
-            'selection_method' => $data['selection_method'],
-        ]));
+        return DB::transaction(function () use ($ppdb, $user, $data) {
+            $ppdbUser = $ppdb->ppdbUsers()->save(new PpdbUser([
+                'user_id' => $user->id,
+                'selection_method' => $data['selection_method'],
+            ]));
 
-        $paymentDetails = $ppdbUser->ppdb->paymentDetails();
+            $paymentDetails = $ppdbUser->ppdb->paymentDetails();
 
-        $transaction = $this->transactionService->create([
-            'payment_type' => $paymentDetails['payment_type'],
-            'provider' => $paymentDetails['provider'],
-            'provider_number' => $paymentDetails['provider_number'],
-            'provider_holder_name' => $paymentDetails['provider_holder_name'],
-            'valid_until' => now()->addMonths(6),
-        ]);
+            $transaction = $this->transactionService->create([
+                'payment_type' => $paymentDetails['payment_type'],
+                'provider' => $paymentDetails['provider'],
+                'provider_number' => $paymentDetails['provider_number'],
+                'provider_holder_name' => $paymentDetails['provider_holder_name'],
+                'valid_until' => now()->addMonths(6),
+            ]);
 
-        $this->transactionItemService->create($transaction, $ppdbUser, [
-            'name' => 'Biaya Pendaftaran PPDB ' . $ppdbUser->ppdb->academicYear->name,
-            'price' => $ppdbUser->ppdb->price(),
-        ]);
+            $this->transactionItemService->create($transaction, $ppdbUser, [
+                'name' => 'Biaya Pendaftaran PPDB ' . $ppdbUser->ppdb->academicYear->name,
+                'price' => $ppdbUser->ppdb->price(),
+            ]);
+
+            return $ppdbUser;
+        });
     }
 
     public function currentPpdb(): ?Ppdb
