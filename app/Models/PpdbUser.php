@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Models\Concerns\Transactionable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PpdbUser extends Model
 {
-    use Transactionable;
+    use HasFactory,
+        Transactionable;
 
     protected $fillable = [
         'user_id',
