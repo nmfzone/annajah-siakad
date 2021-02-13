@@ -7,10 +7,12 @@ use App\Enums\PaymentType;
 use App\Models\AcademicYear;
 use App\Models\Ppdb;
 use App\Models\Site;
-use Illuminate\Support\Arr;
+use App\Services\PpdbService;
 
 trait CreatesPpdb
 {
+    protected $ppdbService;
+
     public function createPpdbFor(Site $site): Ppdb
     {
         AcademicYear::factory()->create([
@@ -36,5 +38,14 @@ trait CreatesPpdb
         ]);
 
         return $ppdb;
+    }
+
+    public function makePpdbService(): PpdbService
+    {
+        if ($this->ppdbService) {
+            return $this->ppdbService;
+        }
+
+        return $this->app->make(PpdbService::class);
     }
 }
