@@ -9,6 +9,7 @@ use Google_Service_Drive_FileList;
 use Google_Service_Drive_Permission;
 use Google_Http_MediaFileUpload;
 use Google_Service_Exception;
+use Google\Exception as GoogleException;
 use League\Flysystem\Adapter\AbstractAdapter;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
@@ -167,6 +168,21 @@ class GoogleDriveAdapter extends AbstractAdapter
      */
     protected $defaultParams = [];
 
+    /**
+     * Root path.
+     *
+     * @var string
+     */
+    protected $root;
+
+    /**
+     * Creates GoogleDriveAdapter.
+     *
+     * @param  Google_Service_Drive  $service
+     * @param  string  $root
+     * @param  array  $options
+     * @return void
+     */
     public function __construct(Google_Service_Drive $service, $root = null, $options = [])
     {
         if (! $root) {
@@ -215,7 +231,7 @@ class GoogleDriveAdapter extends AbstractAdapter
      * Write a new file.
      *
      * @param  string  $path
-     * @param  string  $contents
+     * @param  string|resource  $contents
      * @param  Config  $config
      * @return array|false
      */
@@ -328,11 +344,13 @@ class GoogleDriveAdapter extends AbstractAdapter
             $this->cacheFileObjectsByName[$newParentId . '/' . $fileName] = $newFile;
             list ($newDir) = $this->splitPath($newpath);
             $newpath = (($newDir === $this->root) ? '' : ($newDir . '/')) . $newFile->getId();
+
             if ($this->getRawVisibility($path) === AdapterInterface::VISIBILITY_PUBLIC) {
                 $this->publish($newpath);
             } else {
                 $this->unPublish($newpath);
             }
+
             return true;
         }
 
@@ -350,17 +368,19 @@ class GoogleDriveAdapter extends AbstractAdapter
         if ($file = $this->getFileObject($path)) {
             $name = $file->getName();
             list ($parentId, $id) = $this->splitPath($path);
+
             if ($parents = $file->getParents()) {
                 $file = new Google_Service_Drive_DriveFile();
                 $opts = [];
                 $res = false;
+
                 if (count($parents) > 1) {
                     $opts['removeParents'] = $parentId;
                 } else {
                     if ($this->options['deleteAction'] === 'delete') {
                         try {
                             $this->service->files->delete($id);
-                        } catch (Google_Exception $e) {
+                        } catch (GoogleException $e) {
                             return false;
                         }
                         $res = true;
@@ -368,6 +388,7 @@ class GoogleDriveAdapter extends AbstractAdapter
                         $file->setTrashed(true);
                     }
                 }
+
                 if (!$res) {
                     try {
                         $this->service->files->update(
@@ -375,18 +396,21 @@ class GoogleDriveAdapter extends AbstractAdapter
                             $file,
                             $this->applyDefaultParams($opts, 'files.update')
                         );
-                    } catch (Google_Exception $e) {
+                    } catch (GoogleException $e) {
                         return false;
                     }
                 }
+
                 unset(
                     $this->cacheFileObjects[$id],
                     $this->cacheHasDirs[$id],
                     $this->cacheFileObjectsByName[$parentId . '/' . $name]
                 );
+
                 return true;
             }
         }
+
         return false;
     }
 
@@ -475,9 +499,13 @@ class GoogleDriveAdapter extends AbstractAdapter
     public function readStream($path)
     {
         $redirect = [];
+        $dlurl = null;
+        $access_token = null;
+
         if (func_num_args() > 1) {
             $redirect = func_get_arg(1);
         }
+
         if (! $redirect) {
             $redirect = [
                 'cnt' => 0,
@@ -485,14 +513,17 @@ class GoogleDriveAdapter extends AbstractAdapter
                 'token' => '',
                 'cookies' => []
             ];
+
             if ($file = $this->getFileObject($path)) {
                 $dlurl = $this->getDownloadUrl($file);
                 $client = $this->service->getClient();
+
                 if ($client->isUsingApplicationDefaultCredentials()) {
                     $token = $client->fetchAccessTokenWithAssertion();
                 } else {
                     $token = $client->getAccessToken();
                 }
+
                 $access_token = '';
                 if (is_array($token)) {
                     if (empty($token['access_token']) && !empty($token['refresh_token'])) {
@@ -504,6 +535,7 @@ class GoogleDriveAdapter extends AbstractAdapter
                         $access_token = $token->access_token;
                     }
                 }
+
                 $redirect = [
                     'cnt' => 0,
                     'url' => '',
@@ -515,6 +547,7 @@ class GoogleDriveAdapter extends AbstractAdapter
             if ($redirect['cnt'] > 5) {
                 return false;
             }
+
             $dlurl = $redirect['url'];
             $redirect['url'] = '';
             $access_token = $redirect['token'];
@@ -523,6 +556,7 @@ class GoogleDriveAdapter extends AbstractAdapter
         if ($dlurl) {
             $url = parse_url($dlurl);
             $cookies = [];
+
             if ($redirect['cookies']) {
                 foreach ($redirect['cookies'] as $d => $c) {
                     if (strpos($url['host'], $d) !== false) {
@@ -530,6 +564,7 @@ class GoogleDriveAdapter extends AbstractAdapter
                     }
                 }
             }
+
             if ($access_token) {
                 $query = isset($url['query']) ? '?' . $url['query'] : '';
                 $stream = stream_socket_client('ssl://' . $url['host'] . ':443');
@@ -538,15 +573,18 @@ class GoogleDriveAdapter extends AbstractAdapter
                 fputs($stream, "Host: {$url['host']}\r\n");
                 fputs($stream, "Authorization: Bearer {$access_token}\r\n");
                 fputs($stream, "Connection: Close\r\n");
+
                 if ($cookies) {
                     fputs($stream, "Cookie: " . join('; ', $cookies) . "\r\n");
                 }
+
                 fputs($stream, "\r\n");
                 while (($res = trim(fgets($stream))) !== '') {
                     // find redirect
                     if (preg_match('/^Location: (.+)$/', $res, $m)) {
                         $redirect['url'] = $m[1];
                     }
+
                     // fetch cookie
                     if (strpos($res, 'Set-Cookie:') === 0) {
                         $domain = $url['host'];
@@ -562,14 +600,18 @@ class GoogleDriveAdapter extends AbstractAdapter
                         }
                     }
                 }
+
                 if ($redirect['url']) {
                     $redirect['cnt'] ++;
                     fclose($stream);
+
                     return $this->readStream($path, $redirect);
                 }
+
                 return compact('stream');
             }
         }
+
         return false;
     }
 
@@ -664,6 +706,7 @@ class GoogleDriveAdapter extends AbstractAdapter
                 return $url;
             }
         }
+
         return false;
     }
 
@@ -1197,7 +1240,7 @@ class GoogleDriveAdapter extends AbstractAdapter
      * @param  string  $fileName
      * @param  Google_Service_Drive_DriveFile|null  $srcDriveFile
      * @param  string  $mime
-     * @return Google_Service_Drive_DriveFile
+     * @return Google_Service_Drive_DriveFile|\Psr\Http\Message\ResponseInterface
      */
     protected function uploadStringToGoogleDrive($contents, $parentId, $fileName, $srcDriveFile, $mime)
     {
@@ -1213,7 +1256,7 @@ class GoogleDriveAdapter extends AbstractAdapter
      * @param  string  $fileName
      * @param  Google_Service_Drive_DriveFile|null  $srcDriveFile
      * @param  string  $mime
-     * @return Google_Service_Drive_DriveFile
+     * @return Google_Service_Drive_DriveFile|\Psr\Http\Message\ResponseInterface
      */
     protected function ensureDriveFileExists($contents, $parentId, $fileName, $srcDriveFile, $mime)
     {
@@ -1336,10 +1379,10 @@ class GoogleDriveAdapter extends AbstractAdapter
     /**
      * Get a MediaFileUpload
      *
-     * @param  $client
-     * @param  $request
-     * @param  $mime
-     * @param  $chunkSizeBytes
+     * @param  \Google\Client  $client
+     * @param  mixed  $request
+     * @param  string  $mime
+     * @param  int|bool  $chunkSizeBytes
      * @return Google_Http_MediaFileUpload
      */
     protected function getMediaFileUpload($client, $request, $mime, $chunkSizeBytes)
