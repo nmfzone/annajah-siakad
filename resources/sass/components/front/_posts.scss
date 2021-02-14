@@ -16,7 +16,7 @@
       @apply h-64 overflow-hidden relative w-full;
 
       img {
-        @apply absolute object-cover m-auto w-full cursor-pointer;
+        @apply absolute object-cover m-auto h-full w-full cursor-pointer;
 
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;

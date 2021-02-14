@@ -60,19 +60,23 @@ class WebController extends Controller
         if (! is_main_app()) {
             $slides = [
                 [
-                    'id' => 3,
+                    'id' => 1,
                     'image' => asset('images/slider-1.png')
                 ],
                 [
-                    'id' => 1,
-                    'image' => asset('images/slider-2.jpg')
+                    'id' => 2,
+                    'image' => asset('images/slider-2.webp')
+                ],
+                [
+                    'id' => 3,
+                    'image' => asset('images/slider-3.webp')
                 ],
             ];
             $articles = [
                 [
                     'id' => 1,
                     'title' => 'Tantangan dunia Pendidikan di masa Pandemi',
-                    'thumbnail' => asset('images/gambar-1.jpeg'),
+                    'thumbnail' => asset('images/gambar-1.webp'),
                     'categories' => [
                         ['id' => 1, 'title' => 'Artikel', 'link' => '#']
                     ]
@@ -80,7 +84,7 @@ class WebController extends Controller
                 [
                     'id' => 2,
                     'title' => 'Tantangan dunia Pendidikan di masa Pandemi',
-                    'thumbnail' => asset('images/gambar-1.jpeg'),
+                    'thumbnail' => asset('images/gambar-1.webp'),
                     'categories' => [
                         ['id' => 1, 'title' => 'Artikel', 'link' => '#']
                     ]
@@ -88,7 +92,7 @@ class WebController extends Controller
                 [
                     'id' => 3,
                     'title' => 'Tantangan dunia Pendidikan di masa Pandemi',
-                    'thumbnail' => asset('images/gambar-1.jpeg'),
+                    'thumbnail' => asset('images/gambar-1.webp'),
                     'categories' => [
                         ['id' => 1, 'title' => 'Artikel', 'link' => '#']
                     ]

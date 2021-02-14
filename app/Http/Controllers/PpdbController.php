@@ -40,12 +40,16 @@ class PpdbController extends Controller
 
         $slides = [
             [
-                'id' => 3,
-                'image' => asset('images/slider-1_500.png')
+                'id' => 1,
+                'image' => asset('images/slider-1_500.webp')
             ],
             [
-                'id' => 1,
-                'image' => asset('images/slider-2.jpg')
+                'id' => 2,
+                'image' => asset('images/slider-2.webp')
+            ],
+            [
+                'id' => 3,
+                'image' => asset('images/slider-3.webp')
             ],
         ];
 
