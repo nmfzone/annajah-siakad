@@ -24,7 +24,7 @@
   <div class="font-light text-base">
     <div class="top-right links">
       @auth
-        @if(! is_main_app() || (is_main_app() && in_array(auth()->user()->role, [Role::SUPERADMIN, Role::EDITOR])))
+        @if(! is_main_app() || (is_main_app() && in_array(Auth::user()->role, [Role::SUPERADMIN, Role::EDITOR])))
           <a href="{{ switch_route('auto', 'backoffice.dashboard') }}">Dashboard</a>
         @endif
       @else

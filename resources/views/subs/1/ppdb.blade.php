@@ -45,7 +45,7 @@
         <div class="w-fit-content m-auto mt-8 md:w-1/2">
           <div class="flex justify-center bg-black text-white p-8">
             <div class="text-left">
-              <p>Username: <b>{{ auth()->user()->username }}</b></p>
+              <p>Username: <b>{{ Auth::user()->username }}</b></p>
               <p>Password: <b>{{ session('password') }}</b></p>
             </div>
           </div>

@@ -17,7 +17,7 @@
             <div class="col-md-6 my-auto">
               <h3 class="card-title">Lis Peserta PPDB</h3>
             </div>
-{{--            @if(auth()->user()->isSuperAdminOrAdmin())--}}
+{{--            @if(Auth::user()->isSuperAdminOrAdmin())--}}
 {{--              <div class="col-md-6">--}}
 {{--                <a href="{{ sub_route('backoffice.users.create') }}" class="btn btn-secondary float-right">--}}
 {{--                  <i class="fa fa-plus"></i> Tambah Pendaftar--}}

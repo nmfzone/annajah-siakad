@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Enums\ArticleType;
 use App\Models\Article;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use InvalidArgumentException;
 
 class MediaService extends BaseService
@@ -35,7 +36,7 @@ class MediaService extends BaseService
                 'content' => '',
                 'title' => 'Konsep Otomatis',
                 'site_id' => optional(site())->id,
-                'user_id' => auth()->user()->id,
+                'user_id' => Auth::user()->id,
             ], true);
         }
     }

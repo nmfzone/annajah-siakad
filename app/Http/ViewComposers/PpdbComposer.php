@@ -3,6 +3,7 @@
 namespace App\Http\ViewComposers;
 
 use App\Services\PpdbService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class PpdbComposer
@@ -29,8 +30,7 @@ class PpdbComposer
             $view->with('currentPpdb', $this->ppdbService->currentPpdb());
         }
 
-        /** @var \App\Models\User|null $authUser */
-        $authUser = auth()->user();
+        $authUser = Auth::user();
 
         $view->with('latestPpdbUser', $authUser
             ? $this->ppdbService->latestPpdbUserFor($authUser)

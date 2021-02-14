@@ -26,7 +26,7 @@
                 </a>
               @else
                 @if($transactionItem->isPending())
-                  <div class="{{ auth()->user()->isSuperAdminOrAdmin()
+                  <div class="{{ Auth::user()->isSuperAdminOrAdmin()
                                   ? 'text-yellow-600' : 'py-2 px-6 bg-yellow-600 text-white' }}
                     font-bold rounded-lg text-center">
                     Proses Verifikasi
@@ -46,13 +46,13 @@
                   @endif
                 @else
                   @if($transactionItem->isDeclined())
-                    <div class="{{ auth()->user()->isSuperAdminOrAdmin()
+                    <div class="{{ Auth::user()->isSuperAdminOrAdmin()
                                     ? 'text-red-600' : 'py-2 px-6 bg-red-600 text-white' }}
                       font-bold rounded-lg text-center">
                       Pembayaran Ditolak
                     </div>
                   @else
-                    <div class="{{ auth()->user()->isSuperAdminOrAdmin()
+                    <div class="{{ Auth::user()->isSuperAdminOrAdmin()
                                       ? 'text-green-600' : 'py-2 px-6 bg-green-600 text-white' }}
                       font-bold rounded-lg text-center">
                       Terverifikasi
@@ -86,14 +86,14 @@
                 @endif
               @endif
             </div>
-            @if(auth()->user()->isStudent() && $transactionItem->isPending())
+            @if(Auth::user()->isStudent() && $transactionItem->isPending())
               <div class="w-full mt-5">
                 <p>Metode Pembayaran: {{ PaymentType::getDescription($transactionItem->transaction->payment_type) }}</p>
                 <p>Provider: {{ Str::upper($transactionItem->transaction->provider) }}</p>
                 <p>Nomor: {{ $transactionItem->transaction->provider_number }}</p>
                 <p>Atas Nama: {{ $transactionItem->transaction->provider_holder_name }}</p>
               </div>
-            @elseif(auth()->user()->isSuperAdminOrAdmin() && ! is_null($transactionItem->transaction->payment))
+            @elseif(Auth::user()->isSuperAdminOrAdmin() && ! is_null($transactionItem->transaction->payment))
               <div class="w-full mt-5">
                 <p>Nomor Rekening: {{ $transactionItem->transaction->payment->provider_number }}</p>
                 <p>Atas Nama: {{ $transactionItem->transaction->payment->provider_holder_name }}</p>

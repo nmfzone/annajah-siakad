@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class RoleMiddleware
 {
@@ -19,7 +20,7 @@ class RoleMiddleware
     public function handle($request, Closure $next, ...$roles)
     {
         return app(Authenticate::class)->handle($request, function ($request) use ($next, $roles) {
-            if (in_array(auth()->user()->role, $roles)) {
+            if (in_array(Auth::user()->role, $roles)) {
                 return $next($request);
             }
 

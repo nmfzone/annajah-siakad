@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class SubPermissionMiddleware
 {
@@ -16,14 +17,15 @@ class SubPermissionMiddleware
     public function handle($request, Closure $next)
     {
         return app(Authenticate::class)->handle($request, function ($request) use ($next) {
-            if (auth()->user()->isSuperAdmin() && is_main_app()) {
+            $authUser = Auth::user();
+
+            if ($authUser->isSuperAdmin() && is_main_app()) {
                 return $next($request);
             }
 
             $site = site();
 
-            if (auth()->user()->isSuperAdmin() ||
-                ($site && $site->users()->find(auth()->user()))) {
+            if ($authUser->isSuperAdmin() || ($site && $site->users()->find($authUser))) {
                 return $next($request);
             }
 

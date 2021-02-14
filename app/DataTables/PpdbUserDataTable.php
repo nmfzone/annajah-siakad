@@ -5,6 +5,7 @@ namespace App\DataTables;
 use App\Models\Ppdb;
 use App\Models\PpdbUser;
 use App\Models\Student;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 
@@ -27,7 +28,7 @@ class PpdbUserDataTable extends DataTable
 
     public function __construct(Ppdb $ppdb)
     {
-        $this->authUser = auth()->user();
+        $this->authUser = Auth::user();
         $this->ppdb = $ppdb;
         $this->site = $ppdb->academicYear->site;
     }

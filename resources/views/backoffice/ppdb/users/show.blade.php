@@ -52,7 +52,7 @@
                   @endif
                 </a>
               @endif
-              <a href="{{ auth()->user()->isSuperAdminOrAdmin()
+              <a href="{{ Auth::user()->isSuperAdminOrAdmin()
                     ? route('backoffice.users.edit', ['user' => $ppdbUser->user, 'to_previous' => 1])
                     : route('backoffice.profile') }}"
                  class="ml-2 btn btn-secondary">

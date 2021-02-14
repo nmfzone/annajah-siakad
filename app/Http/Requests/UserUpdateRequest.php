@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class UserUpdateRequest extends UserCreateRequest
@@ -15,7 +16,7 @@ class UserUpdateRequest extends UserCreateRequest
     public function rules(): array
     {
         /** @var \App\Models\User $authUser */
-        $authUser = auth()->user();
+        $authUser = Auth::user();
         $rules = parent::rules();
 
         return $this->mergeRules($rules, [

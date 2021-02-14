@@ -11,6 +11,7 @@ use App\Models\Media;
 use App\Rules\WysiwygMediaModel;
 use App\Services\MediaService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MediaController extends Controller
@@ -82,7 +83,7 @@ class MediaController extends Controller
             });
         }
 
-        $media->user()->associate(auth()->user());
+        $media->user()->associate(Auth::user());
         $media->site()->associate(site());
         $media->save();
 

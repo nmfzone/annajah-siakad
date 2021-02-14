@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-  @if(auth()->user()->isSuperAdminOrAdmin())
+  @if(Auth::user()->isSuperAdminOrAdmin())
     <div class="row">
       <div class="col-lg-3 col-6">
         <a href="#">

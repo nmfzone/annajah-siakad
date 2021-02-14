@@ -119,7 +119,7 @@
                       </div>
                     </div>
                   </div>
-                  @if (auth()->user()->isSuperAdminOrAdmin())
+                  @if (Auth::user()->isSuperAdminOrAdmin())
                     <div class="col-md-6 pl-md-4">
                       <div class="form-group">
                         <label for="content" class="col-form-label">
