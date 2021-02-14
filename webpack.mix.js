@@ -28,10 +28,10 @@ require('laravel-mix-browser-sync-multi')
 //   .copy('node_modules/datatables.net-responsive-bs4/css/responsive.bootstrap4.css', 'resources/sass/vendor/datatables.net-responsive-bs4/responsive.bootstrap4.scss')
 
 
-mix.js('resources/js/app.js', 'public/js').vue()
-  .js('resources/js/dashboard.js', 'public/js')
-  .sass('resources/sass/app.scss', 'public/css')
-  .sass('resources/sass/dashboard.scss', 'public/css')
+mix.js('resources/js/app.js', 'js').vue()
+  .js('resources/js/dashboard.js', 'js')
+  .sass('resources/sass/app.scss', 'css')
+  .sass('resources/sass/dashboard.scss', 'css')
   .tailwind('./tailwind.config.js')
   .browserSyncMulti([
     {

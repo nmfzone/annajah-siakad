@@ -2,15 +2,15 @@
 
 @tailwind base;
 
-@import "vendor/overlayscrollbars/OverlayScrollbars";
+@import "./vendor/overlayscrollbars/OverlayScrollbars";
 
-@import "vendor/icheck-bootstrap/icheck-bootstrap";
+@import "./vendor/icheck-bootstrap/icheck-bootstrap";
 
-@import "vendor/almasaeed2010/adminlte";
+@import "./vendor/almasaeed2010/adminlte";
 
-@import "vendor/datatables.net-bs4/dataTables.bootstrap4";
-@import "vendor/datatables.net-buttons-bs4/buttons.bootstrap4";
-@import "vendor/datatables.net-responsive-bs4/responsive.bootstrap4";
+@import "./vendor/datatables.net-bs4/dataTables.bootstrap4";
+@import "./vendor/datatables.net-buttons-bs4/buttons.bootstrap4";
+@import "./vendor/datatables.net-responsive-bs4/responsive.bootstrap4";
 
 @import "components/backoffice/datatable";
 

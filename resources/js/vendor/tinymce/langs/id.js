@@ -168,7 +168,7 @@ tinymce.addI18n('id', {
   "Alternative source": "Sumber alternatif",
   "Alternative source URL": "URL Sumber alternatif",
   "Media poster (Image URL)": "Poster media (URL gambar)",
-  "Paste your embed code below:": "Tempel kode yang diembed dibawah ini:",
+  "Paste your embed code below:": "Tempel kode yang diembed di bawah ini:",
   "Embed": "Embed",
   "Media...": "Media...",
   "Nonbreaking space": "Spasi",
