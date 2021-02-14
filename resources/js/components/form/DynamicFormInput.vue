@@ -106,6 +106,7 @@ export default {
     removeForm(index) {
       if (!this.canRemoveForm) return
       this.forms.splice(index, 1)
+      this.initialValues.splice(index, 1)
     },
     validateProps() {
       if (this.min >= this.max) {
