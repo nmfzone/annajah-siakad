@@ -13,6 +13,7 @@ class MediaObserver extends BaseObserver
 
         // When the disk is GoogleDrive, Model delete will not working as expected.
         // We need to re-delete the model after deleted event is executed.
+        // It's likely caused by the listener (saving full path & conversion path).
         Media::withoutEvents(function () use ($media) {
             $media->delete();
         });
