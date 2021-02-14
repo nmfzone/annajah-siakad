@@ -23,6 +23,12 @@ class Payment extends Model implements HasMedia
         return $this->belongsTo(Transaction::class);
     }
 
+    public function setProviderHolderNameAttribute($value)
+    {
+        $this->attributes['provider_holder_name'] = app('indoNameFormatter')
+            ->format($value);
+    }
+
     public function isVerified(): bool
     {
         return ! is_null($this->getAttribute('verified_at'));
