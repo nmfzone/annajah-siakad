@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Illuminate\Routing\Router;
 
 class Kernel extends HttpKernel
 {
@@ -88,4 +89,15 @@ class Kernel extends HttpKernel
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
     ];
+
+    /**
+     * Set the router instance to the Kernel.
+     *
+     * @param  \Illuminate\Routing\Router  $router
+     * @return void
+     */
+    public function setRouter(Router $router)
+    {
+        $this->router = $router;
+    }
 }

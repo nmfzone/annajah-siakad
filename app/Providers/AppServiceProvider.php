@@ -17,7 +17,6 @@ use Illuminate\Routing\Matching\MethodValidator;
 use Illuminate\Routing\Matching\SchemeValidator;
 use Illuminate\Routing\Matching\UriValidator;
 use Illuminate\Routing\Route;
-use Illuminate\Routing\Router as BaseRouter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
@@ -59,15 +58,7 @@ class AppServiceProvider extends ServiceProvider
             return $this->app->make(\App\Garages\MediaLibrary\Filesystem::class);
         });
 
-        $this->app->extend('router', function (BaseRouter $router) {
-            $newRouter = new Router($this->app['events'], $this->app);
-            $newRouter->setRoutes($router->getRoutes());
-            $newRouter->setMiddleware($router->getMiddleware());
-            $newRouter->setMiddlewareGroups($router->getMiddlewareGroups());
-            $newRouter->middlewarePriority = $router->middlewarePriority;
-
-            return $newRouter;
-        });
+        $this->overrideRouter();
 
         $this->app->singleton('url', function ($app) {
             $routes = $app['router']->getRoutes();
@@ -108,5 +99,21 @@ class AppServiceProvider extends ServiceProvider
             'teacher' => Teacher::class,
             'student' => Student::class,
         ]);
+    }
+
+    protected function overrideRouter()
+    {
+        $this->app->booted(function () {
+            $newRouter = new Router($this->app['events'], $this->app);
+            $newRouter->setRoutes($this->app['router']->getRoutes());
+            $newRouter->setMiddleware($this->app['router']->getMiddleware());
+            $newRouter->setMiddlewareGroups($this->app['router']->getMiddlewareGroups());
+            $newRouter->middlewarePriority = $this->app['router']->middlewarePriority;
+
+            $this->app['router'] = $newRouter;
+
+            $kernel = $this->app->make(\Illuminate\Contracts\Http\Kernel::class);
+            $kernel->setRouter($newRouter);
+        });
     }
 }
