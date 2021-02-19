@@ -14,23 +14,11 @@ class UrlGenerator extends BaseUrlGenerator
 {
     public function getUrl(): string
     {
-        /** @var \League\Flysystem\Filesystem $driver */
-        $driver = $this->getDisk()->getDriver();
-        $adapter = $driver->getAdapter();
-
-        if (($adapter instanceof Local &&
-                $driver->getConfig()->get('visibility') !== 'public') ||
-            $adapter instanceof GoogleDriveAdapter) {
-            $type = $this->conversion ? 'c' : 'n';
-            $conversion = $this->conversion ? $this->conversion->getName() : 'z';
-
-            return URL::route('storage.private_media', [
-                'type' => $type,
-                'conversion' => $conversion,
-                'path' => Crypt::encryptString(
-                    $this->media->getKey() . ';' . $type . ';' . $conversion
-                ),
-            ]);
+        if ($this->isPrivateMedia()) {
+            return $this->getPrivateMediaUrl(
+                $this->conversion ? 'c' : 'n',
+                $this->media->file_name
+            );
         }
 
         $url = $this->getDisk()->url($this->getPathRelativeToRoot());
@@ -64,7 +52,7 @@ class UrlGenerator extends BaseUrlGenerator
 
         $pathPrefix = $adapter->getPathPrefix();
 
-        return $pathPrefix.$this->getPathRelativeToRoot();
+        return $pathPrefix . $this->getPathRelativeToRoot();
     }
 
     public function getResponsiveImagesDirectoryUrl(): string
@@ -73,6 +61,41 @@ class UrlGenerator extends BaseUrlGenerator
 
         $path = $this->pathGenerator->getPathForResponsiveImages($this->media);
 
-        return Str::finish(url($base.$path), '/');
+        return Str::finish(url($base . $path), '/');
+    }
+
+    public function getResponsiveImageUrl($fileName): string
+    {
+        if ($this->isPrivateMedia()) {
+            return $this->getPrivateMediaUrl('r', $fileName);
+        }
+
+        return $this->getResponsiveImagesDirectoryUrl() . rawurlencode($fileName);
+    }
+
+    protected function getPrivateMediaUrl($type, $fileName = ''): string
+    {
+        $conversion = $this->conversion ? $this->conversion->getName() : 'z';
+
+        return URL::route('storage.private_media', [
+            'type' => $type,
+            'conversion' => $conversion,
+            'path' => Crypt::encryptString(
+                $this->media->getKey() . ';' . $type . ';' . $conversion . ';' . $fileName
+            ),
+        ]);
+    }
+
+    protected function isPrivateMedia(): bool
+    {
+        /** @var \League\Flysystem\Filesystem $driver */
+        $driver = $this->getDisk()->getDriver();
+        $adapter = $driver->getAdapter();
+
+        // @TODO: Google Drive media is not only a private media, it can be a public media.
+        // We need to separate Google Drive public media & Google Drive private media.
+        return ($adapter instanceof Local &&
+                    $driver->getConfig()->get('visibility') !== 'public') ||
+                $adapter instanceof GoogleDriveAdapter;
     }
 }

@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Sanctum\Sanctum;
 use League\Flysystem\Filesystem;
+use Spatie\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -54,9 +55,15 @@ class AppServiceProvider extends ServiceProvider
             return new Filesystem($adapter);
         });
 
-        $this->app->extend(\Spatie\MediaLibrary\MediaCollections\Filesystem::class, function () {
-            return $this->app->make(\App\Garages\MediaLibrary\Filesystem::class);
-        });
+        $this->app->bind(
+            \Spatie\MediaLibrary\MediaCollections\Filesystem::class,
+            \App\Garages\MediaLibrary\Filesystem::class
+        );
+
+        $this->app->bind(
+            \Spatie\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator::class,
+            \App\Garages\MediaLibrary\ResponsiveImages\ResponsiveImageGenerator::class
+        );
 
         $this->overrideRouter();
 

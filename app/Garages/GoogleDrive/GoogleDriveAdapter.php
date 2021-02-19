@@ -173,7 +173,7 @@ class GoogleDriveAdapter extends AbstractAdapter
      *
      * @var string
      */
-    protected $root;
+    public $root;
 
     /**
      * Creates GoogleDriveAdapter.

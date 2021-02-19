@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Garages\MediaLibrary\ResponsiveImages\RegisteredResponsiveImages;
 use Illuminate\Support\Arr;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\MediaCollections\Filesystem;
@@ -20,8 +21,17 @@ class Media extends Model
         return $this->belongsTo(Site::class);
     }
 
-    public function copy(HasMedia $model, $collectionName = 'default', string $diskName = ''): Model
+    public function responsiveImages(string $conversionName = ''): RegisteredResponsiveImages
     {
+        return new RegisteredResponsiveImages($this, $conversionName);
+    }
+
+    public function copy(
+        HasMedia $model,
+        $collectionName = 'default',
+        string $diskName = '',
+        string $fileName = ''
+    ): Model {
         $temporaryDirectory = TemporaryDirectory::create();
 
         $temporaryFile = $temporaryDirectory->path('/') .
@@ -32,9 +42,10 @@ class Media extends Model
 
         $filesystem->copyFromMediaLibrary($this, $temporaryFile);
 
-        $newMedia = $model
+        $fileAdder = $model
             ->addMedia($temporaryFile)
             ->usingName($this->name)
+            ->setOrder($this->order_column)
             ->withCustomProperties(Arr::except(
                 $this->custom_properties,
                 [ // exclude google drive specific custom properties
@@ -42,10 +53,15 @@ class Media extends Model
                     'gdrive_responsive-images_path',
                     'gdrive_conversions_path',
                     'full_path',
-                    'conversion_paths',
                     'last_responsiveImages_path',
                 ]
-            ))
+            ));
+
+        if ($fileName !== '') {
+            $fileAdder->usingFileName($fileName);
+        }
+
+        $newMedia = $fileAdder
             ->toMediaCollection($collectionName, $diskName);
 
         $temporaryDirectory->delete();

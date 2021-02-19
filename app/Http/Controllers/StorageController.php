@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Garages\GoogleDrive\GoogleDriveAdapter;
+use App\Models\Media;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class StorageController extends Controller
 {
@@ -43,36 +42,36 @@ class StorageController extends Controller
                 throw new Exception('Invalid private media path.');
             }
 
-            /** @var \Spatie\MediaLibrary\MediaCollections\Models\Media $media */
+            $fileName = $values[3];
             $media = Media::findOrFail($values[0]);
-        } catch (Exception $e) {
-            abort(404);
-        }
 
-        $conversion = $conversion === 'z' ? '' : $conversion;
-        $type = $typeMap[$type];
-        $conversionDiskName = $media->conversions_disk ?? $media->disk;
-        $diskName = $conversion === '' ? $media->disk : $conversionDiskName;
+            $conversion = $conversion === 'z' ? '' : $conversion;
+            $type = $typeMap[$type];
+            $conversionDiskName = $media->conversions_disk ?? $media->disk;
+            $diskName = $conversion === '' && $type !== 'responsive-images'
+                ? $media->disk
+                : $conversionDiskName;
 
-        $storage = Storage::disk($diskName);
-        $adapter = $storage->getDriver()->getAdapter();
+            if ($type === 'responsive-images') {
+                $urls = collect(Arr::get(
+                    $media->responsive_images,
+                    ($conversion === '' ? 'media_library_original' : $conversion) . '.urls')
+                );
 
-        try {
-            $path = $media->getPath($conversion);
-        } catch (Exception $e) {
-            abort(404);
-        }
-
-        if ($adapter instanceof GoogleDriveAdapter) {
-            if ($conversion === '') {
-                $path = $media->getCustomProperty('full_path');
+                $path = $urls->filter(function (array $fileDetail) use ($fileName) {
+                    return $fileDetail['name'] === $fileName;
+                })->first()['path'];
             } else {
-                $path = $media->getCustomProperty('conversion_paths.' . $conversion);
+                if ($conversion === '') {
+                    $path = $media->getCustomProperty('full_path');
+                } else {
+                    $path = Arr::get($media->generated_conversions, $conversion);
+                }
             }
 
             return Storage::disk($diskName)->response($path);
+        } catch (Exception $e) {
+            abort(404);
         }
-
-        return response()->file($path);
     }
 }

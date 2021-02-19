@@ -9,11 +9,11 @@ class SaveConversionPath
     public function handle(Event $event)
     {
         $lastPath = $event->media->getCustomProperty('last_conversions_path');
-        $conversionPaths = $event->media->getCustomProperty('conversion_paths', []);
+        $generatedConversions = $event->media->generated_conversions;
 
-        $conversionPaths[$event->conversion->getName()] = $lastPath;
+        $generatedConversions[$event->conversion->getName()] = $lastPath;
 
-        $event->media->setCustomProperty('conversion_paths', $conversionPaths);
+        $event->media->generated_conversions = $generatedConversions;
         $event->media->forgetCustomProperty('last_conversions_path');
         $event->media->save();
     }
