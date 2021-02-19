@@ -34,14 +34,15 @@ class WebController extends Controller
 //        $student = $user->studentProfileFor(site());
 //
 //        /** @var \App\Models\Media $media */
-//        $media = Media::findOrFail(12);
+//        $media = Media::findOrFail(2);
 //        $media->delete();
 //        dd('hai');
-//        dd($media->getUrl());
+//        dd($media->delete());
+//        dd($media->responsiveImages()->getUrls());
 //
 //        $adapter = Storage::disk('ppdb_gdrive')
 //            ->getDriver()->getAdapter();
-//        $folderId = '1gJEKzduW1FtCIBgq0EKFd6OZuCH6-ou8';
+//        $folderId = '1vHl3JBvXWQttJiLzuXo1lP5gCqD8Zag-';
 //        $adapter->setPathPrefix($folderId);
 //        $adapter->root = $folderId;
 
