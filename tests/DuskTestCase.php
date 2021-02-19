@@ -40,9 +40,6 @@ abstract class DuskTestCase extends BaseTestCase
     {
         parent::setUp();
 
-        Storage::fake('local');
-        Storage::fake('public');
-
         $this->registerBrowserMacro();
     }
 
