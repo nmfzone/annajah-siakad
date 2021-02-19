@@ -117,7 +117,7 @@ class User extends Authenticatable implements HasMedia
         $avatar = $this->getFirstMediaUrl('profile_pict', 'thumb');
 
         if (empty($avatar)) {
-            return Avatar::create($this->getAttribute('name'))->toBase64()->encoded;
+            return Avatar::create($this->getAttribute('name'))->toBase64();
         }
 
         return $avatar;
